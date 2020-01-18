@@ -1,15 +1,14 @@
-﻿using Shared.Time;
-using RiotAPIAccessLayer.Exceptions;
-using DatabaseAccessLayer;
+﻿using DatabaseAccessLayer;
 using DatabaseAccessLayer.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RiotAPIAccessLayer;
+using RiotAPIAccessLayer.Exceptions;
+using Shared.Time;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
