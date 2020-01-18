@@ -115,7 +115,7 @@ namespace Crawler
                 }
 
                 var pointsRes = await wrapper.GetSummonerPoints(user.Server, user.SummonerID);
-                var pointsDb = await dal.GetPoints(user.Id);
+                var pointsDb = await dal.GetPointsAsync(user.Id);
 
                 Array.ForEach(pointsRes, p =>
                 {

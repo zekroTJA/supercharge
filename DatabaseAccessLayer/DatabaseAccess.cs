@@ -21,7 +21,17 @@ namespace DatabaseAccessLayer
             return await ctx.Users.ToArrayAsync();
         }
 
-        public async Task<ICollection<PointsModel>> GetPoints(Guid userId, int championId = -1)
+        public async Task<UserModel> GetUserByNameAsync(string server, string userName)
+        {
+            return await ctx.Users.FirstOrDefaultAsync(u => u.Server == server && u.Username == userName);
+        }
+
+        public async Task<UserModel> GetUserBySummonerIdAsync(string summonerId)
+        {
+            return await ctx.Users.FirstOrDefaultAsync(u => u.SummonerID == summonerId);
+        }
+
+        public async Task<ICollection<PointsModel>> GetPointsAsync(Guid userId, int championId = -1)
         {
             return await ctx.Points
                 .Where(p => p.User.Id == userId && (championId == -1 || p.ChampionId == championId))

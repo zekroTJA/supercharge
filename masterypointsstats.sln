@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RiotAPIAccessLayer", "RiotA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{640B3E79-671E-4074-B583-7ED2FE298424}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestAPI", "RestAPI\RestAPI.csproj", "{76FE2D48-4C37-4328-A529-98008EBD336F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{640B3E79-671E-4074-B583-7ED2FE298424}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{640B3E79-671E-4074-B583-7ED2FE298424}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{640B3E79-671E-4074-B583-7ED2FE298424}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76FE2D48-4C37-4328-A529-98008EBD336F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76FE2D48-4C37-4328-A529-98008EBD336F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76FE2D48-4C37-4328-A529-98008EBD336F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76FE2D48-4C37-4328-A529-98008EBD336F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
