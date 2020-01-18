@@ -6,6 +6,7 @@ using RiotAPIAccessLayer;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Timers;
 
 namespace Crawler
@@ -42,7 +43,8 @@ namespace Crawler
             var crawler = provider.GetService<PointsCrawler>();
             crawler.StartLoop();
 
-            Console.ReadLine();
+            while (true)
+                Thread.Sleep(int.MaxValue);
         }
     }
 }
