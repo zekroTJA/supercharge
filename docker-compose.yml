@@ -1,0 +1,42 @@
+vsersion: '3.7'
+
+services:
+
+  postgres:
+    image: 'postgres:latest'
+    ports:
+      - '5432:5432'
+    volumes:
+      - './postgres/data:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_PASSWORD: 'SuperSecretPassword'
+      POSTGRES_USER: 'root'
+    restart: always
+
+  # If you want to use pgAdmin as web interface for
+  # postgresql, here is a default configuration for
+  # docker-compose.
+  #
+  # pgadmin:
+  #   image: 'dpage/pgadmin4'
+  #   ports:
+  #     - '443:443'
+  #   environment:
+  #     PGADMIN_ENABLE_TLS: 'true'
+  #     PGADMIN_DEFAULT_EMAIL: 'admin@example.com'
+  #     PGADMIN_DEFAULT_PASSWORD: 'SuperSecretPassword'
+  #   volumes:
+  #     - './pgadmin/data:/var/lib/pgadmin'
+  #     - './pgadmin/config/servers.json:/pgadmin4/servers.json'
+  #     - '/etc/certs/server.cert:/certs/server.cert:ro'
+  #     - '/etc/certs/server.key:/certs/server.key:ro'
+  #   restart: on-failure
+
+  crawler:
+    image: 'mps/crawler:latest'
+    environment:
+      MPS_LOGGING__LOGLEVEL__DEFAULT: 'Information'
+      MPS_CONNECTIONSTRINGS__POSTGRES: 'Host=postgres;Database=masterypoints;Username=masterypoints;Password=SuperSecretPassword'
+      MPS_RIOTAPI__SECRET: 'RGAPI-...'
+      MPS_CRAWLER__EXECON: '03:00'
+    restart: always
