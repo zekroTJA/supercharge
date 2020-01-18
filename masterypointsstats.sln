@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crawler", "Crawler\Crawler.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseAccessLayer", "DatabaseAccessLayer\DatabaseAccessLayer.csproj", "{287468D1-A626-48C8-9901-65A8D08D4EB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiotAPIAccessLayer", "RiotAPIAccessLayer\RiotAPIAccessLayer.csproj", "{6E720D3E-263C-4426-B079-73A1E74A5178}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RiotAPIAccessLayer", "RiotAPIAccessLayer\RiotAPIAccessLayer.csproj", "{6E720D3E-263C-4426-B079-73A1E74A5178}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{640B3E79-671E-4074-B583-7ED2FE298424}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{6E720D3E-263C-4426-B079-73A1E74A5178}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E720D3E-263C-4426-B079-73A1E74A5178}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E720D3E-263C-4426-B079-73A1E74A5178}.Release|Any CPU.Build.0 = Release|Any CPU
+		{640B3E79-671E-4074-B583-7ED2FE298424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{640B3E79-671E-4074-B583-7ED2FE298424}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{640B3E79-671E-4074-B583-7ED2FE298424}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{640B3E79-671E-4074-B583-7ED2FE298424}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

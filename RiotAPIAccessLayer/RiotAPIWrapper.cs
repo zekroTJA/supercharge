@@ -26,5 +26,12 @@ namespace RiotAPIAccessLayer
 
             return res;
         }
+
+        public async Task<string> GetThirdPartyCode(string server, string userId)
+        {
+            var res = await requests.Get<string>(server, APIs.PLATFORM, "v4", $"third-party-code/by-summoner/{userId}");
+
+            return res;
+        }
     }
 }

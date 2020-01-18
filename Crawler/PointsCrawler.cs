@@ -1,4 +1,5 @@
-﻿using RiotAPIAccessLayer.Exceptions;
+﻿using Shared.Time;
+using RiotAPIAccessLayer.Exceptions;
 using DatabaseAccessLayer;
 using DatabaseAccessLayer.Models;
 using Microsoft.Extensions.Configuration;
@@ -67,7 +68,14 @@ namespace Crawler
         {
             if (execOn.FirstOrDefault(CheckTime) != default)
             {
-                 await Exec();
+                try
+                {
+                    await Exec();
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(e.ToString());
+                }
             }
         }
 
@@ -103,10 +111,50 @@ namespace Crawler
                             logger.LogError("user could not be found by API - settings 'Watch' flag to false");
                         }
                     }
-                    catch (Exception e) {
-                        logger.LogError(e.ToString());
-                    }
+
+                    dal.Update(user);
                 }
+
+                var pointsRes = await wrapper.GetSummonerPoints(user.Server, user.SummonerID);
+                var pointsDb = await dal.GetPoints(user.Id);
+
+                Array.ForEach(pointsRes, p =>
+                {
+                    var pChamp = pointsDb.FirstOrDefault(pdb => pdb.ChampionId == p.ChampionId);
+
+                    if (pChamp == null)
+                    {
+                        pChamp = new PointsModel
+                        {
+                            ChampionId = p.ChampionId,
+                            ChampionLevel = p.ChampionLevel,
+                            ChampionPoints = p.ChampionPoints,
+                            LastPlayed = TimeUtils.UnixToDateTime(p.LastPlayed),
+                            User = user,
+                        };
+
+                        dal.Add(pChamp);
+                    } 
+                    else
+                    {
+                        pChamp.ChampionLevel = p.ChampionLevel;
+                        pChamp.ChampionPoints = p.ChampionPoints;
+                        pChamp.LastPlayed = TimeUtils.UnixToDateTime(p.LastPlayed);
+                        pChamp.Updated = DateTime.Now;
+
+                        dal.Update(pChamp);
+                    }
+
+                    var pointsLog = new PointsLogModel
+                    {
+                        ChampionLevel = p.ChampionLevel,
+                        ChampionId = p.ChampionId,
+                        ChampionPoints = p.ChampionPoints,
+                        User = user,
+                    };
+
+                    dal.Add(pointsLog);
+                });
 
                 await dal.CommitChangesAsync();
                 logger.LogInformation("Changed commited to database");
