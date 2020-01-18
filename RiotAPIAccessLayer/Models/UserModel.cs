@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Crawler.RiotAPI.Models
+namespace RiotAPIAccessLayer.Models
 {
     public class UserModel
     {

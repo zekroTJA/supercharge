@@ -1,19 +1,16 @@
-﻿using Crawler.RiotAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json;
+﻿using Microsoft.Extensions.Configuration;
+using RiotAPIAccessLayer.Models;
 using System.Threading.Tasks;
 
-namespace Crawler.RiotAPI
+namespace RiotAPIAccessLayer
 {
-    class RiotAPIWrapper
+    public class RiotAPIWrapper
     {
         private readonly Requests requests;
 
-        public RiotAPIWrapper(string apiToken)
+        public RiotAPIWrapper(IConfiguration config)
         {
-            requests = new Requests(apiToken);
+            requests = new Requests(config.GetValue<string>("RiotAPI:Secret"));
         }
 
         public async Task<UserModel> GetSummonerByName(string server, string username)

@@ -13,6 +13,7 @@ namespace DatabaseAccessLayer
 
         public DbSet<UserModel> Users { get; private set; }
         public DbSet<PointsModel> Points { get; private set; }
+        public DbSet<PointsLogModel> PointsLog { get; private set; }
 
         public DatabaseContext(IConfiguration config) 
         {

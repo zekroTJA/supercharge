@@ -1,9 +1,9 @@
-﻿using Crawler.Exceptions;
-using Crawler.RiotAPI;
+﻿using RiotAPIAccessLayer.Exceptions;
 using DatabaseAccessLayer;
 using DatabaseAccessLayer.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using RiotAPIAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +25,7 @@ namespace Crawler
         private Timer timer;
         private readonly Dictionary<DateTime, DateTime> latelyExecuted = new Dictionary<DateTime, DateTime>();
 
-        public PointsCrawler(IConfiguration config, DatabaseAccess dal, ILogger<PointsCrawler> logger)
+        public PointsCrawler(IConfiguration config, DatabaseAccess dal, RiotAPIWrapper wrapper, ILogger<PointsCrawler> logger)
         {
             execOn = config.GetSection("Crawler:ExecOn")
                 .AsEnumerable()
@@ -35,7 +35,7 @@ namespace Crawler
 
             this.logger = logger;
             this.dal = dal;
-            wrapper = new RiotAPIWrapper(config.GetValue<string>("RiotAPI:Secret"));
+            this.wrapper = wrapper;
         }
 
         public void StartLoop()

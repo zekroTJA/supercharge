@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DatabaseAccessLayer\DatabaseAccessLayer.csproj" />
+    <ProjectReference Include="..\RiotAPIAccessLayer\RiotAPIAccessLayer.csproj" />
   </ItemGroup>
 
 </Project>

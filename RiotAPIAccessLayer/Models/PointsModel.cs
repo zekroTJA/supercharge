@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Crawler.RiotAPI.Models
+namespace RiotAPIAccessLayer.Models
 {
-    class PointsModel
+    public class PointsModel
     {
         [JsonPropertyName("championLevel")]
         public int ChampionLevel { get; set; }

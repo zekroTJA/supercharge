@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 
-namespace Crawler.Exceptions
+namespace RiotAPIAccessLayer.Exceptions
 {
-    class ResponseException : Exception
+    public class ResponseException : Exception
     {
         public readonly HttpResponseMessage Response;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Crawler.RiotAPI
+namespace RiotAPIAccessLayer
 {
    public static class APIs
    {

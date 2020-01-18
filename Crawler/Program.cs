@@ -1,8 +1,8 @@
-﻿using Crawler.RiotAPI;
-using DatabaseAccessLayer;
+﻿using DatabaseAccessLayer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RiotAPIAccessLayer;
 using System;
 using System.IO;
 using System.Linq;
@@ -22,9 +22,10 @@ namespace Crawler
 
 
             var provider = new ServiceCollection()
+                .AddSingleton<IConfiguration>(config)
                 .AddDbContext<DatabaseContext>()
                 .AddSingleton<DatabaseAccess>()
-                .AddSingleton<IConfiguration>(config)
+                .AddSingleton<RiotAPIWrapper>()
                 .AddSingleton<PointsCrawler>()
                 .AddLogging(opt =>
                 {
