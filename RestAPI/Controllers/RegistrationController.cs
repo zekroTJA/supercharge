@@ -6,6 +6,7 @@ using RiotAPIAccessLayer;
 using RiotAPIAccessLayer.Exceptions;
 using RiotAPIAccessLayer.Models;
 using Shared.Random;
+using System;
 using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
@@ -29,20 +30,22 @@ namespace RestAPI.Controllers
             this.registrationCache = registrationCache;
         }
 
-        [HttpGet("code/{server}/{userName}")]
-        public IActionResult GetCode([FromRoute] string server, [FromRoute] string userName)
+        [HttpGet("[action]/{server}/{userName}")]
+        public IActionResult Code([FromRoute] string server, [FromRoute] string userName)
         {
             var code = RandomString.GetRandomString(16);
-            registrationCache.RegistrationCodeCache[$"{server}/{userName}"] = code;
+            var expVal = registrationCache.RegistrationCodeCache.Set(
+                $"{server}/{userName}", code, TimeSpan.FromMinutes(10));
 
             return Ok(new RegistrationCodeModel
             {
                 Code = code,
+                Expires = expVal.Expires,
             });
         }
 
-        [HttpPost("watch/{server}/{userName}")]
-        public async Task<IActionResult> SetWatch(
+        [HttpPost("[action]/{server}/{userName}")]
+        public async Task<IActionResult> Watch(
             [FromRoute] string server, 
             [FromRoute] string userName)
         {
@@ -51,7 +54,7 @@ namespace RestAPI.Controllers
             if (!registrationCache.RegistrationCodeCache.ContainsKey(key))
                 return Unauthorized();
 
-            var stateCode = registrationCache.RegistrationCodeCache[key];
+            var stateCode = registrationCache.RegistrationCodeCache.Get(key);
 
             UserModel user = new UserModel();
             string obtainedCode;
@@ -99,6 +102,46 @@ namespace RestAPI.Controllers
 
                 dal.Update(dbUser);
             }
+
+            await dal.CommitChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost("[action]/{server}/{userName}")]
+        public async Task<IActionResult> UnWatch(
+            [FromRoute] string server,
+            [FromRoute] string userName)
+        {
+            var key = $"{server}/{userName}";
+
+            if (!registrationCache.RegistrationCodeCache.ContainsKey(key))
+                return Unauthorized();
+
+            var stateCode = registrationCache.RegistrationCodeCache.Get(key);
+
+            string obtainedCode;
+
+            var user = await dal.GetUserByNameAsync(server, userName);
+
+            if (user == null)
+                return NotFound();
+
+            try
+            {
+                obtainedCode = await wrapper.GetThirdPartyCode(server, user.SummonerID);
+                if (obtainedCode != stateCode)
+                    return Unauthorized();
+            }
+            catch (ResponseException e)
+            {
+                if (e.Response.StatusCode == HttpStatusCode.NotFound)
+                    return Unauthorized();
+            }
+
+            user.Watch = false;
+
+            dal.Update(user);
 
             await dal.CommitChangesAsync();
 

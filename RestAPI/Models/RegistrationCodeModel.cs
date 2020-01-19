@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace RestAPI.Models
 {
@@ -6,5 +7,8 @@ namespace RestAPI.Models
     {
         [JsonPropertyName("code")]
         public string Code { get; set; }
+
+        [JsonPropertyName("expires")]
+        public DateTime Expires { get; set; }
     }
 }

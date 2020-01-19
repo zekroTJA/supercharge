@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using RestAPI.Caching;
 using RiotAPIAccessLayer;
 
@@ -29,6 +30,11 @@ namespace RestAPI
                 .AddScoped<RiotAPIWrapper>()
                 .AddSingleton<RegistrationCache>()
                 .AddSingleton<IConfiguration>(Configuration);
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Mastery Points Stats API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +50,14 @@ namespace RestAPI
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger");
+                options.RoutePrefix = "swagger";
+            });
 
             app.UseEndpoints(endpoints =>
             {
