@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseAccessLayer", "Data
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RiotAPIAccessLayer", "RiotAPIAccessLayer\RiotAPIAccessLayer.csproj", "{6E720D3E-263C-4426-B079-73A1E74A5178}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{640B3E79-671E-4074-B583-7ED2FE298424}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{640B3E79-671E-4074-B583-7ED2FE298424}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestAPI", "RestAPI\RestAPI.csproj", "{76FE2D48-4C37-4328-A529-98008EBD336F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestAPI", "RestAPI\RestAPI.csproj", "{76FE2D48-4C37-4328-A529-98008EBD336F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDragonAccessLayer", "DDragonAccessLayer\DDragonAccessLayer.csproj", "{9D76E9C7-AA61-4234-9A59-9634521EF1C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{76FE2D48-4C37-4328-A529-98008EBD336F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76FE2D48-4C37-4328-A529-98008EBD336F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76FE2D48-4C37-4328-A529-98008EBD336F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D76E9C7-AA61-4234-9A59-9634521EF1C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D76E9C7-AA61-4234-9A59-9634521EF1C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D76E9C7-AA61-4234-9A59-9634521EF1C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D76E9C7-AA61-4234-9A59-9634521EF1C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

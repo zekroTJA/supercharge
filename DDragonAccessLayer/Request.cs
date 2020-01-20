@@ -1,29 +1,25 @@
 ﻿using Shared.Exceptions;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
+using System.Text.Json;
 
-namespace Shared
+namespace DDragonAccessLayer
 {
     class Requests
     {
-        private const string ROOT_URI = "https://{0}.api.riotgames.com";
+        private const string ROOT_URI = "https://ddragon.leagueoflegends.com";
 
         private readonly HttpClient client = new HttpClient();
 
-        public Requests(string apiToken)
+        public Requests()
         {
-            client.DefaultRequestHeaders.Add("X-Riot-Token", apiToken);
             client.DefaultRequestHeaders.Add("User-Agent", "MasteryPointsStats Crawler Service");
         }
 
         public async Task<T> Get<T>(
-            string server, 
-            string api, 
-            string apiVersion, 
             string path)
         {
-            var res = await client.GetAsync($"{string.Format(ROOT_URI, server)}/{api}/{apiVersion}/{path}");
+            var res = await client.GetAsync($"{ROOT_URI}/{path}");
 
             if (!res.IsSuccessStatusCode)
             {

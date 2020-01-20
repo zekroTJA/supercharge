@@ -28,13 +28,27 @@ namespace DatabaseAccessLayer
 
         public async Task<UserModel> GetUserBySummonerIdAsync(string summonerId)
         {
-            return await ctx.Users.FirstOrDefaultAsync(u => u.SummonerID == summonerId);
+            return await ctx.Users.FirstOrDefaultAsync(u => u.SummonerId == summonerId);
         }
 
-        public async Task<ICollection<PointsModel>> GetPointsAsync(Guid userId, int championId = -1)
+        public async Task<ICollection<PointsModel>> GetPointsAsync(
+            Guid userId,
+            IEnumerable<int> championIds = null)
         {
             return await ctx.Points
-                .Where(p => p.User.Id == userId && (championId == -1 || p.ChampionId == championId))
+                .Where(p => p.User.Id == userId && ((championIds == null || championIds.Count() < 1) || championIds.Contains(p.ChampionId)))
+                .OrderByDescending(p => p.ChampionPoints)
+                .ToArrayAsync();
+        }
+
+        public async Task<ICollection<PointsViewModel>> GetPointsModelAsync(
+            Guid userId,
+            IEnumerable<int> championIds = null)
+        {
+            return await ctx.Points
+                .Where(p => p.User.Id == userId && ((championIds == null || championIds.Count() < 1) || championIds.Contains(p.ChampionId)))
+                .OrderByDescending(p => p.ChampionPoints)
+                .Select(p => new PointsViewModel(p))
                 .ToArrayAsync();
         }
 

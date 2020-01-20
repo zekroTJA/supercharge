@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
-using RiotAPIAccessLayer.Models;
+using Shared.Models;
 using System.Threading.Tasks;
 
-namespace RiotAPIAccessLayer
+namespace Shared
 {
     public class RiotAPIWrapper
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 
-namespace RiotAPIAccessLayer.Exceptions
+namespace Shared.Exceptions
 {
     public class ResponseException : Exception
     {
