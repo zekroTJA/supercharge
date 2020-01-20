@@ -41,7 +41,7 @@ namespace DatabaseAccessLayer
                 .ToArrayAsync();
         }
 
-        public async Task<ICollection<PointsViewModel>> GetPointsModelAsync(
+        public async Task<ICollection<PointsViewModel>> GetPointsViewAsync(
             Guid userId,
             IEnumerable<int> championIds = null)
         {
@@ -49,6 +49,45 @@ namespace DatabaseAccessLayer
                 .Where(p => p.User.Id == userId && ((championIds == null || championIds.Count() < 1) || championIds.Contains(p.ChampionId)))
                 .OrderByDescending(p => p.ChampionPoints)
                 .Select(p => new PointsViewModel(p))
+                .ToArrayAsync();
+        }
+
+        public async Task<ICollection<PointsLogModel>> GetPointsLogAsync(
+            Guid userId,
+            IEnumerable<int> championIds = null,
+            DateTime from = default,
+            DateTime to = default)
+        {
+            if (from == default)
+                from = DateTime.Now.Subtract(TimeSpan.FromDays(30));
+
+            if (to == default)
+                to = DateTime.Now;
+
+            return await ctx.PointsLog
+                .Where(p => p.User.Id == userId && ((championIds == null || championIds.Count() < 1) || championIds.Contains(p.ChampionId)))
+                .Where(p => p.Timestamp >= from && p.Timestamp <= to)
+                .OrderByDescending(p => p.Timestamp)
+                .ToArrayAsync();
+        }
+
+        public async Task<ICollection<PointsLogViewModel>> GetPointsLogViewAsync(
+            Guid userId,
+            IEnumerable<int> championIds = null,
+            DateTime from = default,
+            DateTime to = default)
+        {
+            if (from == default)
+                from = DateTime.Now.Subtract(TimeSpan.FromDays(30));
+
+            if (to == default)
+                to = DateTime.Now;
+
+            return await ctx.PointsLog
+                .Where(p => p.User.Id == userId && ((championIds == null || championIds.Count() < 1) || championIds.Contains(p.ChampionId)))
+                .Where(p => p.Timestamp >= from && p.Timestamp <= to)
+                .OrderByDescending(p => p.Timestamp)
+                .Select(p => new PointsLogViewModel(p))
                 .ToArrayAsync();
         }
 
