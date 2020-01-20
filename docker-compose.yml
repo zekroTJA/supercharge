@@ -1,4 +1,4 @@
-vsersion: '3.7'
+version: '3.7'
 
 services:
 
@@ -33,10 +33,24 @@ services:
   #   restart: on-failure
 
   crawler:
-    image: 'mps/crawler:latest'
+    build:
+      context: './'
+      dockerfile: './Crawler/Dockerfile'
+    image: 'mpstats/crawler:latest'
     environment:
       MPS_LOGGING__LOGLEVEL__DEFAULT: 'Information'
       MPS_CONNECTIONSTRINGS__POSTGRES: 'Host=postgres;Database=masterypoints;Username=masterypoints;Password=SuperSecretPassword'
       MPS_RIOTAPI__SECRET: 'RGAPI-...'
       MPS_CRAWLER__EXECON: '03:00'
+    restart: always
+
+  restapi:
+    build:
+      context: './'
+      dockerfile: './RestAPI/Dockerfile'
+    image: 'mpstats/restapi:latest'
+    environment:
+      MPS_LOGGING__LOGLEVEL__DEFAULT: 'Information'
+      MPS_CONNECTIONSTRINGS__POSTGRES: 'Host=postgres;Database=masterypoints;Username=masterypoints;Password=SuperSecretPasword'
+      MPS_RIOTAPI__SECRET: 'RGAPI-...'
     restart: always
