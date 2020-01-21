@@ -19,8 +19,8 @@ services:
   #
   # pgadmin:
   #   image: 'dpage/pgadmin4'
-  #   ports:
-  #     - '443:443'
+  #   expose:
+  #     - '80'
   #   environment:
   #     PGADMIN_ENABLE_TLS: 'true'
   #     PGADMIN_DEFAULT_EMAIL: 'admin@example.com'
@@ -31,6 +31,18 @@ services:
   #     - '/etc/certs/server.cert:/certs/server.cert:ro'
   #     - '/etc/certs/server.key:/certs/server.key:ro'
   #   restart: on-failure
+
+  nginx:
+    image: 'nginx:latest'
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - './nginx.conf:/etc/nginx/nginx.conf'
+      # Specify your SSL certificate
+      # location here
+      - '/etc/cert:/etc/cert:ro'
+    restart: always
 
   crawler:
     build:
@@ -49,6 +61,8 @@ services:
       context: './'
       dockerfile: './RestAPI/Dockerfile'
     image: 'mpstats/restapi:latest'
+    expose:
+      - '80'
     environment:
       MPS_LOGGING__LOGLEVEL__DEFAULT: 'Information'
       MPS_CONNECTIONSTRINGS__POSTGRES: 'Host=postgres;Database=masterypoints;Username=masterypoints;Password=SuperSecretPasword'
