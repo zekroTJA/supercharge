@@ -46,6 +46,8 @@ This is another .NET Standard 2.1 Class Library which provides simple general pu
 
 This project contains the sources of an Angular web application which compiled files are served by a light weight HTTP file server written in Go. This will be the web front end for the average user.
 
+![](.github/media/deploy-structure.png)
+
 ---
 
 ## Setup & Hosting
