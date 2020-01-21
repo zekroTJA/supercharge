@@ -1,0 +1,62 @@
+name: Docker Image CD
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+
+jobs:
+
+  build-crawler:
+
+    runs-on: ubuntu-latest
+    name: Build Crawler Image
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Build image
+      run: |
+        docker build . \
+          --file ./Crawler/Dockerfile \
+          --tag docker.pkg.github.com/zekrotja/masterypointsstats/crawler:latest
+    - name: Push image
+      run: |
+        docker login docker.pkg.github.com -u zekroTJA -p ${{ secrets.GITHUB_TOKEN }}
+        docker push docker.pkg.github.com/zekrotja/masterypointsstats/crawler:latest
+        
+  build-restapi:
+
+    runs-on: ubuntu-latest
+    name: Build RestAPI Image
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Build image
+      run: |
+        docker build . \
+          --file ./RestAPI/Dockerfile \
+          --tag docker.pkg.github.com/zekrotja/masterypointsstats/restapi:latest
+    - name: Push image
+      run: |
+        docker login docker.pkg.github.com -u zekroTJA -p ${{ secrets.GITHUB_TOKEN }}
+        docker push docker.pkg.github.com/zekrotja/masterypointsstats/restapi:latest
+
+  build-webapp:
+
+    runs-on: ubuntu-latest
+    name: Build WebApp Image
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Build image
+      run: |
+        docker build ./WebApp \
+          --file ./WebApp/Dockerfile \
+          --tag docker.pkg.github.com/zekrotja/masterypointsstats/webapp:latest
+    - name: Push image
+      run: |
+        docker login docker.pkg.github.com -u zekroTJA -p ${{ secrets.GITHUB_TOKEN }}
+        docker push docker.pkg.github.com/zekrotja/masterypointsstats/webapp:latest
