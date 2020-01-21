@@ -1,6 +1,6 @@
 # masterypointsstats *(provisional project name)*
 
-> This project is currently in a very early development state.
+> I am looking for a new, better name for the project. If you have any ideas, please let me know in the issues. ;)
 
 ---
 
