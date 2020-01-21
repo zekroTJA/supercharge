@@ -42,6 +42,10 @@ This .NET Standard 2.1 Class Library provides an access layer to the Riot League
 
 This is another .NET Standard 2.1 Class Library which provides simple general purpose shared functionalities which are used by other class libraries or applications.
 
+### [WebApp](WebApp)
+
+This project contains the sources of an Angular web application which compiled files are served by a light weight HTTP file server written in Go. This will be the web front end for the average user.
+
 ---
 
 ## Setup & Hosting
