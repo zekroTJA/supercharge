@@ -72,6 +72,7 @@ services:
   webapp:
     build:
       context: './WebApp'
+    command: '-dir /app/dist -addr :80 -routes summoner'
     image: 'mpstats/webapp:latest'
     expose:
       - '80'
