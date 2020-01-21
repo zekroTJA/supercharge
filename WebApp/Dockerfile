@@ -8,7 +8,7 @@ RUN go build -o ./bin/server ./cmd/server/*.go
 RUN cd ./web &&\
     npm ci &&\
     npx ng build --prod &&\
-    cp -r ./dist/WebApp ./bin
+    cp -r ./dist/WebApp /build/bin
 
 FROM debian:stretch-slim AS final
 WORKDIR /app

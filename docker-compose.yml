@@ -68,3 +68,11 @@ services:
       MPS_CONNECTIONSTRINGS__POSTGRES: 'Host=postgres;Database=masterypoints;Username=masterypoints;Password=SuperSecretPasword'
       MPS_RIOTAPI__SECRET: 'RGAPI-...'
     restart: always
+
+  webapp:
+    build:
+      context: './WebApp'
+    image: 'mpstats/webapp:latest'
+    expose:
+      - '80'
+    restart: always
