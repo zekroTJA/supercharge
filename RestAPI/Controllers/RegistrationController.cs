@@ -2,20 +2,22 @@
 using Microsoft.AspNetCore.Mvc;
 using RestAPI.Caching;
 using RestAPI.Models;
-using RiotAPIAccessLayer;
-using RiotAPIAccessLayer.Exceptions;
-using RiotAPIAccessLayer.Models;
+using Shared;
+using Shared.Exceptions;
+using Shared.Models;
 using Shared.Random;
 using System;
 using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using RestAPI.Filter;
 
 namespace RestAPI.Controllers
 {
     [Route("[controller]")]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
+    [HeaderFilter]
     [ApiController]
     public class RegistrationController : ControllerBase
     {
@@ -89,7 +91,7 @@ namespace RestAPI.Controllers
                 {
                     Server = server,
                     Username = user.Name,
-                    SummonerID = user.Id,
+                    SummonerId = user.Id,
                     Watch = true,
                 };
 
@@ -97,7 +99,7 @@ namespace RestAPI.Controllers
             }
             else
             {
-                dbUser.SummonerID = user.Id;
+                dbUser.SummonerId = user.Id;
                 dbUser.Watch = true;
 
                 dal.Update(dbUser);
@@ -129,7 +131,7 @@ namespace RestAPI.Controllers
 
             try
             {
-                obtainedCode = await wrapper.GetThirdPartyCode(server, user.SummonerID);
+                obtainedCode = await wrapper.GetThirdPartyCode(server, user.SummonerId);
                 if (obtainedCode != stateCode)
                     return Unauthorized();
             }

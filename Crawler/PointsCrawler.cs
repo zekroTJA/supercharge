@@ -2,8 +2,8 @@
 using DatabaseAccessLayer.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using RiotAPIAccessLayer;
-using RiotAPIAccessLayer.Exceptions;
+using Shared;
+using Shared.Exceptions;
 using Shared.Time;
 using System;
 using System.Collections.Generic;
@@ -94,13 +94,13 @@ namespace Crawler
                  * the user account does not or does no more exist and the "Watch"
                  * flag in the database will be set to false.
                  */
-                if (user.SummonerID == null)
+                if (user.SummonerId == null)
                 {
                     try
                     {
                         var resUser = await wrapper.GetSummonerByName(user.Server, user.Username);
-                        user.SummonerID = resUser.Id;
-                        logger.LogInformation($"Requested missing SummonerID of summoner '{user.Username}': ${user.SummonerID}");
+                        user.SummonerId = resUser.Id;
+                        logger.LogInformation($"Requested missing SummonerID of summoner '{user.Username}': ${user.SummonerId}");
                     }
                     catch (ResponseException e)
                     {
@@ -114,7 +114,7 @@ namespace Crawler
                     dal.Update(user);
                 }
 
-                var pointsRes = await wrapper.GetSummonerPoints(user.Server, user.SummonerID);
+                var pointsRes = await wrapper.GetSummonerPoints(user.Server, user.SummonerId);
                 var pointsDb = await dal.GetPointsAsync(user.Id);
 
                 Array.ForEach(pointsRes, p =>

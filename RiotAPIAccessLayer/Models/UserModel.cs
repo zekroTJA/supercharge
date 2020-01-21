@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace RiotAPIAccessLayer.Models
+namespace Shared.Models
 {
     public class UserModel
     {

@@ -28,13 +28,66 @@ namespace DatabaseAccessLayer
 
         public async Task<UserModel> GetUserBySummonerIdAsync(string summonerId)
         {
-            return await ctx.Users.FirstOrDefaultAsync(u => u.SummonerID == summonerId);
+            return await ctx.Users.FirstOrDefaultAsync(u => u.SummonerId == summonerId);
         }
 
-        public async Task<ICollection<PointsModel>> GetPointsAsync(Guid userId, int championId = -1)
+        public async Task<ICollection<PointsModel>> GetPointsAsync(
+            Guid userId,
+            IEnumerable<int> championIds = null)
         {
             return await ctx.Points
-                .Where(p => p.User.Id == userId && (championId == -1 || p.ChampionId == championId))
+                .Where(p => p.User.Id == userId && ((championIds == null || championIds.Count() < 1) || championIds.Contains(p.ChampionId)))
+                .OrderByDescending(p => p.ChampionPoints)
+                .ToArrayAsync();
+        }
+
+        public async Task<ICollection<PointsViewModel>> GetPointsViewAsync(
+            Guid userId,
+            IEnumerable<int> championIds = null)
+        {
+            return await ctx.Points
+                .Where(p => p.User.Id == userId && ((championIds == null || championIds.Count() < 1) || championIds.Contains(p.ChampionId)))
+                .OrderByDescending(p => p.ChampionPoints)
+                .Select(p => new PointsViewModel(p))
+                .ToArrayAsync();
+        }
+
+        public async Task<ICollection<PointsLogModel>> GetPointsLogAsync(
+            Guid userId,
+            IEnumerable<int> championIds = null,
+            DateTime from = default,
+            DateTime to = default)
+        {
+            if (from == default)
+                from = DateTime.Now.Subtract(TimeSpan.FromDays(30));
+
+            if (to == default)
+                to = DateTime.Now;
+
+            return await ctx.PointsLog
+                .Where(p => p.User.Id == userId && ((championIds == null || championIds.Count() < 1) || championIds.Contains(p.ChampionId)))
+                .Where(p => p.Timestamp >= from && p.Timestamp <= to)
+                .OrderByDescending(p => p.Timestamp)
+                .ToArrayAsync();
+        }
+
+        public async Task<ICollection<PointsLogViewModel>> GetPointsLogViewAsync(
+            Guid userId,
+            IEnumerable<int> championIds = null,
+            DateTime from = default,
+            DateTime to = default)
+        {
+            if (from == default)
+                from = DateTime.Now.Subtract(TimeSpan.FromDays(30));
+
+            if (to == default)
+                to = DateTime.Now;
+
+            return await ctx.PointsLog
+                .Where(p => p.User.Id == userId && ((championIds == null || championIds.Count() < 1) || championIds.Contains(p.ChampionId)))
+                .Where(p => p.Timestamp >= from && p.Timestamp <= to)
+                .OrderByDescending(p => p.Timestamp)
+                .Select(p => new PointsLogViewModel(p))
                 .ToArrayAsync();
         }
 

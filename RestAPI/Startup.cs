@@ -1,4 +1,5 @@
 using DatabaseAccessLayer;
+using DDragonAccessLayer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using RestAPI.Caching;
-using RiotAPIAccessLayer;
+using Shared;
 
 namespace RestAPI
 {
@@ -29,6 +30,7 @@ namespace RestAPI
                 .AddScoped<DatabaseAccess>()
                 .AddScoped<RiotAPIWrapper>()
                 .AddSingleton<RegistrationCache>()
+                .AddSingleton<DataDragonWrapper>()
                 .AddSingleton<IConfiguration>(Configuration);
 
             services.AddSwaggerGen(options =>
@@ -63,6 +65,12 @@ namespace RestAPI
             {
                 endpoints.MapControllers();
             });
+
+            // This is just getting called here to ensure
+            // DataDragonWrapper is initialized at startup so
+            // the data can be fetched on startup and not on
+            // first request.
+            app.ApplicationServices.GetService<DataDragonWrapper>();
         }
     }
 }
