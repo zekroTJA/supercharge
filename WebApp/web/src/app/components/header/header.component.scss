@@ -1,0 +1,22 @@
+@import '../../../styles/vars.scss';
+
+.header {
+  display: flex;
+  width: 100%;
+  background-color: $c-accent;
+  padding: 10px;
+
+  > * {
+    margin: auto 0px;
+  }
+
+  h2 {
+    margin-right: 20px;
+  }
+
+  .server-dropdown {
+    margin-left: auto;
+    margin-right: 20px;
+  }
+}
+

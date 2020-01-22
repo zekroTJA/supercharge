@@ -1,0 +1,31 @@
+.dropdown {
+  position: relative;
+}
+
+.btn {
+  background-color: rgba(0, 0, 0, 0.25);
+  padding: 8px 15px;
+  transition: all .25s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.selector {
+  position: absolute;
+  margin-top: 10px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 10px 20px 0px;
+
+  > div {
+    padding: 8px 15px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    transition: all .25s ease;
+
+    &:hover {
+      background-color: rgb(226, 226, 226);
+    }
+  }
+}
