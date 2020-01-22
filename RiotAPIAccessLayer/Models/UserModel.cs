@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Shared.Models
+namespace RiotAPIAccessLayer.Models
 {
     public class UserModel
     {
@@ -15,5 +15,8 @@ namespace Shared.Models
 
         [JsonPropertyName("id")]
         public string Id { get; set; }
+
+        [JsonPropertyName("profileIconId")]
+        public int ProfileIconId { get; set; }
     }
 }

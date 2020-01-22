@@ -1,0 +1,9 @@
+<div class="header">
+  <h2>MASTERY POINT STATS</h2>
+  <p class="embed">PATCH {{ state.version?.version }}</p>
+  <app-drop-down
+    class="server-dropdown"
+    [(value)]="state.server"
+    [choises]="['RU', 'KR', 'BR1', 'OC1', 'JP1', 'NA1', 'EUN1', 'EUW1', 'TR1', 'LA1', 'LA2']"
+  ></app-drop-down>
+</div>

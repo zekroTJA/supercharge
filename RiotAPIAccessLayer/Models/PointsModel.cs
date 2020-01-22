@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Shared.Models
+namespace RiotAPIAccessLayer.Models
 {
     public class PointsModel
     {

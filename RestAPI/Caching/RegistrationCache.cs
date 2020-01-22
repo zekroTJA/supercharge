@@ -1,4 +1,4 @@
-﻿using Shared.TimedDictionary;
+﻿using RiotAPIAccessLayer.TimedDictionary;
 using System;
 using System.Collections.Generic;
 using System.Linq;

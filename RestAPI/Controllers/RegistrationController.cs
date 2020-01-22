@@ -1,16 +1,16 @@
 ﻿using DatabaseAccessLayer;
 using Microsoft.AspNetCore.Mvc;
 using RestAPI.Caching;
+using RestAPI.Filter;
 using RestAPI.Models;
-using Shared;
-using Shared.Exceptions;
-using Shared.Models;
-using Shared.Random;
+using RiotAPIAccessLayer;
+using RiotAPIAccessLayer.Exceptions;
+using RiotAPIAccessLayer.Models;
+using RiotAPIAccessLayer.Random;
 using System;
 using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using RestAPI.Filter;
 
 namespace RestAPI.Controllers
 {
@@ -35,7 +35,7 @@ namespace RestAPI.Controllers
         [HttpGet("[action]/{server}/{userName}")]
         public IActionResult Code([FromRoute] string server, [FromRoute] string userName)
         {
-            var code = RandomString.GetRandomString(16);
+            var code = RandomString.GetRandomString(8, "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
             var expVal = registrationCache.RegistrationCodeCache.Set(
                 $"{server}/{userName}", code, TimeSpan.FromMinutes(10));
 

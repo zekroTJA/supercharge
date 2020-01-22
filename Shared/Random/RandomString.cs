@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Shared.Random
+namespace RiotAPIAccessLayer.Random
 {
     public class RandomString
     {

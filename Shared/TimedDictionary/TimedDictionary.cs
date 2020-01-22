@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Timers;
 
-namespace Shared.TimedDictionary
+namespace RiotAPIAccessLayer.TimedDictionary
 {
     public class TimedMapValue<T>
     {

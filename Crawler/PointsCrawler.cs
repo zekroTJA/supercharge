@@ -2,9 +2,9 @@
 using DatabaseAccessLayer.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Shared;
-using Shared.Exceptions;
-using Shared.Time;
+using RiotAPIAccessLayer;
+using RiotAPIAccessLayer.Exceptions;
+using RiotAPIAccessLayer.Time;
 using System;
 using System.Collections.Generic;
 using System.Linq;

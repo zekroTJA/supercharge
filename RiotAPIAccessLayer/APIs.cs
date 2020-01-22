@@ -1,4 +1,4 @@
-﻿namespace Shared
+﻿namespace RiotAPIAccessLayer
 {
     public static class APIs
    {

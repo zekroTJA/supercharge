@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using RestAPI.Caching;
-using Shared;
+using RiotAPIAccessLayer;
 
 namespace RestAPI
 {
@@ -45,6 +45,14 @@ namespace RestAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                app.UseCors(options =>
+                {
+                    options
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
             }
 
             app.UseHttpsRedirection();

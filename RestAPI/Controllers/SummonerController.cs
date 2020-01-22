@@ -2,8 +2,13 @@
 using DDragonAccessLayer;
 using Microsoft.AspNetCore.Mvc;
 using RestAPI.Filter;
+using RestAPI.Models;
+using RiotAPIAccessLayer;
+using RiotAPIAccessLayer.Exceptions;
+using RiotAPIAccessLayer.Models;
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
 
@@ -17,22 +22,41 @@ namespace RestAPI.Controllers
     public class SummonerController : ControllerBase
     {
         private readonly DatabaseAccess dal;
+        private readonly RiotAPIWrapper wrapper;
         private readonly DataDragonWrapper ddragon;
 
-        public SummonerController(DatabaseAccess dal, DataDragonWrapper ddragon)
+        public SummonerController(DatabaseAccess dal, RiotAPIWrapper wrapper, DataDragonWrapper ddragon)
         {
             this.dal = dal;
+            this.wrapper = wrapper;
             this.ddragon = ddragon;
         }
 
         [HttpGet]
         public async Task<IActionResult> Summoner([FromRoute] string server, [FromRoute] string summonerName)
         {
-            var user = await dal.GetUserByNameAsync(server, summonerName);
-            if (user == null)
-                return NotFound();
+            UserModel user = new UserModel();
 
-            return Ok(user);
+            try
+            {
+                user = await wrapper.GetSummonerByName(server, summonerName);
+            }
+            catch (ResponseException e)
+            {
+                if (e.Response.StatusCode == HttpStatusCode.NotFound)
+                    return NotFound();
+            }
+
+            var dbUser = await dal.GetUserByNameAsync(server, summonerName);
+
+            var userView = new UserViewModel(user)
+            {
+                Registered = dbUser != null,
+                Watch = dbUser?.Watch,
+                Created = dbUser?.Created,
+            };
+
+            return Ok(userView);
         }
 
         [HttpGet("stats")]
