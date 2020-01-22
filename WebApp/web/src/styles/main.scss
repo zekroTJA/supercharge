@@ -26,6 +26,13 @@ input[type='text'], input[type='password'] {
   border-left: solid 2px $c-accent;
   background-color: rgba(0, 0, 0, 0.25);
   padding: .5em 1em;
+  color: white;
+  outline: none;
+  transition: all .25s ease;
+
+  &:focus {
+    box-shadow: rgb(0, 0, 0, 0.25) 0px 5px 10px;
+  }
 }
 
 a {
