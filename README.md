@@ -1,6 +1,6 @@
 # masterypointsstats *(provisional project name)*
 
-> This project is currently in a very early development state.
+> I am looking for a new, better name for the project. If you have any ideas, please let me know in the issues. ;)
 
 ---
 
@@ -22,6 +22,10 @@ Every services is provided and deployed as docker image so that the whole server
 
 This .NET Core (3.1) console application crawls, depending on the registered accounts in the database, mastery point data of these users from the League of Legends API and saves them in the database.
 
+### [DDragonAccessLayer](DDragonAccessLayer)
+
+This .NET Standard 2.1 Class Library provides access to the League of Legends Data Dragon API which provides information about champions and patch versions.
+
 ### [DatabaseAccessLayer](DatabaseAccessLayer)
 
 This is a .NET Standard 2.1 Class Library which acts as access layer for the database and provides the Entity Framework database context and the database access class which can be implemented via dependency injection.
@@ -37,6 +41,12 @@ This .NET Standard 2.1 Class Library provides an access layer to the Riot League
 ### [Shared](Shared)
 
 This is another .NET Standard 2.1 Class Library which provides simple general purpose shared functionalities which are used by other class libraries or applications.
+
+### [WebApp](WebApp)
+
+This project contains the sources of an Angular web application which compiled files are served by a light weight HTTP file server written in Go. This will be the web front end for the average user.
+
+![](.github/media/deploy-structure.png)
 
 ---
 
