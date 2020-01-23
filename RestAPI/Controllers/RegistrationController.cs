@@ -35,6 +35,8 @@ namespace RestAPI.Controllers
         [HttpGet("[action]/{server}/{userName}")]
         public IActionResult Code([FromRoute] string server, [FromRoute] string userName)
         {
+            server = server.ToLower();
+
             var code = RandomString.GetRandomString(8, "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
             var expVal = registrationCache.RegistrationCodeCache.Set(
                 $"{server}/{userName}", code, TimeSpan.FromMinutes(10));
@@ -51,6 +53,8 @@ namespace RestAPI.Controllers
             [FromRoute] string server, 
             [FromRoute] string userName)
         {
+            server = server.ToLower();
+
             var key = $"{server}/{userName}";
 
             if (!registrationCache.RegistrationCodeCache.ContainsKey(key))
@@ -115,6 +119,8 @@ namespace RestAPI.Controllers
             [FromRoute] string server,
             [FromRoute] string userName)
         {
+            server = server.ToLower();
+
             var key = $"{server}/{userName}";
 
             if (!registrationCache.RegistrationCodeCache.ContainsKey(key))

@@ -9,9 +9,17 @@ import { AppComponent } from './app.component';
 import { RestAPIService } from './services/api/rest.service';
 import { HeaderComponent } from './components/header/header.component';
 import { DropDownComponent } from './components/drop-down/drop-down.component';
+import { MainRouteComponent } from './routes/main-route/main-route.component';
+import { SummonerRouteComponent } from './routes/summoner-route/summoner-route.component';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, DropDownComponent],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    DropDownComponent,
+    MainRouteComponent,
+    SummonerRouteComponent,
+  ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [{ provide: 'APIService', useClass: RestAPIService }],
   bootstrap: [AppComponent],

@@ -35,6 +35,8 @@ namespace RestAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Summoner([FromRoute] string server, [FromRoute] string summonerName)
         {
+            server = server.ToLower();
+
             UserModel user = new UserModel();
 
             try
@@ -65,6 +67,8 @@ namespace RestAPI.Controllers
             [FromRoute] string summonerName,
             [FromQuery] string[] championNames)
         {
+            server = server.ToLower();
+
             var user = await dal.GetUserByNameAsync(server, summonerName);
             if (user == null)
                 return NotFound();
@@ -84,6 +88,8 @@ namespace RestAPI.Controllers
             [FromQuery] DateTime from,
             [FromQuery] DateTime to)
         {
+            server = server.ToLower();
+
             var user = await dal.GetUserByNameAsync(server, summonerName);
             if (user == null)
                 return NotFound();

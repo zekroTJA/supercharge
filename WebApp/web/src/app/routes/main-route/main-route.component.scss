@@ -1,0 +1,22 @@
+@import '../../../styles/vars.scss';
+
+.summoner-search {
+  margin: 30vh auto;
+  position: relative;
+
+  > input {
+    font-size: 30px;
+    height: 70px;
+    font-family: 'Montserrat', sans-serif;
+    width: 90vw;
+    max-width: 1000px;
+    text-align: center;
+  }
+
+  > button {
+    position: absolute;
+    height: 70px;
+    width: 70px;
+    right: 0px;
+  }
+}

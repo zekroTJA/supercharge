@@ -1,0 +1,16 @@
+h1, p {
+  margin: 0;
+}
+
+.summoner-info {
+  display: flex;
+  padding: 20px;
+
+  .data {
+    margin-left: 30px;
+  }
+}
+
+.summoner-lvl {
+  margin: auto 0 auto 20px;
+}

@@ -1,0 +1,15 @@
+<div class="flex">
+  <div class="summoner-search">
+    <input
+      #searchBar
+      type="text"
+      placeholder="Search for summoner on {{ state.server }}"
+      (keydown.enter)="onSearch(searchBar.value)"
+    />
+    <button class="accent" (click)="onSearch(searchBar.value)">
+      <img src="assets/icons/search.svg"/>
+    </button>
+
+    <div *ngIf="loading" class="loading-bar"></div>
+  </div>
+</div>

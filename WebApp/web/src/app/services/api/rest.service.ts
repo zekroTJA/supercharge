@@ -12,6 +12,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
 import { HistoryModel } from 'src/app/models/history.model';
+import { NotificationService } from './notification/notification.service';
 
 const ROOT_URL = environment.production ? '/api' : 'https://localhost:5001';
 
@@ -21,10 +22,15 @@ export class RestAPIService implements IAPIService {
 
   private readonly errorCatcher = (err) => {
     this.error.emit(err);
+    console.error(err);
+    this.notifications.show(`API Error: ${err.status}`, 'error');
     return throwError(err);
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private notifications: NotificationService
+  ) {}
 
   public getRegistrationCode(
     server: string,

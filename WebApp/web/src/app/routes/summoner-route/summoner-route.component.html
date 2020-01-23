@@ -1,0 +1,15 @@
+<div *ngIf="!summoner" class="loading-bar"></div>
+
+<div *ngIf="summoner" class="summoner-info">
+  <img
+    src="https://ddragon.leagueoflegends.com/cdn/10.1.1/img/profileicon/{{ summoner.profileIconId }}.png"
+    width="150"
+    height="150"
+  />
+  <div class="data">
+    <div class="flex">
+      <h1>{{ summoner.name }}</h1>
+      <p class="embed summoner-lvl">LvL {{ summoner.summonerLevel }}</p>
+    </div>
+  </div>
+</div>
