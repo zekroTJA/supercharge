@@ -14,6 +14,6 @@ FROM debian:stretch-slim AS final
 WORKDIR /app
 COPY --from=build /build/bin .
 
-EXPOSE 8080
+EXPOSE 80
 ENTRYPOINT ["/app/server"]
-CMD ["-dir", "/app/WebApp", "-addr", ":80"]
+CMD ["-dir", "/app/WebApp", "-addr", ":80", "-routes", "summoner"]
