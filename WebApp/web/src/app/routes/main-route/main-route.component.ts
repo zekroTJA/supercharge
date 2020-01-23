@@ -2,9 +2,9 @@
 
 import { Component, OnInit, Inject } from '@angular/core';
 import { SummonerModel } from 'src/app/models/summoner.model';
-import { StateService } from 'src/app/services/api/state/state.service';
+import { StateService } from 'src/app/services/state/state.service';
 import { IAPIService } from 'src/app/services/api/api.interface';
-import { NotificationService } from 'src/app/services/api/notification/notification.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 import { Router } from '@angular/router';
 
 @Component({

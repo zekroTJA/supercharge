@@ -122,3 +122,33 @@ button.accent {
 
   animation: loading-bar-animation 1.5s ease infinite;
 }
+
+.badge {
+  padding: 5px 15px;
+  border: solid 2px;
+  width: fit-content;
+  height: fit-content;
+
+  background-color: rgba(white, 0.35);
+  border-color: white;
+}
+
+.badge.info {
+  background-color: rgba($c-info, 0.35);
+  border-color: $c-info;
+}
+
+.badge.error {
+  background-color: rgba($c-error, 0.35);
+  border-color: $c-error;
+}
+
+.badge.warning {
+  background-color: rgba($c-warning, 0.35);
+  border-color: $c-warning;
+}
+
+.badge.success {
+  background-color: rgba($c-success, 0.35);
+  border-color: $c-success;
+}

@@ -4,7 +4,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { IAPIService } from 'src/app/services/api/api.interface';
 import { ActivatedRoute } from '@angular/router';
 import { SummonerModel } from 'src/app/models/summoner.model';
-import { StateService } from 'src/app/services/api/state/state.service';
+import { StateService } from 'src/app/services/state/state.service';
 
 @Component({
   selector: 'app-summoner-route',

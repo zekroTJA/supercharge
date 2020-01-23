@@ -11,5 +11,10 @@
       <h1>{{ summoner.name }}</h1>
       <p class="embed summoner-lvl">LvL {{ summoner.summonerLevel }}</p>
     </div>
+    <div class="status">
+      <p *ngIf="summoner.registered && summoner.watch" class="badge success">WATCHING</p>
+      <p *ngIf="summoner.registered && !summoner.watch" class="badge info">NOT WATCHING</p>
+      <p *ngIf="!summoner.registered" class="badge">NOT REGISTERED</p>
+    </div>
   </div>
 </div>

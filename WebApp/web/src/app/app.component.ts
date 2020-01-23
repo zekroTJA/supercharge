@@ -1,10 +1,10 @@
 /** @format */
 
 import { Component, Inject, ContentChild, TemplateRef } from '@angular/core';
-import { StateService } from './services/api/state/state.service';
+import { StateService } from './services/state/state.service';
 import { IAPIService } from './services/api/api.interface';
 import { SummonerModel } from './models/summoner.model';
-import { NotificationService } from './services/api/notification/notification.service';
+import { NotificationService } from './services/notification/notification.service';
 
 @Component({
   selector: 'app-root',

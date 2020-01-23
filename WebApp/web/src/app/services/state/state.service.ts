@@ -1,7 +1,7 @@
 /** @format */
 
 import { Injectable, Inject } from '@angular/core';
-import { IAPIService } from '../api.interface';
+import { IAPIService } from '../api/api.interface';
 import { VersionModel } from 'src/app/models/version.model';
 import { ChampionModel } from 'src/app/models/champion.model';
 import { SummonerModel } from 'src/app/models/summoner.model';
