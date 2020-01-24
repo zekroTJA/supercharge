@@ -22,8 +22,8 @@ jobs:
           --tag supercharge/crawler:latest
     - name: Push image
       run: |
-        docker login -u zekroTJA -p ${{ secrets.DOCKER_PASSWORD }}
-        docker supercharge/crawler:latest
+        docker login -u zekro -p ${{ secrets.DOCKER_PASSWORD }}
+        docker push supercharge/crawler:latest
         
   build-restapi:
 
