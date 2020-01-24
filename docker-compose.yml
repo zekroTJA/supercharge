@@ -48,7 +48,7 @@ services:
     build:
       context: './'
       dockerfile: './Crawler/Dockerfile'
-    image: 'mpstats/crawler:latest'
+    image: 'supercharge/crawler:latest'
     environment:
       MPS_LOGGING__LOGLEVEL__DEFAULT: 'Information'
       MPS_CONNECTIONSTRINGS__POSTGRES: 'Host=postgres;Database=masterypoints;Username=masterypoints;Password=SuperSecretPassword'
@@ -60,7 +60,7 @@ services:
     build:
       context: './'
       dockerfile: './RestAPI/Dockerfile'
-    image: 'mpstats/restapi:latest'
+    image: 'supercharge/restapi:latest'
     expose:
       - '80'
     environment:
@@ -73,7 +73,7 @@ services:
     build:
       context: './WebApp'
     command: '-dir /app/dist -addr :80 -routes summoner'
-    image: 'mpstats/webapp:latest'
+    image: 'supercharge/webapp:latest'
     expose:
       - '80'
     restart: always
