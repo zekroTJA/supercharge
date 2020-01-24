@@ -19,11 +19,11 @@ jobs:
       run: |
         docker build . \
           --file ./Crawler/Dockerfile \
-          --tag docker.pkg.github.com/zekrotja/masterypointsstats/crawler:latest
+          --tag supercharge/crawler:latest
     - name: Push image
       run: |
-        docker login docker.pkg.github.com -u zekroTJA -p ${{ secrets.GITHUB_TOKEN }}
-        docker push docker.pkg.github.com/zekrotja/masterypointsstats/crawler:latest
+        docker login -u zekroTJA -p ${{ secrets.DOCKER_PASSWORD }}
+        docker supercharge/crawler:latest
         
   build-restapi:
 
@@ -37,11 +37,11 @@ jobs:
       run: |
         docker build . \
           --file ./RestAPI/Dockerfile \
-          --tag docker.pkg.github.com/zekrotja/masterypointsstats/restapi:latest
+          --tag supercharge/restapi:latest
     - name: Push image
       run: |
-        docker login docker.pkg.github.com -u zekroTJA -p ${{ secrets.GITHUB_TOKEN }}
-        docker push docker.pkg.github.com/zekrotja/masterypointsstats/restapi:latest
+        docker login -u zekro -p ${{ secrets.DOCKER_PASSWORD }}
+        docker push supercharge/restapi:latest
 
   build-webapp:
 
@@ -55,8 +55,8 @@ jobs:
       run: |
         docker build ./WebApp \
           --file ./WebApp/Dockerfile \
-          --tag docker.pkg.github.com/zekrotja/masterypointsstats/webapp:latest
+          --tag supercharge/webapp:latest
     - name: Push image
       run: |
-        docker login docker.pkg.github.com -u zekroTJA -p ${{ secrets.GITHUB_TOKEN }}
-        docker push docker.pkg.github.com/zekrotja/masterypointsstats/webapp:latest
+        docker login -u zekro -p ${{ secrets.DOCKER_PASSWORD }}
+        docker push supercharge/webapp:latest
