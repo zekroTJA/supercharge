@@ -2,8 +2,8 @@
      <!-- <img src="" width="400"/> -->
      <h1>~ supercharge ~</h1>
      <strong>League of Legends mastery points: supercharged analytics tool</strong><br/><br/>
-     <a href="https://github.com/zekroTJA/supercharge/actions"><img src="https://img.shields.io/github/workflow/status/zekroTJA/supercharge/Docker%20Image%20CD.svg?logo=github&style=for-the-badge" height="30"></a>&nbsp;
-     <a href="https://zekro.de/discord"><img src="https://img.shields.io/discord/307084334198816769.svg?logo=discord&style=for-the-badge" height="30">
+     <a href="https://github.com/zekroTJA/supercharge/actions"><img src="https://img.shields.io/github/workflow/status/zekroTJA/supercharge/Docker%20Image%20CD.svg?logo=github&style=for-the-badge" height="30"/></a>&nbsp;
+     <a href="https://zekro.de/discord"><img src="https://img.shields.io/discord/307084334198816769.svg?logo=discord&style=for-the-badge" height="30"/></a>
 </div>
 
 ---
@@ -12,7 +12,9 @@
 
 This web application allows collecting and analyzing League of Legends champion mastery points stats of summoners who have registered their account on the page to be tracked. This allows keeping track and analyzing your porgress on champion masteries and being able to observe your progerssion.
 
-This porject is strongly inspired by [masterypoints.com](https://masterypoints.com), which provides a detailed insight about your chamion mastery points and world wide rankings, but leaks of providing detailed analysis and tracking of the progress of your mastery points.
+This porject is strongly inspired by [masterypoints.com](https://masterypoints.com), which provides a detailed insight about your chamion mastery points and world wide rankings, but leaks of providing detailed analysis and tracking of the progress of your mastery points and [Orianna Bot](https://orianna.molenzwiebel.xyz), which provides detailed mastery point information via Discord.
+
+The name `supercharge` is inspired by the E spell of the League of Legends champion Kai'Sa, which is the main champion of a good friend of mine. And it fits well to the functionality of the app to provide "supercharged" analytics about champion mastery points.
 
 ---
 
@@ -60,7 +62,7 @@ This project contains the sources of an Angular web application which compiled f
 
 First of all, clone the repository somewhere on your server:
 ```
-$ git clone https://github.com/zekroTJA/masterypointsstats . --branch master --depth 3
+$ git clone https://github.com/zekroTJA/supercharge . --branch master --depth 3
 ```
 
 After that, you should check the configuration n the `docker-compose.yml` and define secrets like the Riot API key or the password for the database account. To get an API key for the Riot API, you need to register a product application [here](https://developer.riotgames.com/app-type).
