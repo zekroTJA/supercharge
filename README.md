@@ -1,6 +1,6 @@
 <div align="center">
-     <!-- <img src="" width="400"/> -->
-     <h1>~ supercharge ~</h1>
+     <img src=".github/media/logo.png" width="500"/>
+     <br />
      <strong>League of Legends mastery points: supercharged analytics tool</strong><br/><br/>
      <a href="https://github.com/zekroTJA/supercharge/actions"><img src="https://img.shields.io/github/workflow/status/zekroTJA/supercharge/Docker%20Image%20CD.svg?logo=github&style=for-the-badge" height="30"/></a>&nbsp;
      <a href="https://zekro.de/discord"><img src="https://img.shields.io/discord/307084334198816769.svg?logo=discord&style=for-the-badge" height="30"/></a>
