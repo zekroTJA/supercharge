@@ -1,6 +1,6 @@
 /** @format */
 
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, EventEmitter } from '@angular/core';
 import { IAPIService } from '../api/api.interface';
 import { VersionModel } from 'src/app/models/version.model';
 import { ChampionModel } from 'src/app/models/champion.model';
@@ -15,6 +15,10 @@ export class StateService {
   public version: VersionModel;
   public champions: ChampionModel[];
   public currentSummoner: SummonerModel;
+  public championsMap: { [key: number]: ChampionModel } = {};
+
+  public isInitialized = false;
+  public initialized = new EventEmitter<any>();
 
   private _server = 'EUW1';
 
@@ -27,6 +31,10 @@ export class StateService {
 
     api.getResourcesChampions().subscribe((champs) => {
       this.champions = champs;
+      champs.forEach((c) => (this.championsMap[c.key] = c));
+
+      this.isInitialized = true;
+      this.initialized.emit();
     });
   }
 

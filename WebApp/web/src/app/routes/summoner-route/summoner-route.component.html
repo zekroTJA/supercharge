@@ -18,3 +18,14 @@
     </div>
   </div>
 </div>
+
+<div class="champ-stats">
+  <canvas baseChart
+    [datasets]="barChartData"
+    [labels]="barChartLabels"
+    [options]="barChartOptions"
+    [legend]="true"
+    height="50"
+    chartType="bar">
+  </canvas>
+</div>

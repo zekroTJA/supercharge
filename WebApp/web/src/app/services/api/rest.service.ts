@@ -85,7 +85,7 @@ export class RestAPIService implements IAPIService {
   public getSummonerStats(
     server: string,
     summonerName: string,
-    championNames?: string[]
+    championNames: string[] = []
   ): Observable<StatsModel[]> {
     const params = new HttpParams();
     championNames.forEach((cn) => params.append('championNames', cn));
@@ -102,7 +102,7 @@ export class RestAPIService implements IAPIService {
   public getSummonerHistory(
     server: string,
     summonerName: string,
-    championNames?: string[],
+    championNames: string[] = [],
     from?: Date,
     to?: Date
   ): Observable<HistoryModel[]> {

@@ -12,6 +12,8 @@ import { DropDownComponent } from './components/drop-down/drop-down.component';
 import { MainRouteComponent } from './routes/main-route/main-route.component';
 import { SummonerRouteComponent } from './routes/summoner-route/summoner-route.component';
 
+import { ChartsModule } from 'ng2-charts';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +22,7 @@ import { SummonerRouteComponent } from './routes/summoner-route/summoner-route.c
     MainRouteComponent,
     SummonerRouteComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, ChartsModule],
   providers: [{ provide: 'APIService', useClass: RestAPIService }],
   bootstrap: [AppComponent],
 })
