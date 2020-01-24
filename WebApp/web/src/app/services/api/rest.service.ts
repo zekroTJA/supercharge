@@ -21,9 +21,11 @@ export class RestAPIService implements IAPIService {
   public error = new EventEmitter<any>();
 
   private readonly errorCatcher = (err) => {
-    this.error.emit(err);
-    console.error(err);
-    this.notifications.show(`API Error: ${err.status}`, 'error');
+    if (err.status !== 404) {
+      this.error.emit(err);
+      console.error(err);
+      this.notifications.show(`API Error: ${err.status}`, 'error');
+    }
     return throwError(err);
   };
 

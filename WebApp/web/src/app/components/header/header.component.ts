@@ -2,6 +2,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { StateService } from 'src/app/services/state/state.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,11 @@ import { StateService } from 'src/app/services/state/state.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  constructor(public state: StateService) {}
+  constructor(public state: StateService, private router: Router) {}
 
-  ngOnInit() {}
+  public ngOnInit() {}
+
+  public onHeadingClick() {
+    this.router.navigate(['/']);
+  }
 }

@@ -7,6 +7,8 @@ import { SummonerModel } from 'src/app/models/summoner.model';
 import { StateService } from 'src/app/services/state/state.service';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { ChampionModel } from 'src/app/models/champion.model';
+import { StatsModel } from 'src/app/models/stats.model';
 
 @Component({
   selector: 'app-summoner-route',
@@ -18,11 +20,24 @@ export class SummonerRouteComponent implements OnInit {
 
   public barChartOptions: ChartOptions = {
     responsive: true,
+    legend: {
+      display: false,
+    },
+    scales: {
+      xAxes: [
+        {
+          ticks: {
+            autoSkip: false,
+          },
+        },
+      ],
+    },
   };
-
-  public barChartLabels: string[] = [];
-
+  public barChartLabels: Label[] = [];
   public barChartData: ChartDataSets[] = [{ data: [], label: 'Champion' }];
+
+  public lastUpdated: Date;
+  public isData: boolean;
 
   constructor(
     @Inject('APIService') private api: IAPIService,
@@ -56,13 +71,44 @@ export class SummonerRouteComponent implements OnInit {
   public fetchChampData(summonerName: string) {
     this.api
       .getSummonerStats(this.state.server, summonerName)
-      .subscribe((res) => {
-        console.log(this.state.championsMap);
+      .toPromise()
+      .then((res) => {
+        if (!res || res.length < 1) {
+          this.isData = false;
+          return;
+        }
+
         this.barChartLabels = res.map(
           (r) => this.state.championsMap[r.championId].name
         );
 
-        this.barChartData[0].data = res.map((r) => r.championPoints);
+        this.barChartData = [];
+        this.barChartData.push({
+          data: res.map((r) => r.championPoints),
+          backgroundColor: res.map((r) => this.mapbackgroundColor(r, 200)),
+          hoverBackgroundColor: res.map((r) => this.mapbackgroundColor(r)),
+        });
+
+        this.lastUpdated = res[0].updated;
+
+        this.isData = true;
+      })
+      .catch(() => {
+        this.isData = false;
       });
+  }
+
+  private mapbackgroundColor(r: StatsModel, opacity: number = 255) {
+    const op = opacity.toString(16);
+
+    switch (r.championLevel) {
+      case 7:
+        return '#FFEB3B' + op;
+      case 6:
+        return '#FF9800' + op;
+      case 5:
+        return '#FF5722' + op;
+    }
+    return '#a4465a' + op;
   }
 }

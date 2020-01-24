@@ -23,4 +23,12 @@ h1, p {
   display: block;
   padding: 20px;
   height: 300px;
+
+  > h1 {
+    margin-bottom: 20px;
+  }
+}
+
+.last-updated {
+  margin: 0 0 20px 3px;
 }

@@ -13,6 +13,7 @@ import { MainRouteComponent } from './routes/main-route/main-route.component';
 import { SummonerRouteComponent } from './routes/summoner-route/summoner-route.component';
 
 import { ChartsModule } from 'ng2-charts';
+import { DateTimePipe } from './pipes/date-time.pipe';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ChartsModule } from 'ng2-charts';
     DropDownComponent,
     MainRouteComponent,
     SummonerRouteComponent,
+    DateTimePipe,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, ChartsModule],
   providers: [{ provide: 'APIService', useClass: RestAPIService }],

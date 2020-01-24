@@ -20,12 +20,18 @@
 </div>
 
 <div class="champ-stats">
-  <canvas baseChart
+  <h1>Mastery Points</h1>
+  <div *ngIf="isData === true">
+    <p class="last-updated minor">Last updated: {{ lastUpdated | dateTime }}</p>
+    <canvas baseChart
     [datasets]="barChartData"
     [labels]="barChartLabels"
-    [options]="barChartOptions"
-    [legend]="true"
-    height="50"
-    chartType="bar">
-  </canvas>
+      [options]="barChartOptions"
+      [legend]="true"
+      height="70"
+      chartType="bar">
+    </canvas>
+  </div>
+  <i *ngIf="isData === false">We don't have collected any data from {{ summoner?.name }} :(</i>
 </div>
+
