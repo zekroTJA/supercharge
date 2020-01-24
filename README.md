@@ -1,6 +1,10 @@
-# masterypointsstats *(provisional project name)*
-
-> I am looking for a new, better name for the project. If you have any ideas, please let me know in the issues. ;)
+<div align="center">
+     <!-- <img src="" width="400"/> -->
+     <h1>~ supercharge ~</h1>
+     <strong>League of Legends mastery points: supercharged analytics tool</strong><br/><br/>
+     <a href="https://github.com/zekroTJA/supercharge/actions"><img src="https://img.shields.io/github/workflow/status/zekroTJA/supercharge/Docker%20Image%20CD.svg?logo=github&style=for-the-badge" height="30"></a>&nbsp;
+     <a href="https://zekro.de/discord"><img src="https://img.shields.io/discord/307084334198816769.svg?logo=discord&style=for-the-badge" height="30">
+</div>
 
 ---
 
