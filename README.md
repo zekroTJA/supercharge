@@ -12,7 +12,7 @@
 
 This web application allows collecting and analyzing League of Legends champion mastery points stats of summoners who have registered their account on the page to be tracked. This allows keeping track and analyzing your porgress on champion masteries and being able to observe your progerssion.
 
-This porject is strongly inspired by [masterypoints.com](https://masterypoints.com), which provides a detailed insight about your chamion mastery points and world wide rankings, but leaks of providing detailed analysis and tracking of the progress of your mastery points and [Orianna Bot](https://orianna.molenzwiebel.xyz), which provides detailed mastery point information via Discord.
+This project is strongly inspired by [masterypoints.com](https://masterypoints.com), which provides a detailed insight about your champion mastery points and world wide rankings, but leaks of providing detailed analysis and tracking of the progress of your mastery points and [Orianna Bot](https://orianna.molenzwiebel.xyz), which provides detailed mastery point information via Discord.
 
 The name `supercharge` is inspired by the E spell of the League of Legends champion Kai'Sa, which is the main champion of a good friend of mine. And it fits well to the functionality of the app to provide "supercharged" analytics about champion mastery points.
 
