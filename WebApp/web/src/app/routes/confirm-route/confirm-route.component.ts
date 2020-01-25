@@ -59,6 +59,7 @@ export class ConfirmRouteComponent implements OnInit {
       .postRegistrationWatch(this.state.server, this.summonerName)
       .then(() => {
         this.notifications.show('Successfully set to watching.', 'success');
+        this.state.currentSummoner.watch = true;
         this.router.navigate(['summoner', this.summonerName]);
       })
       .catch((err) => {
@@ -70,7 +71,8 @@ export class ConfirmRouteComponent implements OnInit {
     this.api
       .postRegistrationUnWatch(this.state.server, this.summonerName)
       .then(() => {
-        this.notifications.show('Successfully unwatching.', 'success');
+        this.notifications.show('Successfully set to not watching.', 'success');
+        this.state.currentSummoner.watch = false;
         this.router.navigate(['summoner', this.summonerName]);
       })
       .catch((err) => {

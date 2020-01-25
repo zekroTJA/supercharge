@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { MainRouteComponent } from './routes/main-route/main-route.component';
 import { SummonerRouteComponent } from './routes/summoner-route/summoner-route.component';
 import { ConfirmRouteComponent } from './routes/confirm-route/confirm-route.component';
+import { DetailsRouteComponent } from './routes/details-route/details-route.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
   {
     path: 'summoner/:summonerName/confirm',
     component: ConfirmRouteComponent,
+  },
+  {
+    path: 'summoner/:summonerName/details',
+    component: DetailsRouteComponent,
   },
   {
     path: '**',

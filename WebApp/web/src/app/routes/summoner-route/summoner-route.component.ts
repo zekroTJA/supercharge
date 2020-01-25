@@ -9,6 +9,7 @@ import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { ChampionModel } from 'src/app/models/champion.model';
 import { StatsModel } from 'src/app/models/stats.model';
+import { GRAPH_COLORS } from 'src/app/const/const';
 
 @Component({
   selector: 'app-summoner-route',
@@ -39,6 +40,8 @@ export class SummonerRouteComponent implements OnInit {
   public lastUpdated: Date;
   public isData: boolean;
 
+  private _horizontalChart = true;
+
   constructor(
     @Inject('APIService') private api: IAPIService,
     private state: StateService,
@@ -47,6 +50,9 @@ export class SummonerRouteComponent implements OnInit {
   ) {}
 
   public ngOnInit() {
+    this._horizontalChart =
+      window.localStorage.getItem('summoner_horizontal_chart') === 'true';
+
     this.route.params.subscribe((params) => {
       const summonerName = params.summonerName;
       this.summoner = this.state.currentSummoner;
@@ -111,17 +117,35 @@ export class SummonerRouteComponent implements OnInit {
     });
   }
 
+  public onDetailedClick() {
+    this.router.navigate(['summoner', this.summoner.name, 'details']);
+  }
+
+  public get horizontalChart(): boolean {
+    return this._horizontalChart;
+  }
+
+  public set horizontalChart(v: boolean) {
+    console.log(v, this._horizontalChart);
+    if (v === this._horizontalChart) {
+      return;
+    }
+
+    this._horizontalChart = v;
+    window.localStorage.setItem('summoner_horizontal_chart', v.toString());
+  }
+
   private mapbackgroundColor(r: StatsModel, opacity: number = 255) {
     const op = opacity.toString(16);
 
     switch (r.championLevel) {
       case 7:
-        return '#FFEB3B' + op;
+        return GRAPH_COLORS.RED + op;
       case 6:
-        return '#FF9800' + op;
+        return GRAPH_COLORS.PINK + op;
       case 5:
-        return '#FF5722' + op;
+        return GRAPH_COLORS.PURPLE + op;
     }
-    return '#a4465a' + op;
+    return GRAPH_COLORS.DEEP_PURPLE + op;
   }
 }

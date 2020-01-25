@@ -3,7 +3,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import dateFormat from 'dateformat';
 
-const DEF_DATE_FORMAT = 'yyyy-mm-dd hh:MM:ss TT';
+const DEF_DATE_FORMAT = 'yyyy-mm-dd hh:MM:ss Z';
 
 @Pipe({
   name: 'dateTime',

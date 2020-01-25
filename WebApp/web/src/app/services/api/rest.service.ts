@@ -89,8 +89,10 @@ export class RestAPIService implements IAPIService {
     summonerName: string,
     championNames: string[] = []
   ): Observable<StatsModel[]> {
-    const params = new HttpParams();
-    championNames.forEach((cn) => params.append('championNames', cn));
+    let params = new HttpParams();
+    championNames.forEach(
+      (cn) => (params = params.append('championNames', cn))
+    );
     return this.http
       .get<StatsModel[]>(
         `${ROOT_URL}/summoner/${server}/${summonerName}/stats`,
@@ -108,10 +110,20 @@ export class RestAPIService implements IAPIService {
     from?: Date,
     to?: Date
   ): Observable<HistoryModel[]> {
-    const params = new HttpParams()
-      .set('from', from.toString())
-      .set('to', to.toString());
-    championNames.forEach((cn) => params.append('championNames', cn));
+    let params = new HttpParams();
+
+    if (from) {
+      params = params.set('from', from.toString());
+    }
+    if (to) {
+      params = params.set('to', to.toString());
+    }
+
+    championNames.forEach(
+      (cn) => (params = params.append('championNames', cn))
+    );
+    console.log(championNames);
+
     return this.http
       .get<HistoryModel[]>(
         `${ROOT_URL}/summoner/${server}/${summonerName}/history`,
