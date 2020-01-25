@@ -16,6 +16,8 @@ This project is strongly inspired by [masterypoints.com](https://masterypoints.c
 
 The name `supercharge` is inspired by the E spell of the League of Legends champion Kai'Sa, which is the main champion of a good friend of mine. And it fits well to the functionality of the app to provide "supercharged" analytics about champion mastery points.
 
+The Logo and Icon is created and copyright by [luxtracon](https://twitter.com/luxtracon).
+
 ---
 
 ## Structure
