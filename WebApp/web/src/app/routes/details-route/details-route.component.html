@@ -1,17 +1,32 @@
 <div class="container">
-  <app-tag-select
-    [values]="state.champions"
-    [filter]="inputFilter"
-    [formatter]="inputFormatter"
-    [(selected)]="selectedChampions"
-    (selectedChage)="onSelectedChange()"
-  ></app-tag-select>
+  <div class="control">
+    <table>
+      <tbody>
+        <tr>
+          <td><label for=":from">From:</label></td>
+          <td><input #inputFrom class="datepicker" type="date" id=":from" (change)="onDateChange(inputFrom.value, inputTo.value)"></td>
+        </tr>
+        <tr>
+          <td><label for=":to">To:</label></td>
+          <td><input #inputTo class="datepicker" type="date" id=":to" (change)="onDateChange(inputFrom.value, inputTo.value)"></td>
+        </tr>
+      </tbody>
+    </table>
+    <app-tag-select
+      [values]="state.champions"
+      [filter]="inputFilter"
+      [formatter]="inputFormatter"
+      [(selected)]="selectedChampions"
+      (selectedChage)="onSelectedChange()"
+    ></app-tag-select>
+  </div>
 
   <canvas baseChart
     [datasets]="barChartData"
     [labels]="barChartLabels"
     [options]="barChartOptions"
     [legend]="true"
-    [chartType]="'line'">
-  </canvas>
+    [chartType]="'line'"
+    height="130"
+  ></canvas>
 </div>

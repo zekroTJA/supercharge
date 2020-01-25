@@ -52,7 +52,9 @@ button {
   }
 }
 
-input[type='text'], input[type='password'] {
+input[type='text'],
+input[type='password'],
+input[type='date'] {
   border: none;
   border-left: solid 2px $c-accent;
   background-color: rgba(0, 0, 0, 0.25);

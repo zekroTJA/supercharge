@@ -1,6 +1,12 @@
 /** @format */
 
-import { Component, OnInit, Inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Inject,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { IAPIService } from 'src/app/services/api/api.interface';
 import { StateService } from 'src/app/services/state/state.service';
 import { ActivatedRoute } from '@angular/router';
@@ -9,6 +15,7 @@ import { ChartOptions, ChartDataSets, ChartData } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { StatsModel } from 'src/app/models/stats.model';
 import { ChampionModel } from 'src/app/models/champion.model';
+import dateformat from 'dateformat';
 
 @Component({
   selector: 'app-details-route',
@@ -16,10 +23,16 @@ import { ChampionModel } from 'src/app/models/champion.model';
   styleUrls: ['./details-route.component.scss'],
 })
 export class DetailsRouteComponent implements OnInit {
+  @ViewChild('inputFrom', { static: true }) public inputFrom: ElementRef;
+  @ViewChild('inputTo', { static: true }) public inputTo: ElementRef;
+
   public summonerName: string;
   public summoner: SummonerModel;
   public stats: StatsModel[];
   public selectedChampions: ChampionModel[];
+
+  public dateFrom: Date = new Date(new Date().getTime() - 30 * 24 * 3600_000);
+  public dateTo: Date = new Date();
 
   public barChartOptions: ChartOptions = {
     responsive: true,
@@ -54,6 +67,12 @@ export class DetailsRouteComponent implements OnInit {
       this.summonerName = params.summonerName;
       this.summoner = this.state.currentSummoner;
 
+      this.inputFrom.nativeElement.value = dateformat(
+        this.dateFrom,
+        'yyyy-mm-dd'
+      );
+      this.inputTo.nativeElement.value = dateformat(this.dateTo, 'yyyy-mm-dd');
+
       this.api
         .getSummonerStats(this.state.server, this.summonerName)
         .subscribe((stats) => {
@@ -82,7 +101,7 @@ export class DetailsRouteComponent implements OnInit {
         .slice(0, 3)
         .map((s) => this.state.championsMap[s.championId]);
     }
-    this.fetchHistory(this.selectedChampions);
+    this.fetchHistory(this.selectedChampions, this.dateFrom, this.dateTo);
   }
 
   private fetchHistory(
@@ -131,6 +150,12 @@ export class DetailsRouteComponent implements OnInit {
   }
 
   public onSelectedChange() {
+    this.renderChart();
+  }
+
+  public onDateChange(from, to) {
+    this.dateFrom = new Date(from);
+    this.dateTo = new Date(to);
     this.renderChart();
   }
 }

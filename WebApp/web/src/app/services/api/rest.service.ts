@@ -13,6 +13,7 @@ import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
 import { HistoryModel } from 'src/app/models/history.model';
 import { NotificationService } from '../notification/notification.service';
+import dateformat from 'dateformat';
 
 const ROOT_URL = environment.production ? '/api' : 'https://localhost:5001';
 
@@ -113,10 +114,10 @@ export class RestAPIService implements IAPIService {
     let params = new HttpParams();
 
     if (from) {
-      params = params.set('from', from.toString());
+      params = params.set('from', dateformat(from, 'yyyy-mm-dd hh:MM:ss'));
     }
     if (to) {
-      params = params.set('to', to.toString());
+      params = params.set('to', dateformat(to, 'yyyy-mm-dd hh:MM:ss'));
     }
 
     championNames.forEach(

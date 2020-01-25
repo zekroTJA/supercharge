@@ -2,6 +2,7 @@
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -30,7 +31,13 @@ import { TagSelectComponent } from './components/tag-select/tag-select.component
     DetailsRouteComponent,
     TagSelectComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, ChartsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ChartsModule,
+    FormsModule,
+  ],
   providers: [{ provide: 'APIService', useClass: RestAPIService }],
   bootstrap: [AppComponent],
 })
