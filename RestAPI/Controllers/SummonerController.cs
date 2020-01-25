@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Mime;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace RestAPI.Controllers
@@ -94,7 +95,10 @@ namespace RestAPI.Controllers
             if (user == null)
                 return NotFound();
 
-            var championIds = championNames.Select(n => ddragon.GetChampionByName(n));
+            var rx = new Regex(@"^\d*$");
+
+            var championIds = championNames
+                .Select(n => rx.IsMatch(n) ? int.Parse(n) : ddragon.GetChampionByName(n));
 
             var history = await dal.GetPointsLogViewAsync(user.Id, championIds, from, to);
 
