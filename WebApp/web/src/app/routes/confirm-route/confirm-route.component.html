@@ -1,0 +1,10 @@
+<div class="container">
+  <div *ngIf="!code">
+    <p class="generating-code">Generating security code...</p>
+  </div>
+  <div *ngIf="code">
+    <p class="code">{{ code.code }}</p>
+    <p>Take this code and enter it in your client as third-party verification code. <a href="#">How do I do that?</a></p>
+    <button (click)="onConfirmClick()">CONFIRM</button>
+  </div>
+</div>

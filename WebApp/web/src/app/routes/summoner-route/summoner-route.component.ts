@@ -2,7 +2,7 @@
 
 import { Component, OnInit, Inject } from '@angular/core';
 import { IAPIService } from 'src/app/services/api/api.interface';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SummonerModel } from 'src/app/models/summoner.model';
 import { StateService } from 'src/app/services/state/state.service';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
@@ -42,7 +42,8 @@ export class SummonerRouteComponent implements OnInit {
   constructor(
     @Inject('APIService') private api: IAPIService,
     private state: StateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   public ngOnInit() {
@@ -96,6 +97,18 @@ export class SummonerRouteComponent implements OnInit {
       .catch(() => {
         this.isData = false;
       });
+  }
+
+  public onWatchClick() {
+    this.router.navigate(['summoner', this.summoner.name, 'confirm'], {
+      queryParams: { action: 'watch' },
+    });
+  }
+
+  public onUnwatchClick() {
+    this.router.navigate(['summoner', this.summoner.name, 'confirm'], {
+      queryParams: { action: 'unwatch' },
+    });
   }
 
   private mapbackgroundColor(r: StatsModel, opacity: number = 255) {

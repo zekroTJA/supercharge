@@ -16,6 +16,11 @@
       <p *ngIf="summoner.registered && !summoner.watch" class="badge info">NOT WATCHING</p>
       <p *ngIf="!summoner.registered" class="badge">NOT REGISTERED</p>
     </div>
+    <div class="control">
+      <button *ngIf="!summoner.registered" (click)="onWatchClick()">REGISTER NOW</button>
+      <button *ngIf="summoner.registered && !summoner.watch" (click)="onWatchClick()">WATCH ME</button>
+      <button *ngIf="summoner.registered && summoner.watch" (click)="onUnwatchClick()">UNWATCH ME</button>
+    </div>
   </div>
 </div>
 

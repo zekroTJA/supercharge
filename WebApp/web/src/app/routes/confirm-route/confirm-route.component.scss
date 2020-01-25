@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  width: 100%;
+  height: 80vh;
+
+  > div {
+    margin: auto;
+    text-align: center;
+    max-width: 500px;
+
+    a {
+      text-decoration: underline;
+    }
+
+    button {
+      margin-top: 30px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+    }
+  }
+
+
+  .generating-code {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+  }
+
+  .code {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 60px;
+  }
+}

@@ -14,6 +14,7 @@ import { SummonerRouteComponent } from './routes/summoner-route/summoner-route.c
 
 import { ChartsModule } from 'ng2-charts';
 import { DateTimePipe } from './pipes/date-time.pipe';
+import { ConfirmRouteComponent } from './routes/confirm-route/confirm-route.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { DateTimePipe } from './pipes/date-time.pipe';
     MainRouteComponent,
     SummonerRouteComponent,
     DateTimePipe,
+    ConfirmRouteComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, ChartsModule],
   providers: [{ provide: 'APIService', useClass: RestAPIService }],
