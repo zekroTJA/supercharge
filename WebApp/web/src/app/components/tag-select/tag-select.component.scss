@@ -1,0 +1,42 @@
+p {
+  margin: 0 0 10px 0;
+}
+
+.selections {
+  display: flex;
+  flex-wrap: wrap;
+
+  > * {
+    margin-right: 10px;
+  }
+}
+
+.selection {
+  display: flex;
+  background-color: rgb(0, 0, 0, 200);
+  padding: 3px 8px;
+
+  > span {
+    padding: 0 5px;
+    background-color: rgba(255, 255, 255, 0.3);
+    font-size: 12px;
+    margin: auto 0 auto 10px;
+    cursor: pointer;
+  }
+}
+
+.suggestions {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+
+  > * {
+    margin-right: 10px;
+  }
+}
+
+.suggestion {
+  background-color: rgb(0, 0, 0, 200);
+  padding: 3px 8px;
+  cursor: pointer;
+}

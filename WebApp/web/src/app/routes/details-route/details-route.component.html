@@ -1,4 +1,12 @@
 <div class="container">
+  <app-tag-select
+    [values]="state.champions"
+    [filter]="inputFilter"
+    [formatter]="inputFormatter"
+    [(selected)]="selectedChampions"
+    (selectedChage)="onSelectedChange()"
+  ></app-tag-select>
+
   <canvas baseChart
     [datasets]="barChartData"
     [labels]="barChartLabels"

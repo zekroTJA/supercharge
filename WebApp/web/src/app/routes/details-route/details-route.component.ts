@@ -8,6 +8,7 @@ import { SummonerModel } from 'src/app/models/summoner.model';
 import { ChartOptions, ChartDataSets, ChartData } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { StatsModel } from 'src/app/models/stats.model';
+import { ChampionModel } from 'src/app/models/champion.model';
 
 @Component({
   selector: 'app-details-route',
@@ -18,6 +19,7 @@ export class DetailsRouteComponent implements OnInit {
   public summonerName: string;
   public summoner: SummonerModel;
   public stats: StatsModel[];
+  public selectedChampions: ChampionModel[];
 
   public barChartOptions: ChartOptions = {
     responsive: true,
@@ -43,7 +45,7 @@ export class DetailsRouteComponent implements OnInit {
 
   constructor(
     @Inject('APIService') private api: IAPIService,
-    private state: StateService,
+    public state: StateService,
     private route: ActivatedRoute
   ) {}
 
@@ -56,7 +58,7 @@ export class DetailsRouteComponent implements OnInit {
         .getSummonerStats(this.state.server, this.summonerName)
         .subscribe((stats) => {
           this.stats = stats;
-          this.initChart();
+          this.renderChart();
         });
 
       if (!this.summoner || this.summoner.name !== this.summonerName) {
@@ -74,19 +76,25 @@ export class DetailsRouteComponent implements OnInit {
     });
   }
 
-  private initChart() {
-    const champs = this.stats
-      .slice(0, 3)
-      .map((stat) => stat.championId.toString(10));
-    this.fetchHistory(champs);
+  private renderChart() {
+    if (!this.selectedChampions || this.selectedChampions.length < 1) {
+      this.selectedChampions = this.stats
+        .slice(0, 3)
+        .map((s) => this.state.championsMap[s.championId]);
+    }
+    this.fetchHistory(this.selectedChampions);
   }
 
-  private fetchHistory(champions: string[] = [], from?: Date, to?: Date) {
+  private fetchHistory(
+    champions: ChampionModel[] = [],
+    from?: Date,
+    to?: Date
+  ) {
     this.api
       .getSummonerHistory(
         this.state.server,
         this.summonerName,
-        champions,
+        champions.map((c) => c.id),
         from,
         to
       )
@@ -108,5 +116,21 @@ export class DetailsRouteComponent implements OnInit {
             } as ChartDataSets)
         );
       });
+  }
+
+  public inputFilter(v: ChampionModel, input: string): boolean {
+    input = input.toLowerCase();
+    return (
+      v.key.toLowerCase().includes(input) ||
+      v.name.toLocaleLowerCase().includes(input)
+    );
+  }
+
+  public inputFormatter(v: ChampionModel): string {
+    return v.name;
+  }
+
+  public onSelectedChange() {
+    this.renderChart();
   }
 }

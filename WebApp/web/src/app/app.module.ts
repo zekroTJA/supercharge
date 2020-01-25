@@ -16,6 +16,7 @@ import { ChartsModule } from 'ng2-charts';
 import { DateTimePipe } from './pipes/date-time.pipe';
 import { ConfirmRouteComponent } from './routes/confirm-route/confirm-route.component';
 import { DetailsRouteComponent } from './routes/details-route/details-route.component';
+import { TagSelectComponent } from './components/tag-select/tag-select.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { DetailsRouteComponent } from './routes/details-route/details-route.comp
     DateTimePipe,
     ConfirmRouteComponent,
     DetailsRouteComponent,
+    TagSelectComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, ChartsModule],
   providers: [{ provide: 'APIService', useClass: RestAPIService }],

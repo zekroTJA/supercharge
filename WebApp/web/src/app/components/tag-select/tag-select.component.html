@@ -1,0 +1,12 @@
+<div class="selections">
+  <p *ngFor="let c of selected; let i = index" class="selection">
+    {{ formatter(c) }}
+    <span (click)="onRemoveClick(i)">x</span>
+  </p>
+</div>
+
+<input #input type="text" placeholder="Champion name" (input)="onInput(input.value)"/>
+
+<div class="suggestions">
+  <p *ngFor="let s of suggestions" class="suggestion" (click)="onSuggestionClick(s)">{{ formatter(s) }}</p>
+</div>
