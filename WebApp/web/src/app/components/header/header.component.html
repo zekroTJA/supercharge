@@ -1,5 +1,8 @@
 <div class="header">
   <img class="heading" (click)="onHeadingClick()" src="assets/logo/logo.svg"/>
+  <div class="menu-buttons">
+    <button routerLink="about" class="menu-button">ABOUT</button>
+  </div>
   <p class="embed">PATCH {{ state.version?.version }}</p>
   <app-drop-down
     class="server-dropdown"

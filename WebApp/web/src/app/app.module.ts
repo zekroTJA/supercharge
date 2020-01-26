@@ -18,6 +18,7 @@ import { DateTimePipe } from './pipes/date-time.pipe';
 import { ConfirmRouteComponent } from './routes/confirm-route/confirm-route.component';
 import { DetailsRouteComponent } from './routes/details-route/details-route.component';
 import { TagSelectComponent } from './components/tag-select/tag-select.component';
+import { AboutRouteComponent } from './routes/about-route/about-route.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { TagSelectComponent } from './components/tag-select/tag-select.component
     ConfirmRouteComponent,
     DetailsRouteComponent,
     TagSelectComponent,
+    AboutRouteComponent,
   ],
   imports: [
     BrowserModule,
