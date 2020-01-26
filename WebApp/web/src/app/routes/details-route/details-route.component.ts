@@ -11,11 +11,12 @@ import { IAPIService } from 'src/app/services/api/api.interface';
 import { StateService } from 'src/app/services/state/state.service';
 import { ActivatedRoute } from '@angular/router';
 import { SummonerModel } from 'src/app/models/summoner.model';
-import { ChartOptions, ChartDataSets, ChartData } from 'chart.js';
+import { ChartOptions, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { StatsModel } from 'src/app/models/stats.model';
 import { ChampionModel } from 'src/app/models/champion.model';
 import dateformat from 'dateformat';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 @Component({
   selector: 'app-details-route',
@@ -30,6 +31,10 @@ export class DetailsRouteComponent implements OnInit {
   public summoner: SummonerModel;
   public stats: StatsModel[];
   public selectedChampions: ChampionModel[];
+
+  public comparing = false;
+  public selectedChampionsComparage: ChampionModel[];
+  public summonerComparing: SummonerModel;
 
   public dateFrom: Date = new Date(new Date().getTime() - 30 * 24 * 3600_000);
   public dateTo: Date = new Date();
@@ -59,7 +64,8 @@ export class DetailsRouteComponent implements OnInit {
   constructor(
     @Inject('APIService') private api: IAPIService,
     public state: StateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notifications: NotificationService
   ) {}
 
   public ngOnInit() {
@@ -85,6 +91,7 @@ export class DetailsRouteComponent implements OnInit {
           .getSummoner(this.state.server, params.summonerName)
           .subscribe((summoner) => {
             this.summoner = summoner;
+            this.state.currentSummoner = summoner;
           });
       }
 
@@ -101,40 +108,72 @@ export class DetailsRouteComponent implements OnInit {
         .slice(0, 3)
         .map((s) => this.state.championsMap[s.championId]);
     }
-    this.fetchHistory(this.selectedChampions, this.dateFrom, this.dateTo);
+    this.fetchHistory();
   }
 
-  private fetchHistory(
-    champions: ChampionModel[] = [],
-    from?: Date,
-    to?: Date
-  ) {
+  private fetchHistory() {
+    this.barChartData = [];
     this.api
       .getSummonerHistory(
         this.state.server,
         this.summonerName,
-        champions.map((c) => c.id),
-        from,
-        to
+        this.selectedChampions.map((c) => c.id),
+        this.dateFrom,
+        this.dateTo
       )
       .subscribe((history) => {
         const champs = new Set<number>();
-
         history.forEach((h) => champs.add(h.championId));
 
-        this.barChartData = Array.from(champs).map(
-          (cid) =>
-            ({
-              data: history
-                .filter((h) => h.championId === cid)
-                .map((h) => ({
-                  x: new Date(h.timestamp),
-                  y: h.championPoints,
-                })),
-              label: this.state.championsMap[cid].name,
-            } as ChartDataSets)
+        this.barChartData = this.barChartData.concat(
+          Array.from(champs).map(
+            (cid) =>
+              ({
+                data: history
+                  .filter((h) => h.championId === cid)
+                  .map((h) => ({
+                    x: new Date(h.timestamp),
+                    y: h.championPoints,
+                  })),
+                label:
+                  this.state.championsMap[cid].name +
+                  (this.comparing ? ` (${this.summonerName})` : ''),
+              } as ChartDataSets)
+          )
         );
       });
+
+    if (this.comparing && this.summonerComparing) {
+      this.api
+        .getSummonerHistory(
+          this.state.server,
+          this.summonerComparing.name,
+          this.selectedChampionsComparage.map((c) => c.id),
+          this.dateFrom,
+          this.dateTo
+        )
+        .subscribe((historyComp) => {
+          const champs = new Set<number>();
+          historyComp.forEach((h) => champs.add(h.championId));
+          this.barChartData = this.barChartData.concat(
+            Array.from(champs).map(
+              (cid) =>
+                ({
+                  data: historyComp
+                    .filter((h) => h.championId === cid)
+                    .map((h) => ({
+                      x: new Date(h.timestamp),
+                      y: h.championPoints,
+                    })),
+                  label:
+                    this.state.championsMap[cid].name +
+                    (this.comparing ? ` (${this.summonerComparing.name})` : ''),
+                } as ChartDataSets)
+            )
+          );
+          console.log(this.barChartData);
+        });
+    }
   }
 
   public inputFilter(v: ChampionModel, input: string): boolean {
@@ -153,9 +192,60 @@ export class DetailsRouteComponent implements OnInit {
     this.renderChart();
   }
 
-  public onDateChange(from, to) {
+  public onDateChange(from: Date, to: Date) {
     this.dateFrom = new Date(from);
     this.dateTo = new Date(to);
     this.renderChart();
   }
+
+  public onCompareClick() {
+    this.comparing = true;
+  }
+
+  public onCompareSummonerChange(v: string) {
+    if (!v) {
+      this.summonerComparing = null;
+      return;
+    }
+    console.log('TEST');
+    this.api
+      .getSummoner(this.state.server, v)
+      .toPromise()
+      .then((summoner) => {
+        if (!summoner.registered) {
+          this.notifications.show('Summoner is not registered.', 'error');
+          return;
+        }
+        if (summoner.accountId === this.state.currentSummoner.accountId) {
+          this.notifications.show(
+            'You can not compare you with yourself.',
+            'error'
+          );
+          return;
+        }
+
+        this.summonerComparing = summoner;
+
+        this.api
+          .getSummonerStats(this.state.server, summoner.name)
+          .subscribe((stats) => {
+            if (stats.length <= 0) {
+              return;
+            }
+
+            this.selectedChampionsComparage = [
+              this.state.championsMap[stats[0].championId],
+            ];
+
+            this.renderChart();
+          });
+      })
+      .catch((err) => {
+        if (err.status === 404) {
+          this.notifications.show('Summoner could not be found.', 'error');
+        }
+      });
+  }
+
+  public onSelectedComparisonChange() {}
 }

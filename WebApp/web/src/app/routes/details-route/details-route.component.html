@@ -1,24 +1,51 @@
 <div class="container">
   <div class="control">
-    <table>
-      <tbody>
-        <tr>
-          <td><label for=":from">From:</label></td>
-          <td><input #inputFrom class="datepicker" type="date" id=":from" (change)="onDateChange(inputFrom.value, inputTo.value)"></td>
-        </tr>
-        <tr>
-          <td><label for=":to">To:</label></td>
-          <td><input #inputTo class="datepicker" type="date" id=":to" (change)="onDateChange(inputFrom.value, inputTo.value)"></td>
-        </tr>
-      </tbody>
-    </table>
-    <app-tag-select
-      [values]="state.champions"
-      [filter]="inputFilter"
-      [formatter]="inputFormatter"
-      [(selected)]="selectedChampions"
-      (selectedChage)="onSelectedChange()"
-    ></app-tag-select>
+
+    <div>
+      <table>
+        <tbody>
+          <tr>
+            <td><label for=":from">From:</label></td>
+            <td><input #inputFrom class="datepicker" type="date" id=":from" (change)="onDateChange(inputFrom.value, inputTo.value)"></td>
+          </tr>
+          <tr>
+            <td><label for=":to">To:</label></td>
+            <td><input #inputTo class="datepicker" type="date" id=":to" (change)="onDateChange(inputFrom.value, inputTo.value)"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="champ-select">
+      <app-tag-select
+        [values]="state.champions"
+        [filter]="inputFilter"
+        [formatter]="inputFormatter"
+        [(selected)]="selectedChampions"
+        (selectedChage)="onSelectedChange()"
+      ></app-tag-select>
+    </div>
+
+    <button *ngIf="!comparing; else tempCompare" class="btn-compare" (click)="onCompareClick()">COMPARE</button>
+    <ng-template #tempCompare>
+      <div class="input-compare-container">
+        <label>Compare with:</label>
+        <br/>
+        <input
+          #inputSummonerComparage type="text" placeholder="Summoner"
+          (change)="onCompareSummonerChange(inputSummonerComparage.value)"
+        />
+      </div>
+      <div *ngIf="summonerComparing" class="champ-select">
+        <app-tag-select
+          [values]="state.champions"
+          [filter]="inputFilter"
+          [formatter]="inputFormatter"
+          [(selected)]="selectedChampionsComparage"
+          (selectedChage)="onSelectedComparisonChange()"
+        ></app-tag-select>
+      </div>
+    </ng-template>
   </div>
 
   <canvas baseChart

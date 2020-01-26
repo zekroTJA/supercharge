@@ -4,6 +4,12 @@
 
 .control {
   display: flex;
+  margin-bottom: 10px;
+
+  > div {
+    margin-right: 20px;
+    border-right: solid 2px rgba(255, 255, 255, 0.25);
+  }
 }
 
 td {
@@ -12,10 +18,23 @@ td {
 
 table {
   padding-right: 10px;
-  margin-right: 20px;
-  border-right: solid 2px rgba(255, 255, 255, 0.25);
 }
 
 .datepicker {
   height: 28px;
+}
+
+.btn-compare {
+  height: fit-content;
+}
+
+.input-compare-container {
+  > input {
+    margin-top: 12px;
+    margin-right: 10px;
+  }
+}
+
+.champ-select {
+  padding-right: 20px;
 }
