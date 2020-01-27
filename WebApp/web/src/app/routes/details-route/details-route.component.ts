@@ -143,7 +143,11 @@ export class DetailsRouteComponent implements OnInit {
         );
       });
 
-    if (this.comparing && this.summonerComparing) {
+    if (
+      this.comparing &&
+      this.summonerComparing &&
+      this.selectedChampionsComparage.length > 0
+    ) {
       this.api
         .getSummonerHistory(
           this.state.server,
@@ -247,5 +251,7 @@ export class DetailsRouteComponent implements OnInit {
       });
   }
 
-  public onSelectedComparisonChange() {}
+  public onSelectedComparisonChange() {
+    this.renderChart();
+  }
 }
