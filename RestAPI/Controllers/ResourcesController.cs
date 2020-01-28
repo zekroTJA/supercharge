@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
-using System.Threading.Tasks;
-using DDragonAccessLayer;
-using Microsoft.AspNetCore.Http;
+﻿using DDragonAccessLayer;
 using Microsoft.AspNetCore.Mvc;
 using RestAPI.Filter;
+using System.Net.Mime;
 
 namespace RestAPI.Controllers
 {
     [Route("[controller]")]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
+    [RateLimitFilter(1, 10)]
     [HeaderFilter]
+    [ProxyAddressFilter]
+    [ApiController]
     public class ResourcesController : ControllerBase
     {
         private readonly DataDragonWrapper ddragon;

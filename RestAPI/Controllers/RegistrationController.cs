@@ -18,6 +18,8 @@ namespace RestAPI.Controllers
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [HeaderFilter]
+    [ProxyAddressFilter]
+    [RateLimitFilter(10, 5)]
     [ApiController]
     public class RegistrationController : ControllerBase
     {

@@ -19,6 +19,7 @@ namespace RestAPI.Controllers
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [HeaderFilter]
+    [ProxyAddressFilter]
     [ApiController]
     public class SummonerController : ControllerBase
     {
@@ -34,6 +35,7 @@ namespace RestAPI.Controllers
         }
 
         [HttpGet]
+        [RateLimitFilter(2, 5)]
         public async Task<IActionResult> Summoner([FromRoute] string server, [FromRoute] string summonerName)
         {
             server = server.ToLower();
@@ -63,6 +65,7 @@ namespace RestAPI.Controllers
         }
 
         [HttpGet("stats")]
+        [RateLimitFilter(2, 5)]
         public async Task<IActionResult> Points(
             [FromRoute] string server, 
             [FromRoute] string summonerName,
@@ -82,6 +85,7 @@ namespace RestAPI.Controllers
         }
 
         [HttpGet("history")]
+        [RateLimitFilter(2, 5)]
         public async Task<IActionResult> History(
             [FromRoute] string server,
             [FromRoute] string summonerName,
