@@ -6,10 +6,8 @@ using RiotAPIAccessLayer;
 using RiotAPIAccessLayer.Exceptions;
 using RiotAPIAccessLayer.Time;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Crawler
@@ -18,20 +16,27 @@ namespace Crawler
     class PointsCrawler
     {
         private readonly RiotAPIWrapper wrapper;
-        private readonly List<DateTime> execOn;
         private readonly DatabaseAccess dal;
         private readonly ILogger<PointsCrawler> logger;
-
-        private Timer timer;
-        private readonly Dictionary<DateTime, DateTime> latelyExecuted = new Dictionary<DateTime, DateTime>();
+        private readonly Scheduler scheduler;
 
         public PointsCrawler(IConfiguration config, DatabaseAccess dal, RiotAPIWrapper wrapper, ILogger<PointsCrawler> logger)
         {
-            execOn = config.GetSection("Crawler:ExecOn")
+            var statusTimes = config.GetSection("Crawler:ExecOn:GetStatus")
                 .AsEnumerable()
                 .Where(v => v.Value != null)
                 .Select(v => DateTime.Parse(v.Value))
                 .ToList();
+
+            var logTimes = config.GetSection("Crawler:ExecOn:GetLog")
+                .AsEnumerable()
+                .Where(v => v.Value != null)
+                .Select(v => DateTime.Parse(v.Value))
+                .ToList();
+
+            scheduler = new Scheduler(TimeSpan.FromHours(23))
+                .DoAt(async () => await GetStats(addToLog: false), statusTimes)
+                .DoAt(async () => await GetStats(addToLog: true), logTimes);
 
             this.logger = logger;
             this.dal = dal;
@@ -41,46 +46,67 @@ namespace Crawler
         public void StartLoop()
         {
             logger.LogInformation(
-                $"Loop initialized for following times: {string.Join(", ", execOn.Select(dt => $"{dt.Hour}:{dt.Minute}"))}");
+                $"Loop initialized");
 
-            timer = new Timer(new TimerCallback(OnTimerElapse), null, 1000, 10_000);
+            scheduler.Start(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(10));
         }
 
-        private bool CheckTime(DateTime dt)
+        //private bool CheckTime(DateTime dt)
+        //{
+        //    var now = DateTime.Now;
+        //    if (now.Hour != dt.Hour || now.Minute != dt.Minute)
+        //        return false;
+
+
+        //    if (!latelyExecuted.ContainsKey(dt) || 
+        //        now - latelyExecuted[dt] > TimeSpan.FromHours(23)) 
+        //    {
+        //        latelyExecuted[dt] = now; 
+        //        return true;
+        //    }
+
+        //    return false;
+        //}
+
+        //private async void OnTimerElapse(object v)
+        //{
+        //    if (execOn.FirstOrDefault(CheckTime) != default)
+        //    {
+        //        try
+        //        {
+        //            await Exec();
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            logger.LogError(e.ToString());
+        //        }
+        //    }
+        //}
+
+
+        private async Task GetSummonerID(UserModel user)
         {
-            var now = DateTime.Now;
-            if (now.Hour != dt.Hour || now.Minute != dt.Minute)
-                return false;
-
-
-            if (!latelyExecuted.ContainsKey(dt) || 
-                now - latelyExecuted[dt] > TimeSpan.FromHours(23)) 
+            try
             {
-                latelyExecuted[dt] = now; 
-                return true;
+                var resUser = await wrapper.GetSummonerByName(user.Server, user.Username);
+                user.SummonerId = resUser.Id;
+                logger.LogInformation($"Requested missing SummonerID of summoner '{user.Username}': ${user.SummonerId}");
+            }
+            catch (ResponseException e)
+            {
+                if (e.Response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    user.Watch = false;
+                    logger.LogError("user could not be found by API - settings 'Watch' flag to false");
+                }
             }
 
-            return false;
+            dal.Update(user);
         }
 
-        private async void OnTimerElapse(object v)
+        private async Task GetStats(bool addToLog = false)
         {
-            if (execOn.FirstOrDefault(CheckTime) != default)
-            {
-                try
-                {
-                    await Exec();
-                }
-                catch (Exception e)
-                {
-                    logger.LogError(e.ToString());
-                }
-            }
-        }
-
-        private async Task Exec()
-        {
-            logger.LogInformation("Executing loop function...");
+            logger.LogInformation($"Getting stats{(addToLog ? " and add to log" : "")}...");
 
             var users = await dal.GetUsersAsync();
 
@@ -95,24 +121,7 @@ namespace Crawler
                  * flag in the database will be set to false.
                  */
                 if (user.SummonerId == null)
-                {
-                    try
-                    {
-                        var resUser = await wrapper.GetSummonerByName(user.Server, user.Username);
-                        user.SummonerId = resUser.Id;
-                        logger.LogInformation($"Requested missing SummonerID of summoner '{user.Username}': ${user.SummonerId}");
-                    }
-                    catch (ResponseException e)
-                    {
-                        if (e.Response.StatusCode == HttpStatusCode.NotFound)
-                        {
-                            user.Watch = false;
-                            logger.LogError("user could not be found by API - settings 'Watch' flag to false");
-                        }
-                    }
-
-                    dal.Update(user);
-                }
+                    await GetSummonerID(user);
 
                 var pointsRes = await wrapper.GetSummonerPoints(user.Server, user.SummonerId);
                 var pointsDb = await dal.GetPointsAsync(user.Id);
@@ -133,7 +142,7 @@ namespace Crawler
                         };
 
                         dal.Add(pChamp);
-                    } 
+                    }
                     else
                     {
                         pChamp.ChampionLevel = p.ChampionLevel;
@@ -144,15 +153,18 @@ namespace Crawler
                         dal.Update(pChamp);
                     }
 
-                    var pointsLog = new PointsLogModel
+                    if (addToLog)
                     {
-                        ChampionLevel = p.ChampionLevel,
-                        ChampionId = p.ChampionId,
-                        ChampionPoints = p.ChampionPoints,
-                        User = user,
-                    };
+                        var pointsLog = new PointsLogModel
+                        {
+                            ChampionLevel = p.ChampionLevel,
+                            ChampionId = p.ChampionId,
+                            ChampionPoints = p.ChampionPoints,
+                            User = user,
+                        };
 
-                    dal.Add(pointsLog);
+                        dal.Add(pointsLog);
+                    }
                 });
 
                 await dal.CommitChangesAsync();
