@@ -51,39 +51,6 @@ namespace Crawler
             scheduler.Start(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(10));
         }
 
-        //private bool CheckTime(DateTime dt)
-        //{
-        //    var now = DateTime.Now;
-        //    if (now.Hour != dt.Hour || now.Minute != dt.Minute)
-        //        return false;
-
-
-        //    if (!latelyExecuted.ContainsKey(dt) || 
-        //        now - latelyExecuted[dt] > TimeSpan.FromHours(23)) 
-        //    {
-        //        latelyExecuted[dt] = now; 
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-
-        //private async void OnTimerElapse(object v)
-        //{
-        //    if (execOn.FirstOrDefault(CheckTime) != default)
-        //    {
-        //        try
-        //        {
-        //            await Exec();
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            logger.LogError(e.ToString());
-        //        }
-        //    }
-        //}
-
-
         private async Task GetSummonerID(UserModel user)
         {
             try
