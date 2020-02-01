@@ -39,7 +39,7 @@ namespace RestAPI.Filter
             else
             {
                 limiter = new RateLimiter(limit, burst);
-                limiters.Add(remoteAddress, limiter);
+                limiters[remoteAddress] = limiter;
 
             }
 
