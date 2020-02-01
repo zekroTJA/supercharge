@@ -22,10 +22,13 @@ namespace DatabaseAccessLayer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+#if DEBUG
+            var connectionString = config.GetConnectionString("mysql");
+            optionsBuilder.UseMySql(connectionString);
+#else
             var connectionString = config.GetConnectionString("postgres");
-
             optionsBuilder.UseNpgsql(connectionString);
-
+#endif
             base.OnConfiguring(optionsBuilder);
         }
     }
