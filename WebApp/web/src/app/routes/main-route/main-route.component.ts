@@ -6,6 +6,7 @@ import { StateService } from 'src/app/services/state/state.service';
 import { IAPIService } from 'src/app/services/api/api.interface';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { Router } from '@angular/router';
+import { LoadingBarService } from 'src/app/services/loading-bar/loading-bar.service';
 
 @Component({
   selector: 'app-main-route',
@@ -13,13 +14,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./main-route.component.scss'],
 })
 export class MainRouteComponent {
-  public loading = false;
-
   constructor(
     public state: StateService,
     @Inject('APIService') private api: IAPIService,
     private notifications: NotificationService,
-    private router: Router
+    private router: Router,
+    private loadingBar: LoadingBarService
   ) {}
 
   public onSearch(value: string) {
@@ -27,7 +27,7 @@ export class MainRouteComponent {
       return;
     }
 
-    this.loading = true;
+    this.loadingBar.activate();
     this.api
       .getSummoner(this.state.server, value)
       .toPromise()
@@ -45,7 +45,7 @@ export class MainRouteComponent {
         }
       })
       .finally(() => {
-        this.loading = false;
+        this.loadingBar.deactivate();
       });
   }
 }

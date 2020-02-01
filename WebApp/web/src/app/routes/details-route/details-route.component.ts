@@ -17,6 +17,7 @@ import { StatsModel } from 'src/app/models/stats.model';
 import { ChampionModel } from 'src/app/models/champion.model';
 import dateformat from 'dateformat';
 import { NotificationService } from 'src/app/services/notification/notification.service';
+import { LoadingBarService } from 'src/app/services/loading-bar/loading-bar.service';
 
 @Component({
   selector: 'app-details-route',
@@ -65,7 +66,8 @@ export class DetailsRouteComponent implements OnInit {
     @Inject('APIService') private api: IAPIService,
     public state: StateService,
     private route: ActivatedRoute,
-    private notifications: NotificationService
+    private notifications: NotificationService,
+    private loadingBar: LoadingBarService
   ) {}
 
   public ngOnInit() {
@@ -79,25 +81,24 @@ export class DetailsRouteComponent implements OnInit {
       );
       this.inputTo.nativeElement.value = dateformat(this.dateTo, 'yyyy-mm-dd');
 
+      this.loadingBar.activate();
       this.api
         .getSummonerStats(this.state.server, this.summonerName)
         .subscribe((stats) => {
           this.stats = stats;
           this.renderChart();
+          this.loadingBar.deactivate();
         });
 
       if (!this.summoner || this.summoner.name !== this.summonerName) {
+        this.loadingBar.activate();
         this.api
           .getSummoner(this.state.server, params.summonerName)
           .subscribe((summoner) => {
             this.summoner = summoner;
             this.state.currentSummoner = summoner;
+            this.loadingBar.deactivate();
           });
-      }
-
-      if (!this.state.initialized) {
-        this.state.initialized.subscribe(() => {});
-      } else {
       }
     });
   }
@@ -113,6 +114,7 @@ export class DetailsRouteComponent implements OnInit {
 
   private fetchHistory() {
     this.barChartData = [];
+    this.loadingBar.activate();
     this.api
       .getSummonerHistory(
         this.state.server,
@@ -141,6 +143,8 @@ export class DetailsRouteComponent implements OnInit {
               } as ChartDataSets)
           )
         );
+
+        this.loadingBar.deactivate();
       });
 
     if (
@@ -148,6 +152,8 @@ export class DetailsRouteComponent implements OnInit {
       this.summonerComparing &&
       this.selectedChampionsComparage.length > 0
     ) {
+      this.loadingBar.activate();
+
       this.api
         .getSummonerHistory(
           this.state.server,
@@ -175,7 +181,8 @@ export class DetailsRouteComponent implements OnInit {
                 } as ChartDataSets)
             )
           );
-          console.log(this.barChartData);
+
+          this.loadingBar.deactivate();
         });
     }
   }

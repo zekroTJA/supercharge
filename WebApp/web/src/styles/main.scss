@@ -118,13 +118,14 @@ button.accent {
   opacity: 1;
 }
 
-.loading-bar {
-  margin-top: 30px;
-  height: 3px;
-  background-color: $c-accent;
+// TODO: Remove
+// .loading-bar {
+//   margin-top: 30px;
+//   height: 3px;
+//   background-color: $c-accent;
 
-  animation: loading-bar-animation 1.5s ease infinite;
-}
+//   animation: loading-bar-animation 1.5s ease infinite;
+// }
 
 .badge {
   padding: 5px 15px;

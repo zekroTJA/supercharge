@@ -19,6 +19,7 @@ import { ConfirmRouteComponent } from './routes/confirm-route/confirm-route.comp
 import { DetailsRouteComponent } from './routes/details-route/details-route.component';
 import { TagSelectComponent } from './components/tag-select/tag-select.component';
 import { AboutRouteComponent } from './routes/about-route/about-route.component';
+import { LoadingBarComponent } from './components/loading-bar/loading-bar.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { AboutRouteComponent } from './routes/about-route/about-route.component'
     DetailsRouteComponent,
     TagSelectComponent,
     AboutRouteComponent,
+    LoadingBarComponent,
   ],
   imports: [
     BrowserModule,

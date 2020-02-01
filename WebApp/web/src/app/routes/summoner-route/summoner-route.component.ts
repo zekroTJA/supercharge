@@ -5,11 +5,11 @@ import { IAPIService } from 'src/app/services/api/api.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SummonerModel } from 'src/app/models/summoner.model';
 import { StateService } from 'src/app/services/state/state.service';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { ChartOptions, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
-import { ChampionModel } from 'src/app/models/champion.model';
 import { StatsModel } from 'src/app/models/stats.model';
 import { GRAPH_COLORS } from 'src/app/const/const';
+import { LoadingBarService } from 'src/app/services/loading-bar/loading-bar.service';
 
 @Component({
   selector: 'app-summoner-route',
@@ -46,7 +46,8 @@ export class SummonerRouteComponent implements OnInit {
     @Inject('APIService') private api: IAPIService,
     private state: StateService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private loadingBar: LoadingBarService
   ) {}
 
   public ngOnInit() {
@@ -58,10 +59,12 @@ export class SummonerRouteComponent implements OnInit {
       this.summoner = this.state.currentSummoner;
 
       if (!this.summoner || this.summoner.name !== summonerName) {
+        this.loadingBar.activate();
         this.api
           .getSummoner(this.state.server, params.summonerName)
           .subscribe((summoner) => {
             this.summoner = summoner;
+            this.loadingBar.deactivate();
           });
       }
 
@@ -76,6 +79,7 @@ export class SummonerRouteComponent implements OnInit {
   }
 
   public fetchChampData(summonerName: string) {
+    this.loadingBar.activate();
     this.api
       .getSummonerStats(this.state.server, summonerName)
       .toPromise()
@@ -102,7 +106,8 @@ export class SummonerRouteComponent implements OnInit {
       })
       .catch(() => {
         this.isData = false;
-      });
+      })
+      .finally(() => this.loadingBar.deactivate());
   }
 
   public onWatchClick() {
