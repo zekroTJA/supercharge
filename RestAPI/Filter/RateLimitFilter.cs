@@ -10,7 +10,7 @@ namespace RestAPI.Filter
     public class RateLimitFilter : ActionFilterAttribute
     {
 
-        private readonly Dictionary<IPAddress, RateLimiter> limiters = new Dictionary<IPAddress, RateLimiter>();
+        private readonly Dictionary<IPAddress, RateLimiter> limiters;
         private readonly TimeSpan limit;
         private readonly int burst;
 
@@ -18,6 +18,7 @@ namespace RestAPI.Filter
         {
             limit = TimeSpan.FromSeconds(limitSeconds);
             burst = _burst;
+            limiters = new Dictionary<IPAddress, RateLimiter>();
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -40,7 +41,6 @@ namespace RestAPI.Filter
             {
                 limiter = new RateLimiter(limit, burst);
                 limiters[remoteAddress] = limiter;
-
             }
 
             var reservation = limiter.Reserve();
