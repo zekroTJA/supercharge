@@ -49,7 +49,7 @@ namespace Crawler
                 $"Loop initialized");
 
             scheduler.Start(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(10));
-        }
+        } 
 
         private async Task GetSummonerID(UserModel user)
         {
@@ -59,19 +59,23 @@ namespace Crawler
                 user.SummonerId = resUser.Id;
                 logger.LogInformation($"Requested missing SummonerID of summoner '{user.Username}': ${user.SummonerId}");
             }
-            catch (ResponseException e)
+            catch (Exception e)
             {
-                if (e.Response.StatusCode == HttpStatusCode.NotFound)
+                if (e is ResponseException && 
+                    !(e as ResponseException).Response.IsSuccessStatusCode &&
+                    (e as ResponseException).Response.StatusCode != HttpStatusCode.TooManyRequests)
                 {
                     user.Watch = false;
                     logger.LogError("user could not be found by API - settings 'Watch' flag to false");
-                }
+                } 
+                else
+                    logger.LogError($"an unexpected error occured during request: {e.Message}");
             }
 
             dal.Update(user);
         }
 
-        private async Task GetStats(bool addToLog = false)
+        private async Task GetStats(bool addToLog = false, bool isRetry = false)
         {
             logger.LogInformation($"Getting stats{(addToLog ? " and add to log" : "")}...");
 
@@ -79,18 +83,45 @@ namespace Crawler
 
             foreach (var user in users.Where(u => u.Watch))
             {
-                /* If the Users ID, which is collected from the Riot API,
-                 * null, so the ID will be firstly determinated by requesting
-                 * the user profile from the Riot API.
-                 * 
-                 * If the response returns a 404 code, which identicates that
-                 * the user account does not or does no more exist and the "Watch"
-                 * flag in the database will be set to false.
-                 */
                 if (user.SummonerId == null)
                     await GetSummonerID(user);
 
-                var pointsRes = await wrapper.GetSummonerPoints(user.Server, user.SummonerId);
+                RiotAPIAccessLayer.Models.PointsModel[] pointsRes;
+
+                try
+                {
+                    pointsRes = await wrapper.GetSummonerPoints(user.Server, user.SummonerId);
+                }
+                catch(Exception e)
+                {
+                    if (e is ResponseException &&
+                        !(e as ResponseException).Response.IsSuccessStatusCode &&
+                        (e as ResponseException).Response.StatusCode != HttpStatusCode.TooManyRequests)
+                    {
+                        // If the data can not be fetched by the summoner ID saved in the databse, 
+                        // then firstly try to collect the user ID of the user from the API again
+                        // and retry this function with isRetry passed as true.
+                        // If isRetry is true, the user will be 'Watch' flag of the user will be set
+                        // to false to prevent further errors.
+                        if (!isRetry)
+                        {
+                            await GetSummonerID(user);
+                            await GetStats(addToLog, true);
+                        }
+                        else
+                        {
+                            user.Watch = false;
+                            logger.LogError("user could not be found by API - settings 'Watch' flag to false");
+                            dal.Update(user);
+                        }
+                    }
+                    else
+                        logger.LogError($"an unexpected error occured during request: {e.Message}");
+
+                    continue;
+                }
+
+
                 var pointsDb = await dal.GetPointsAsync(user.Id);
 
                 Array.ForEach(pointsRes, p =>
