@@ -66,10 +66,10 @@ namespace Crawler
                     (e as ResponseException).Response.StatusCode != HttpStatusCode.TooManyRequests)
                 {
                     user.Watch = false;
-                    logger.LogError("user could not be found by API - settings 'Watch' flag to false");
+                    logger.LogError("User could not be found by API - settings 'Watch' flag to false");
                 } 
                 else
-                    logger.LogError($"an unexpected error occured during request: {e.Message}");
+                    logger.LogError($"An unexpected error occured during request: {e.Message}");
             }
 
             dal.Update(user);
@@ -105,18 +105,20 @@ namespace Crawler
                         // to false to prevent further errors.
                         if (!isRetry)
                         {
+                            logger.LogInformation($"Requesting stats of user '{user.Username}' failed: ${(e as ResponseException).Response.StatusCode}");
+                            logger.LogInformation($"Trying to refresh users ID and retry getting stats...");
                             await GetSummonerID(user);
                             await GetStats(addToLog, true);
                         }
                         else
                         {
                             user.Watch = false;
-                            logger.LogError("user could not be found by API - settings 'Watch' flag to false");
+                            logger.LogError("retry getting stats failed - settings 'Watch' flag to false");
                             dal.Update(user);
                         }
                     }
                     else
-                        logger.LogError($"an unexpected error occured during request: {e.Message}");
+                        logger.LogError($"An unexpected error occured during request: {e.Message}");
 
                     continue;
                 }

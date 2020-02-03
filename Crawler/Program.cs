@@ -29,7 +29,10 @@ namespace Crawler
                 {
                     opt
                         .AddConfiguration(config.GetSection("Logging"))
-                        .AddConsole();
+                        .AddConsole(c =>
+                        {
+                            c.TimestampFormat = "yyyy/MM/dd - HH:mm:ss | ";
+                        });
                 })
                 .BuildServiceProvider();
 
