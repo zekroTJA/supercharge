@@ -91,6 +91,15 @@ namespace DatabaseAccessLayer
                 .ToArrayAsync();
         }
 
+        public long GetUsersCount(Func<UserModel, bool> preticate) => 
+            ctx.Users.Where(preticate).LongCount();
+
+        public long GetPointsCount(Func<PointsModel, bool> preticate) =>
+            ctx.Points.Where(preticate).LongCount();
+
+        public long GetPointsLogCount(Func<PointsLogModel, bool> preticate) =>
+            ctx.PointsLog.Where(preticate).LongCount();
+
         public void Update<T>(T d)
         {
             ctx.Update(d);
