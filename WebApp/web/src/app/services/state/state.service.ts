@@ -5,6 +5,7 @@ import { IAPIService } from '../api/api.interface';
 import { VersionModel } from 'src/app/models/version.model';
 import { ChampionModel } from 'src/app/models/champion.model';
 import { SummonerModel } from 'src/app/models/summoner.model';
+import { LocalStorageService } from '../local-storage/local-storage.service';
 
 const DEFAULT_SERVER = 'EUW1';
 
@@ -22,8 +23,11 @@ export class StateService {
 
   private _server = 'EUW1';
 
-  constructor(@Inject('APIService') api: IAPIService) {
-    this.server = localStorage.getItem('server') || DEFAULT_SERVER;
+  constructor(
+    @Inject('APIService') api: IAPIService,
+    private localStorage: LocalStorageService
+  ) {
+    this.server = this.localStorage.server || DEFAULT_SERVER;
 
     api.getResourcesVersion().subscribe((version) => {
       this.version = version;
@@ -48,6 +52,6 @@ export class StateService {
     }
 
     this._server = v;
-    window.localStorage.setItem('server', v);
+    this.localStorage.server = this._server;
   }
 }
