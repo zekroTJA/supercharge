@@ -21,12 +21,20 @@ export class SummonerRouteComponent implements OnInit {
   public summoner: SummonerModel;
 
   public barChartOptions: ChartOptions = {
-    responsive: true,
+    // responsive: true,
+    // maintainAspectRatio: false,
     legend: {
       display: false,
     },
     scales: {
       xAxes: [
+        {
+          ticks: {
+            autoSkip: false,
+          },
+        },
+      ],
+      yAxes: [
         {
           ticks: {
             autoSkip: false,
@@ -90,9 +98,9 @@ export class SummonerRouteComponent implements OnInit {
           return;
         }
 
-        this.barChartLabels = res.map(
-          (r) => this.state.championsMap[r.championId].name
-        );
+        this.barChartLabels = res
+          .map((r) => this.state.championsMap[r.championId].name)
+          .slice(0, 30);
 
         this.barChartData = [];
         this.barChartData.push({

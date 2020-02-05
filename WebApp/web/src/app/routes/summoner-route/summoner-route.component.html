@@ -32,13 +32,14 @@
     <button (click)="verticalChart = !verticalChart" class="btn-flip-chart">FLIP CHART</button>
   </div>
   <div *ngIf="isData === true">
-    <p class="last-updated minor">Last updated: {{ lastUpdated | dateTime }}</p>
+    <p class="last-updated minor">Top 30 | Last updated: {{ lastUpdated | dateTime }}</p>
     <canvas baseChart
       [datasets]="barChartData"
       [labels]="barChartLabels"
       [options]="barChartOptions"
       [legend]="true"
-      [chartType]="verticalChart ? 'bar' : 'horizontalBar'">
+      [chartType]="verticalChart ? 'bar' : 'horizontalBar'"
+      height="115">
     </canvas>
   </div>
   <i *ngIf="isData === false">We don't have collected any data from {{ summoner?.name }} :(</i>
