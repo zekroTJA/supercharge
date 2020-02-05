@@ -18,9 +18,6 @@ namespace Crawler
         private readonly List<SchedulerTask> tasks = new List<SchedulerTask>();
         private readonly TimeSpan actionCooldown;
 
-        private int _rollingActionId = 0;
-        private int RollingActionId => _rollingActionId++;
-
         public Scheduler(TimeSpan actionCooldown)
         {
             this.actionCooldown = actionCooldown;

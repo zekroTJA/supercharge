@@ -29,7 +29,7 @@
 <div class="champ-stats">
   <div class="flex">
     <h1>Mastery Points</h1>
-    <button (click)="horizontalChart = !horizontalChart" class="btn-flip-chart">FLIP CHART</button>
+    <button (click)="verticalChart = !verticalChart" class="btn-flip-chart">FLIP CHART</button>
   </div>
   <div *ngIf="isData === true">
     <p class="last-updated minor">Last updated: {{ lastUpdated | dateTime }}</p>
@@ -38,7 +38,7 @@
       [labels]="barChartLabels"
       [options]="barChartOptions"
       [legend]="true"
-      [chartType]="horizontalChart ? 'horizontalBar' : 'bar'">
+      [chartType]="verticalChart ? 'bar' : 'horizontalBar'">
     </canvas>
   </div>
   <i *ngIf="isData === false">We don't have collected any data from {{ summoner?.name }} :(</i>

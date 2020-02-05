@@ -10,6 +10,7 @@ import { Label } from 'ng2-charts';
 import { StatsModel } from 'src/app/models/stats.model';
 import { GRAPH_COLORS } from 'src/app/const/const';
 import { LoadingBarService } from 'src/app/services/loading-bar/loading-bar.service';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-summoner-route',
@@ -40,19 +41,19 @@ export class SummonerRouteComponent implements OnInit {
   public lastUpdated: Date;
   public isData: boolean;
 
-  private _horizontalChart = true;
+  private _verticalChart = false;
 
   constructor(
     @Inject('APIService') private api: IAPIService,
     private state: StateService,
     private route: ActivatedRoute,
     private router: Router,
-    private loadingBar: LoadingBarService
+    private loadingBar: LoadingBarService,
+    private localStorage: LocalStorageService
   ) {}
 
   public ngOnInit() {
-    this._horizontalChart =
-      window.localStorage.getItem('summoner_horizontal_chart') === 'true';
+    this._verticalChart = this.localStorage.verticalChart;
 
     this.route.params.subscribe((params) => {
       const summonerName = params.summonerName;
@@ -126,18 +127,18 @@ export class SummonerRouteComponent implements OnInit {
     this.router.navigate(['summoner', this.summoner.name, 'details']);
   }
 
-  public get horizontalChart(): boolean {
-    return this._horizontalChart;
+  public get verticalChart(): boolean {
+    return this._verticalChart;
   }
 
-  public set horizontalChart(v: boolean) {
-    console.log(v, this._horizontalChart);
-    if (v === this._horizontalChart) {
+  public set verticalChart(v: boolean) {
+    console.log(v, this._verticalChart);
+    if (v === this._verticalChart) {
       return;
     }
 
-    this._horizontalChart = v;
-    window.localStorage.setItem('summoner_horizontal_chart', v.toString());
+    this._verticalChart = v;
+    this.localStorage.verticalChart = v;
   }
 
   private mapbackgroundColor(r: StatsModel, opacity: number = 255) {

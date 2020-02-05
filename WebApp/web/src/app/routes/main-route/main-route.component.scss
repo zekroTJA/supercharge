@@ -20,3 +20,41 @@
     right: 0px;
   }
 }
+
+.recently {
+  position: absolute;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+
+  p {
+    margin: 0;
+  }
+
+  > div {
+    display: flex;
+    margin: 0;
+    padding: 16px;
+    cursor: pointer;
+    transition: all .25s ease;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.4);
+
+      > span {
+        opacity: .75;
+      }
+    }
+
+    > span {
+      padding: 2px 5px;
+      opacity: 0;
+      margin: auto 0 auto auto;
+      background-color: $c-error;
+      transition: all .25s ease;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}

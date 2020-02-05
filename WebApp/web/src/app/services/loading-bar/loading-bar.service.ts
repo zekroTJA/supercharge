@@ -34,7 +34,6 @@ export class LoadingBarService {
 
     this._activations = v;
 
-    console.log(this.activations);
     this._active = this.activations > 0;
   }
 }

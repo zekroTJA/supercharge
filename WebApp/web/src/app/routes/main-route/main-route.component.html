@@ -1,13 +1,23 @@
 <div class="flex">
-  <div class="summoner-search">
+  <div id=":summoner-search" class="summoner-search">
     <input
       #searchBar
       type="text"
       placeholder="Search for summoner on {{ state.server }}"
       (keydown.enter)="onSearch(searchBar.value)"
+      (click)="displaySuggestedSummoners = true"
     />
     <button class="accent" (click)="onSearch(searchBar.value)">
       <img src="assets/icons/search.svg"/>
     </button>
+    <div *ngIf="displaySuggestedSummoners" class="recently">
+      <div
+        *ngFor="let s of suggestedSummonerNames"
+        (click)="onSuggestionClick(s)"
+      >
+        <p>{{ s }}</p>
+        <span (click)="onSuggestionRemoveClick(s, $event)">x</span>
+      </div>
+    </div>
   </div>
 </div>
