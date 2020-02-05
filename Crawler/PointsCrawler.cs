@@ -8,6 +8,7 @@ using RiotAPIAccessLayer.Time;
 using System;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Crawler
@@ -19,6 +20,9 @@ namespace Crawler
         private readonly DatabaseAccess dal;
         private readonly ILogger<PointsCrawler> logger;
         private readonly Scheduler scheduler;
+
+        private readonly int maxRequestsPerSecond = 18;
+        private int requestCount = 0;
 
         public PointsCrawler(IConfiguration config, DatabaseAccess dal, RiotAPIWrapper wrapper, ILogger<PointsCrawler> logger)
         {
@@ -33,6 +37,8 @@ namespace Crawler
                 .Where(v => v.Value != null)
                 .Select(v => DateTime.Parse(v.Value))
                 .ToList();
+
+            maxRequestsPerSecond = config.GetValue<int>("Crawler:MaxRequestsPerSecond", maxRequestsPerSecond);
 
             scheduler = new Scheduler(TimeSpan.FromHours(23))
                 .DoAt(async () => await GetStats(addToLog: false), statusTimes)
@@ -55,6 +61,13 @@ namespace Crawler
         {
             try
             {
+                if (requestCount++ > maxRequestsPerSecond)
+                {
+                    logger.LogInformation("Max request coun exceed, waiting until continuing...");
+                    Thread.Sleep(1_000);
+                    requestCount = 0;
+                }
+
                 var resUser = await wrapper.GetSummonerByName(user.Server, user.Username);
                 user.SummonerId = resUser.Id;
                 logger.LogInformation($"Requested missing SummonerID of summoner '{user.Username}': ${user.SummonerId}");
@@ -83,6 +96,13 @@ namespace Crawler
 
             foreach (var user in users.Where(u => u.Watch))
             {
+                if (requestCount++ > maxRequestsPerSecond)
+                {
+                    logger.LogInformation("Max request coun exceed, waiting until continuing...");
+                    Thread.Sleep(1_000);
+                    requestCount = 0;
+                }
+
                 if (user.SummonerId == null)
                     await GetSummonerID(user);
 
