@@ -1,4 +1,4 @@
-﻿using RiotAPIAccessLayer.Exceptions;
+﻿using Shared.Exceptions;
 using System;
 using System.Linq;
 using System.Net;
