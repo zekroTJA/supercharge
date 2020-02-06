@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RiotAPIAccessLayer.Time
+namespace Shared.Time
 {
     public class TimeUtils
     {

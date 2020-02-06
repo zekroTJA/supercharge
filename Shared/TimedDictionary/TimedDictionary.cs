@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Timers;
 
-namespace RiotAPIAccessLayer.TimedDictionary
+namespace Shared.TimedDictionary
 {
     public class TimedMapValue<T>
     {
