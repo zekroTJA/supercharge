@@ -46,8 +46,16 @@
 table {
   border-collapse: collapse;
 
+  thead {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 22px;
+    text-align: center;
+    background-color: rgb(40, 40, 40);
+  }
+
   td {
-    border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+    border-bottom: solid 1px rgb(95, 95, 95);
     padding: 10px 10px;
   }
 
@@ -57,5 +65,14 @@ table {
 
   .val {
     text-align: right;
+  }
+}
+
+.info-tables {
+  display: flex;
+  flex-wrap: wrap;
+
+  > table {
+    margin-right: 40px;
   }
 }

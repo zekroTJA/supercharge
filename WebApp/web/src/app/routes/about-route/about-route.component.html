@@ -29,29 +29,56 @@
   </p>
   -->
 
-  <div *ngIf="status">
+  <div>
     <h1>Instance Information</h1>
 
-    <table>
-      <tbody>
-        <tr>
-          <td class="key">Registered Users:</td>
-          <td class="val">{{ status.counts.users }}</td>
-        </tr>
-        <tr>
-          <td class="key">Watching Users:</td>
-          <td class="val">{{ status.counts.usersWatching }}</td>
-        </tr>
-        <tr>
-          <td class="key">Collected Points Entries:</td>
-          <td class="val">{{ status.counts.points }}</td>
-        </tr>
-        <tr>
-          <td class="key">Collected Points Log Entries:</td>
-          <td class="val">{{ status.counts.pointsLog }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <div class="info-tables">
+      <table *ngIf="versions">
+        <thead><tr><td colspan="2">Assembly Versions</td></tr></thead>
+        <tbody>
+          <tr>
+            <td class="key">RestAPI:</td>
+            <td class="val">{{ versions.restApi }}</td>
+          </tr>
+          <tr>
+            <td class="key">DatabaseAccessLayer:</td>
+            <td class="val">{{ versions.databaseAccessLayer }}</td>
+          </tr>
+          <tr>
+            <td class="key">DataDragonAccessLayer:</td>
+            <td class="val">{{ versions.ddragonAccessLayer }}</td>
+          </tr>
+          <tr>
+            <td class="key">RiotAPIAccessLayer:</td>
+            <td class="val">{{ versions.riotApiAccessLayer }}</td>
+          </tr>
+          <tr>
+            <td class="key">Shared:</td>
+            <td class="val">{{ versions.shared }}</td>
+          </tr>
+        </tbody>
+      </table>
 
-</div>
+      <table *ngIf="counts">
+        <thead><tr><td colspan="2">Database Stats</td></tr></thead>
+        <tbody>
+          <tr>
+            <td class="key">Registered Users:</td>
+            <td class="val">{{ counts.users }}</td>
+          </tr>
+          <tr>
+            <td class="key">Watching Users:</td>
+            <td class="val">{{ counts.usersWatching }}</td>
+          </tr>
+          <tr>
+            <td class="key">Collected Points Entries:</td>
+            <td class="val">{{ counts.points }}</td>
+          </tr>
+          <tr>
+            <td class="key">Collected Points Log Entries:</td>
+            <td class="val">{{ counts.pointsLog }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

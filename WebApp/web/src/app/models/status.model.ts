@@ -1,10 +1,16 @@
-export interface CountsModel {
+/** @format */
+
+export interface StatusCountsModel {
   users: string;
   usersWatching: string;
   points: string;
   pointsLog: string;
 }
 
-export interface StatusModel {
-  counts: CountsModel;
+export interface StatusVersionsModel {
+  restApi: string;
+  databaseAccessLayer: string;
+  ddragonAccessLayer: string;
+  riotApiAccessLayer: string;
+  shared: string;
 }
