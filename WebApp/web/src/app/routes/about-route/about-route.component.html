@@ -20,14 +20,38 @@
         <p>View used stacks on stackshare</p>
       </a>
     </div>
+  </div>
 
-    <!--
-    Whoops.
-    <p>
-      Lorem Ipsum i like fluffy butts
-    </p>
-    -->
+  <!--
+  Whoops.
+  <p>
+    Lorem Ipsum i like fluffy butts
+  </p>
+  -->
 
+  <div *ngIf="status">
+    <h1>Instance Information</h1>
+
+    <table>
+      <tbody>
+        <tr>
+          <td class="key">Registered Users:</td>
+          <td class="val">{{ status.counts.users }}</td>
+        </tr>
+        <tr>
+          <td class="key">Watching Users:</td>
+          <td class="val">{{ status.counts.usersWatching }}</td>
+        </tr>
+        <tr>
+          <td class="key">Collected Points Entries:</td>
+          <td class="val">{{ status.counts.points }}</td>
+        </tr>
+        <tr>
+          <td class="key">Collected Points Log Entries:</td>
+          <td class="val">{{ status.counts.pointsLog }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
 </div>

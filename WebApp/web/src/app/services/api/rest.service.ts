@@ -14,6 +14,7 @@ import { catchError } from 'rxjs/operators';
 import { HistoryModel } from 'src/app/models/history.model';
 import { NotificationService } from '../notification/notification.service';
 import dateformat from 'dateformat';
+import { StatusModel } from 'src/app/models/status.model';
 
 const ROOT_URL = environment.production ? '/api' : 'https://localhost:5001';
 
@@ -132,6 +133,12 @@ export class RestAPIService implements IAPIService {
           params,
         }
       )
+      .pipe(catchError(this.errorCatcher));
+  }
+
+  public getStatus(): Observable<StatusModel> {
+    return this.http
+      .get<StatusModel>(`${ROOT_URL}/status`)
       .pipe(catchError(this.errorCatcher));
   }
 }

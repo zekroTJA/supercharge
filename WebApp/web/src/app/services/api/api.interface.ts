@@ -8,6 +8,7 @@ import { SummonerModel } from 'src/app/models/summoner.model';
 import { StatsModel } from 'src/app/models/stats.model';
 import { EventEmitter } from '@angular/core';
 import { HistoryModel } from 'src/app/models/history.model';
+import { StatusModel } from 'src/app/models/status.model';
 
 export interface IAPIService {
   error: EventEmitter<any>;
@@ -35,4 +36,6 @@ export interface IAPIService {
     from?: Date,
     to?: Date
   ): Observable<HistoryModel[]>;
+
+  getStatus(): Observable<StatusModel>;
 }
