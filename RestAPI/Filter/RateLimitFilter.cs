@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using RestAPI.Modules;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 
@@ -10,7 +11,7 @@ namespace RestAPI.Filter
     public class RateLimitFilter : ActionFilterAttribute
     {
 
-        private readonly Dictionary<IPAddress, RateLimiter> limiters;
+        private readonly ConcurrentDictionary<IPAddress, RateLimiter> limiters;
         private readonly TimeSpan limit;
         private readonly int burst;
 
@@ -18,7 +19,7 @@ namespace RestAPI.Filter
         {
             limit = TimeSpan.FromSeconds(limitSeconds);
             burst = _burst;
-            limiters = new Dictionary<IPAddress, RateLimiter>();
+            limiters = new ConcurrentDictionary<IPAddress, RateLimiter>();
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)

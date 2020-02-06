@@ -1,7 +1,10 @@
 ﻿using DatabaseAccessLayer;
+using DDragonAccessLayer;
 using Microsoft.AspNetCore.Mvc;
 using RestAPI.Filter;
 using RestAPI.Models;
+using RiotAPIAccessLayer;
+using Shared.Time;
 using System.Net.Mime;
 
 namespace RestAPI.Controllers
@@ -21,23 +24,38 @@ namespace RestAPI.Controllers
             this.dal = dal;
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         [RateLimitFilter(10, 2)]
-        public IActionResult Get()
+        public IActionResult Counts()
         {
-            var status = new StatusModel
+            var counts = new CountsModel
             {
-                Counts = new CountsModel
-                {
-                    Users = dal.GetUsersCount((_) => true).ToString(),
-                    UsersWatching = dal.GetUsersCount((u) => u.Watch).ToString(),
-                    Points = dal.GetPointsCount((_) => true).ToString(),
-                    PointsLog = dal.GetPointsLogCount((_) => true).ToString(),
-                }
+                Users = dal.GetUsersCount((_) => true).ToString(),
+                UsersWatching = dal.GetUsersCount((u) => u.Watch).ToString(),
+                Points = dal.GetPointsCount((_) => true).ToString(),
+                PointsLog = dal.GetPointsLogCount((_) => true).ToString(),
             };
 
-            return Ok(status);
+            return Ok(counts);
         }
 
+        [HttpGet("[action]")]
+        public IActionResult Versions()
+        {
+            var versions = new VersionsModel
+            {
+                RestAPI = GetVersion<Startup>(),
+                DatabaseAccessLayer = GetVersion<DatabaseAccess>(),
+                DDragonAccessLayer = GetVersion<DataDragonWrapper>(),
+                RiotAPIAccessLayer = GetVersion<RiotAPIWrapper>(),
+                Shared = GetVersion<TimeUtils>(),
+            };
+
+            return Ok(versions);
+        }
+
+
+        private string GetVersion<T>() =>
+            typeof(T).Assembly.GetName().Version.ToString();
     }
 }

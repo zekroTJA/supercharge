@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestAPI.Filter;
 using RestAPI.Models;
 using RiotAPIAccessLayer;
-using RiotAPIAccessLayer.Exceptions;
+using Shared.Exceptions;
 using RiotAPIAccessLayer.Models;
 using System;
 using System.Linq;
