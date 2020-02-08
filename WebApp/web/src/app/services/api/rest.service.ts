@@ -19,7 +19,7 @@ import {
   StatusVersionsModel,
 } from 'src/app/models/status.model';
 
-const ROOT_URL = environment.production ? '/api' : 'https://localhost:5001';
+const ROOT_URL = environment.production ? '/api' : 'http://localhost:5001';
 
 @Injectable({ providedIn: 'root' })
 export class RestAPIService implements IAPIService {
