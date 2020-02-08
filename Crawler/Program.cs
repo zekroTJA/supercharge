@@ -36,7 +36,7 @@ namespace Crawler
             logger.LogInformation("Crawler instance initialized and connected");
 
             var crawler = provider.GetService<PointsCrawler>();
-            crawler.StartLoop();
+            crawler.StartScheduler();
 
             while (true)
                 Thread.Sleep(int.MaxValue);
