@@ -71,7 +71,7 @@ jobs:
       uses: actions/checkout@v1
     - name: Build image
       run: |
-        docker build ./CLI \
+        docker build . \
           --file ./CLI/Dockerfile \
           --tag supercharge/cli:latest
     - name: Push image
