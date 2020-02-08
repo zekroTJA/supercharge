@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "summoner -P -s euw1 -n Bumsrakete --yeah-delete-all--collected-data-from-this-user"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

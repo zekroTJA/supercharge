@@ -36,6 +36,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebApp", "WebApp\", "{C3214
 		SlnRelativePath = "WebApp\"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI", "CLI\CLI.csproj", "{7174DBF0-7BB5-4944-8412-F70F6BB93778}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +72,10 @@ Global
 		{C32140E1-7DB5-4DB9-A7DC-D27943845F84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C32140E1-7DB5-4DB9-A7DC-D27943845F84}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{C32140E1-7DB5-4DB9-A7DC-D27943845F84}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{7174DBF0-7BB5-4944-8412-F70F6BB93778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7174DBF0-7BB5-4944-8412-F70F6BB93778}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7174DBF0-7BB5-4944-8412-F70F6BB93778}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7174DBF0-7BB5-4944-8412-F70F6BB93778}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

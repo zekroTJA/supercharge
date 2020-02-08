@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>zekro Developmenr</Authors>
+    <Company>zekro Developmenr</Company>
+    <Product>supercharge</Product>
+    <Copyright>(c) zekro Development 2020</Copyright>
+    <PackageId>CLI</PackageId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.7.82" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DatabaseAccessLayer\DatabaseAccessLayer.csproj" />
+    <ProjectReference Include="..\RiotAPIAccessLayer\RiotAPIAccessLayer.csproj" />
+  </ItemGroup>
+
+</Project>
