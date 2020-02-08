@@ -60,3 +60,21 @@ jobs:
       run: |
         docker login -u zekro -p ${{ secrets.DOCKER_PASSWORD }}
         docker push supercharge/webapp:latest
+        
+  build-cli:
+
+    runs-on: ubuntu-latest
+    name: Build CLI Image
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Build image
+      run: |
+        docker build ./CLI \
+          --file ./CLI/Dockerfile \
+          --tag supercharge/cli:latest
+    - name: Push image
+      run: |
+        docker login -u zekro -p ${{ secrets.DOCKER_PASSWORD }}
+        docker push supercharge/cli:latest
