@@ -26,6 +26,10 @@ This project is split up in seperate "microservices" and access layers for bette
 
 Every services is provided and deployed as docker image so that the whole server stack can be deployed with the provided docker-compose configuration.
 
+### [CLI](CLI)
+
+A .NET Core (3.1) administrator CLI interface for manage summoners, data collection and system health directly via console commands.
+
 ### [Crawler](Crawler)
 
 This .NET Core (3.1) console application crawls, depending on the registered accounts in the database, mastery point data of these users from the League of Legends API and saves them in the database.
