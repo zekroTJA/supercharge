@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RiotAPIAccessLayer;
-using System.IO;
+using Shared.Configuration;
 using System.Threading;
 
 namespace Crawler
@@ -12,12 +12,7 @@ namespace Crawler
     {
         static void Main(string[] args)
         {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true)
-                .AddEnvironmentVariables(prefix: "MPS_")
-                .Build();
-
+            var config = Configuration.ParseConfig();
 
             var provider = new ServiceCollection()
                 .AddSingleton<IConfiguration>(config)
