@@ -55,8 +55,6 @@ namespace RestAPI
                 });
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseAuthorization();
