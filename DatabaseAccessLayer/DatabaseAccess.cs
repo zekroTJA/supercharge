@@ -100,6 +100,21 @@ namespace DatabaseAccessLayer
         public long GetPointsLogCount(Func<PointsLogModel, bool> preticate) =>
             ctx.PointsLog.Where(preticate).LongCount();
 
+        public void DeletePoints(Guid fromUserId)
+        {
+            var elements = ctx.Points.Where(p => p.User.Id == fromUserId);
+            ctx.RemoveRange(elements);
+        }
+
+        public void DeletePointsLog(Guid fromUserId)
+        {
+            var elements = ctx.PointsLog.Where(p => p.User.Id == fromUserId);
+            ctx.RemoveRange(elements);
+        }
+
+        public void DeleteUser(UserModel user) =>
+            ctx.Remove(user);
+
         public void Update<T>(T d)
         {
             ctx.Update(d);
