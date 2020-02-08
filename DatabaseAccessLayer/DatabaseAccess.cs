@@ -42,21 +42,27 @@ namespace DatabaseAccessLayer
         }
 
         public async Task<ICollection<PointsViewModel>> GetPointsViewAsync(
-            Guid userId,
-            IEnumerable<int> championIds = null)
+            Guid userId = default,
+            IEnumerable<int> championIds = null,
+            int limit = int.MaxValue,
+            int skip = 0)
         {
             return await ctx.Points
-                .Where(p => p.User.Id == userId && ((championIds == null || championIds.Count() < 1) || championIds.Contains(p.ChampionId)))
+                .Where(p => (userId == default || p.User.Id == userId) && ((championIds == null || championIds.Count() < 1) || championIds.Contains(p.ChampionId)))
                 .OrderByDescending(p => p.ChampionPoints)
+                .Skip(skip)
+                .Take(limit)
                 .Select(p => new PointsViewModel(p))
                 .ToArrayAsync();
         }
 
         public async Task<ICollection<PointsLogModel>> GetPointsLogAsync(
-            Guid userId,
+            Guid userId = default,
             IEnumerable<int> championIds = null,
             DateTime from = default,
-            DateTime to = default)
+            DateTime to = default,
+            int limit = int.MaxValue,
+            int skip = 0)
         {
             if (from == default)
                 from = DateTime.Now.Subtract(TimeSpan.FromDays(30));
@@ -65,9 +71,11 @@ namespace DatabaseAccessLayer
                 to = DateTime.Now;
 
             return await ctx.PointsLog
-                .Where(p => p.User.Id == userId && ((championIds == null || championIds.Count() < 1) || championIds.Contains(p.ChampionId)))
+                .Where(p => (userId == default || p.User.Id == userId) && ((championIds == null || championIds.Count() < 1) || championIds.Contains(p.ChampionId)))
                 .Where(p => p.Timestamp >= from && p.Timestamp <= to)
                 .OrderByDescending(p => p.Timestamp)
+                .Skip(skip)
+                .Take(limit)
                 .ToArrayAsync();
         }
 
