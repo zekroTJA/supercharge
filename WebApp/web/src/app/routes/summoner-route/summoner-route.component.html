@@ -15,7 +15,6 @@
       <p *ngIf="summoner.registered && summoner.watch" class="badge success">WATCHING</p>
       <p *ngIf="summoner.registered && !summoner.watch" class="badge info">NOT WATCHING</p>
       <p *ngIf="!summoner.registered" class="badge">NOT REGISTERED</p>
-      <p *ngIf="!summoner.registered" class="badge">NOT REGISTERED</p>
     </div>
     <div class="control">
       <button *ngIf="summoner.registered" (click)="onDetailedClick()">► DETAILED STATISTICS</button>
