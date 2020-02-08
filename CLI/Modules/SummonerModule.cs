@@ -11,15 +11,6 @@ namespace CLI.Modules
     [Verb("summoner", HelpText = "Manage summoners")]
     public class SummonerModuleOptions
     {
-        //[Value(2, Required = true, HelpText = "Action [info, watch, unwatch, prune]")]
-        //public string Action { get; set; }
-
-        //[Value(3, Required = true, HelpText = "server")]
-        //public string Server { get; set; }
-
-        //[Value(4, Required = true, HelpText = "summoner name")]
-        //public string SummonerName { get; set; }
-
         [Option('I', "info", Group = "action", HelpText = "show summoenr info")]
         public bool ActionInfo { get; set; }
 
@@ -38,7 +29,7 @@ namespace CLI.Modules
         [Option('n', "name", Required = true, Group = "summoner specification", HelpText = "summoner name")]
         public string SummonerName { get; set; }
 
-        [Option("yeah-delete-all--collected-data-from-this-user", Required = false, Hidden = true)]
+        [Option("yeah-delete-all-collected-data-from-this-user", Required = false, Hidden = true)]
         public bool SurelyPrune { get; set; }
     }
 
@@ -57,7 +48,7 @@ namespace CLI.Modules
 
         public int Exec(SummonerModuleOptions opts)
         {
-            var summoner = GetSummoner(opts).Result;
+            var summoner = Shared.GetSummoner(opts.Server, opts.SummonerName, riotApi, logger).Result;
             if (summoner == null)
                 return 1;
 
@@ -78,7 +69,7 @@ namespace CLI.Modules
 
         private int Info(UserModel summoner)
         {
-            var summonerDb = GetDbSummoner(summoner.Id).Result;
+            var summonerDb = Shared.GetDbSummoner(summoner.Id, dal).Result;
 
             var info = "\n" +
                     $"Summoner Id:     {summoner.Id}\n" +
@@ -103,7 +94,7 @@ namespace CLI.Modules
 
         private int Watch(UserModel summoner, string server)
         {
-            var summonerDb = GetDbSummoner(summoner.Id).Result;
+            var summonerDb = Shared.GetDbSummoner(summoner.Id, dal).Result;
 
             if (summonerDb != null)
             {
@@ -128,14 +119,14 @@ namespace CLI.Modules
                 dal.Add(summonerDb);
             }
 
-            CommitDatabaseChanges().Wait();
+            Shared.CommitDatabaseChanges(dal, logger).Wait();
 
             return 0;
         }
 
         private int Unwatch(UserModel summoner)
         {
-            var summonerDb = GetDbSummoner(summoner.Id).Result;
+            var summonerDb = Shared.GetDbSummoner(summoner.Id, dal).Result;
 
             if (summonerDb == null)
             {
@@ -152,7 +143,7 @@ namespace CLI.Modules
             summonerDb.Watch = false;
             dal.Update(summonerDb);
 
-            CommitDatabaseChanges().Wait();
+            Shared.CommitDatabaseChanges(dal, logger).Wait();
 
             return 0;
         }
@@ -166,13 +157,13 @@ namespace CLI.Modules
                     "!!! ATTENTION !!!\n" +
                     "THIS ACTION WILL DELETE ALL COLLECTED DATA CORRESPONDING TO " +
                     "THE SPECIFIED USER AND THIS CAN NOT BE UNDONE!\n\n" +
-                    "Re-execute this command with the flag '--yeah-delete-all--collected-data-from-this-user' " +
+                    "Re-execute this command with the flag '--yeah-delete-all-collected-data-from-this-user' " +
                     "if you are sure to perform this command."
                 );
                 return 0;
             }
 
-            var summonerDb = GetDbSummoner(summoner.Id).Result;
+            var summonerDb = Shared.GetDbSummoner(summoner.Id, dal).Result;
 
             if (summonerDb == null)
             {
@@ -184,36 +175,9 @@ namespace CLI.Modules
             dal.DeletePoints(summonerDb.Id);
             dal.DeleteUser(summonerDb);
 
-            CommitDatabaseChanges().Wait();
+            Shared.CommitDatabaseChanges(dal, logger).Wait();
 
             return 0;
-        }
-
-        #endregion
-
-        #region helpers
-
-        private async Task<UserModel> GetSummoner(SummonerModuleOptions opts)
-        {
-            try
-            {
-                return await riotApi.GetSummonerByName(opts.Server, opts.SummonerName);
-            }
-            catch (Exception e)
-            {
-                logger.LogError($"Failed getting summoner: {e}");
-            }
-
-            return null;
-        }
-
-        private async Task<DatabaseAccessLayer.Models.UserModel> GetDbSummoner(string id) =>
-            await dal.GetUserBySummonerIdAsync(id);
-
-        private async Task CommitDatabaseChanges()
-        {
-            logger.LogInformation("Committing changes to database...");
-            await dal.CommitChangesAsync();
         }
 
         #endregion

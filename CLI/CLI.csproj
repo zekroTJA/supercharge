@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Crawler\Crawler.csproj" />
     <ProjectReference Include="..\DatabaseAccessLayer\DatabaseAccessLayer.csproj" />
     <ProjectReference Include="..\RiotAPIAccessLayer\RiotAPIAccessLayer.csproj" />
   </ItemGroup>

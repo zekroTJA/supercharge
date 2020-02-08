@@ -1,11 +1,12 @@
 ﻿using CLI.Modules;
 using CommandLine;
+using Crawler;
 using DatabaseAccessLayer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using RiotAPIAccessLayer;
 using Shared.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace CLI
 {
@@ -21,6 +22,8 @@ namespace CLI
                 .AddSingleton<DatabaseAccess>()
                 .AddSingleton<RiotAPIWrapper>()
                 .AddTransient<SummonerModule>()
+                .AddTransient<PointsModule>()
+                .AddTransient<PointsCrawler>()
                 .AddLogging(opt =>
                 {
                     opt
@@ -29,9 +32,10 @@ namespace CLI
                 })
                 .BuildServiceProvider();
 
-            CommandLine.Parser.Default.ParseArguments<SummonerModuleOptions>(args)
+            Parser.Default.ParseArguments<SummonerModuleOptions, PointsModuleOptions>(args)
                 .MapResult(
                     (SummonerModuleOptions opts) => provider.GetService<SummonerModule>().Exec(opts),
+                    (PointsModuleOptions opts) => provider.GetService<PointsModule>().Exec(opts),
                     errs => 1
                 );
 
