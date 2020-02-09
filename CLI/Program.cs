@@ -23,6 +23,7 @@ namespace CLI
                 .AddSingleton<RiotAPIWrapper>()
                 .AddTransient<SummonerModule>()
                 .AddTransient<PointsModule>()
+                .AddTransient<PointsLogModule>()
                 .AddTransient<PointsCrawler>()
                 .AddLogging(opt =>
                 {
@@ -32,10 +33,11 @@ namespace CLI
                 })
                 .BuildServiceProvider();
 
-            Parser.Default.ParseArguments<SummonerModuleOptions, PointsModuleOptions>(args)
+            Parser.Default.ParseArguments<SummonerModuleOptions, PointsModuleOptions, PointsLogModuleOptions>(args)
                 .MapResult(
                     (SummonerModuleOptions opts) => provider.GetService<SummonerModule>().Exec(opts),
                     (PointsModuleOptions opts) => provider.GetService<PointsModule>().Exec(opts),
+                    (PointsLogModuleOptions opts) => provider.GetService<PointsLogModule>().Exec(opts),
                     errs => 1
                 );
 

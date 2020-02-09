@@ -2,7 +2,8 @@
   "profiles": {
     "CLI": {
       "commandName": "Project",
-      "commandLineArgs": "points -F -s euw1 -n zêkrô",
+      "commandLineArgs": "log -F",
+      "workingDirectory": "E:\\dev\\supercharge\\RestAPI",
       "nativeDebugging": false
     },
     "Docker": {

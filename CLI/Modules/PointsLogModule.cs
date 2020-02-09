@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace CLI.Modules
 {
-    [Verb("points", HelpText = "Manage mastery points")]
-    class PointsModuleOptions
+    [Verb("log", HelpText = "Manage mastery points log")]
+    class PointsLogModuleOptions
     {
-        [Option('I', "info", Group = "action", HelpText = "show points info")]
+        [Option('I', "info", Group = "action", HelpText = "show points log info")]
         public bool ActionInfo { get; set; }
 
         [Option('F', "fetch", Group = "action", HelpText = "fetch data from Riot API and save to DB")]
@@ -24,14 +24,14 @@ namespace CLI.Modules
         public string SummonerName { get; set; }
     }
 
-    class PointsModule
+    class PointsLogModule
     {
         private readonly RiotAPIWrapper riotApi;
         private readonly DatabaseAccess dal;
         private readonly PointsCrawler crawler;
-        private readonly ILogger<PointsModule> logger;
+        private readonly ILogger<PointsLogModule> logger;
 
-        public PointsModule(RiotAPIWrapper riotApi, DatabaseAccess dal, PointsCrawler crawler, ILogger<PointsModule> logger)
+        public PointsLogModule(RiotAPIWrapper riotApi, DatabaseAccess dal, PointsCrawler crawler, ILogger<PointsLogModule> logger)
         {
             this.riotApi = riotApi;
             this.dal = dal;
@@ -39,7 +39,7 @@ namespace CLI.Modules
             this.logger = logger;
         }
 
-        public int Exec(PointsModuleOptions opts)
+        public int Exec(PointsLogModuleOptions opts)
         {
             if (opts.ActionInfo)
                 return Info(opts).Result;
@@ -53,7 +53,7 @@ namespace CLI.Modules
 
         #region actions
 
-        private async Task<int> Info(PointsModuleOptions opts)
+        private async Task<int> Info(PointsLogModuleOptions opts)
         {
             if (opts.Server != null && opts.SummonerName != null)
             {
@@ -63,7 +63,7 @@ namespace CLI.Modules
 
                 var summonerDb = await Shared.GetDbSummoner(summoner.Id, dal);
 
-                var entries = await dal.GetPointsViewAsync(summonerDb?.Id ?? default);
+                var entries = await dal.GetPointsLogViewAsync(summonerDb?.Id ?? default);
                 var count = entries?.Count ?? 0;
                 var lastEntry = entries?.ToArray()[0];
 
@@ -71,25 +71,25 @@ namespace CLI.Modules
                     "\n" +
                     $"For summoner '{summoner.Name}' ({summonerDb.Id}):\n\n" +
                     $"Data count:   {count}\n" +
-                    $"Last entry:   {(lastEntry == null ? "[nothing collected yet]" : lastEntry.Updated.ToString())}"
+                    $"Last entry:   {(lastEntry == null ? "[nothing collected yet]" : lastEntry.Timestamp.ToString())}"
                 );
-            } 
+            }
             else
             {
-                var count = dal.GetPointsCount((_) => true);
-                var lastEntry = (await dal.GetPointsViewAsync(default, null, 1, 0)).ToArray();
+                var count = dal.GetPointsLogCount((_) => true);
+                var lastEntry = (await dal.GetPointsLogViewAsync(default, null, default, default, 1, 0)).ToArray();
 
                 logger.LogInformation(
                     "\n" +
                     $"Data count:   {count}\n" +
-                    $"Last entry:   {(lastEntry.Length < 1 ? "[nothing collected yet]" : lastEntry[0].Updated.ToString())}"
+                    $"Last entry:   {(lastEntry.Length < 1 ? "[nothing collected yet]" : lastEntry[0].Timestamp.ToString())}"
                 );
             }
 
             return 0;
         }
 
-        private async Task<int> Fetch(PointsModuleOptions opts)
+        private async Task<int> Fetch(PointsLogModuleOptions opts)
         {
             if (opts.Server != null && opts.SummonerName != null)
             {
@@ -105,13 +105,13 @@ namespace CLI.Modules
                     return 1;
                 }
 
-                await crawler.GetUserStats(summonerDb, addToLog: false);
+                await crawler.GetUserStats(summonerDb, addToLog: true);
             }
             else
             {
-                logger.LogInformation("Fetching points for all watching users...");
+                logger.LogInformation("Fetching points log for all watching users...");
                 logger.LogInformation("Depending on the watching user account, this can take a while...");
-                await crawler.GetStats(addToLog: false);
+                await crawler.GetStats(addToLog: true);
             }
 
             return 0;
@@ -120,3 +120,4 @@ namespace CLI.Modules
         #endregion
     }
 }
+
