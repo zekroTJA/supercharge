@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"path": "CLI"
+		},
+		{
+			"path": "Crawler"
+		},
+		{
+			"path": "DatabaseAccessLayer"
+		},
+		{
+			"path": "DDragonAccessLayer"
+		},
+		{
+			"path": "RestAPI"
+		},
+		{
+			"path": "RiotAPIAccessLayer"
+		},
+		{
+			"path": "Shared"
+		},
+		{
+			"path": "WebApp"
+		}
+	],
+	"settings": {}
+}
