@@ -2,10 +2,10 @@
 
 import { Component, OnInit, Inject } from '@angular/core';
 import { IAPIService } from 'src/app/services/api/api.interface';
-import { StateService } from 'src/app/services/state/state.service';
+import { StateService } from 'src/app/services/state.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CodeModel } from 'src/app/models/code.model';
-import { NotificationService } from 'src/app/services/notification/notification.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-confirm-route',

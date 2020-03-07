@@ -8,7 +8,7 @@ import {
   ElementRef,
 } from '@angular/core';
 import { IAPIService } from 'src/app/services/api/api.interface';
-import { StateService } from 'src/app/services/state/state.service';
+import { StateService } from 'src/app/services/state.service';
 import { ActivatedRoute } from '@angular/router';
 import { SummonerModel } from 'src/app/models/summoner.model';
 import { ChartOptions, ChartDataSets } from 'chart.js';
@@ -16,8 +16,8 @@ import { Label } from 'ng2-charts';
 import { StatsModel } from 'src/app/models/stats.model';
 import { ChampionModel } from 'src/app/models/champion.model';
 import dateformat from 'dateformat';
-import { NotificationService } from 'src/app/services/notification/notification.service';
-import { LoadingBarService } from 'src/app/services/loading-bar/loading-bar.service';
+import { NotificationService } from 'src/app/services/notification.service';
+import { LoadingBarService } from 'src/app/services/loading-bar.service';
 
 @Component({
   selector: 'app-details-route',

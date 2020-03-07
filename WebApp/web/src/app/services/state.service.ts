@@ -1,11 +1,11 @@
 /** @format */
 
 import { Injectable, Inject, EventEmitter } from '@angular/core';
-import { IAPIService } from '../api/api.interface';
+import { IAPIService } from './api/api.interface';
 import { VersionModel } from 'src/app/models/version.model';
 import { ChampionModel } from 'src/app/models/champion.model';
 import { SummonerModel } from 'src/app/models/summoner.model';
-import { LocalStorageService } from '../local-storage/local-storage.service';
+import { LocalStorageService } from './local-storage.service';
 
 const DEFAULT_SERVER = 'EUW1';
 

@@ -12,7 +12,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
 import { HistoryModel } from 'src/app/models/history.model';
-import { NotificationService } from '../notification/notification.service';
+import { NotificationService } from '../notification.service';
 import dateformat from 'dateformat';
 import {
   StatusCountsModel,

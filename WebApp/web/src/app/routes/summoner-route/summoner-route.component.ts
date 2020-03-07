@@ -4,13 +4,13 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { IAPIService } from 'src/app/services/api/api.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SummonerModel } from 'src/app/models/summoner.model';
-import { StateService } from 'src/app/services/state/state.service';
+import { StateService } from 'src/app/services/state.service';
 import { ChartOptions, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { StatsModel } from 'src/app/models/stats.model';
 import { GRAPH_COLORS } from 'src/app/const/const';
-import { LoadingBarService } from 'src/app/services/loading-bar/loading-bar.service';
-import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
+import { LoadingBarService } from 'src/app/services/loading-bar.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Component({
   selector: 'app-summoner-route',

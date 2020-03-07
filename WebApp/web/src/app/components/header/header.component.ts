@@ -1,7 +1,7 @@
 /** @format */
 
 import { Component, OnInit } from '@angular/core';
-import { StateService } from 'src/app/services/state/state.service';
+import { StateService } from 'src/app/services/state.service';
 import { Router } from '@angular/router';
 
 @Component({

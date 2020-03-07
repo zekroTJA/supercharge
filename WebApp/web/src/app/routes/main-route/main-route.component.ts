@@ -1,12 +1,12 @@
 /** @format */
 
 import { Component, Inject, OnInit } from '@angular/core';
-import { StateService } from 'src/app/services/state/state.service';
+import { StateService } from 'src/app/services/state.service';
 import { IAPIService } from 'src/app/services/api/api.interface';
-import { NotificationService } from 'src/app/services/notification/notification.service';
+import { NotificationService } from 'src/app/services/notification.service';
 import { Router } from '@angular/router';
-import { LoadingBarService } from 'src/app/services/loading-bar/loading-bar.service';
-import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
+import { LoadingBarService } from 'src/app/services/loading-bar.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Component({
   selector: 'app-main-route',
