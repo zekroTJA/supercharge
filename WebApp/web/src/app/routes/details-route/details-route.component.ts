@@ -42,6 +42,11 @@ export class DetailsRouteComponent implements OnInit {
 
   public barChartOptions: ChartOptions = {
     responsive: true,
+    elements: {
+      line: {
+        tension: 0,
+      },
+    },
     legend: {
       display: true,
     },
