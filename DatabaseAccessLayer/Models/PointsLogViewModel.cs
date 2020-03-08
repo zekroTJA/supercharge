@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace DatabaseAccessLayer.Models
@@ -18,6 +17,10 @@ namespace DatabaseAccessLayer.Models
 
         [JsonPropertyName("timestamp")]
         public DateTime Timestamp { get; set; }
+
+        [JsonPropertyName("predicted")]
+        [NotMapped]
+        public bool Predicted { get; set; }
 
 
         public PointsLogViewModel()
