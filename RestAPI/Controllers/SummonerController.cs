@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using RestAPI.Modules;
 
 namespace RestAPI.Controllers
 {
@@ -105,6 +106,11 @@ namespace RestAPI.Controllers
                 .Select(n => rx.IsMatch(n) ? int.Parse(n) : ddragon.GetChampionByName(n));
 
             var history = await dal.GetPointsLogViewAsync(user.Id, championIds, from, to);
+
+            if (to > DateTime.Now)
+            {
+                history = new HistoryPrediction(history).Predict(to - DateTime.Now);
+            }
 
             return Ok(history);
         }
