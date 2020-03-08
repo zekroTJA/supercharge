@@ -149,39 +149,30 @@ export class DetailsRouteComponent implements OnInit {
           )
         );
 
-        this.barChartData = this.barChartData.concat(
-          Array.from(champs).map(
-            (cid) =>
-              ({
-                data: history
-                  .filter((h) => h.championId === cid && h.predicted)
-                  .map((h) => ({
-                    x: new Date(h.timestamp),
-                    y: h.championPoints,
-                  })),
-                label:
-                  this.state.championsMap[cid].name +
-                  (this.comparing ? ` (${this.summonerName})` : ''),
-                fill: false,
-                pointRadius: 1,
-                borderWidth: 3,
-                borderDash: [0, 6],
-                borderColor: '#ccc',
-                borderCapStyle: 'round',
-              } as ChartDataSets)
-          )
-        );
-
-        // this.barChartData = this.barChartData.concat({
-        //   data: PRED,
-        //   fill: false,
-        //   pointRadius: 0,
-        //   borderWidth: 3,
-        //   borderDash: [0, 6],
-        //   borderColor: '#ccc',
-        //   borderCapStyle: 'round',
-        //   label: 'Kindred',
-        // });
+        if (history.find((h) => h.predicted)) {
+          this.barChartData = this.barChartData.concat(
+            Array.from(champs).map(
+              (cid) =>
+                ({
+                  data: history
+                    .filter((h) => h.championId === cid && h.predicted)
+                    .map((h) => ({
+                      x: new Date(h.timestamp),
+                      y: h.championPoints,
+                    })),
+                  label:
+                    this.state.championsMap[cid].name +
+                    (this.comparing ? ` (${this.summonerName})` : ''),
+                  fill: false,
+                  pointRadius: 1,
+                  borderWidth: 3,
+                  borderDash: [0, 6],
+                  borderColor: '#ccc',
+                  borderCapStyle: 'round',
+                } as ChartDataSets)
+            )
+          );
+        }
 
         this.loadingBar.deactivate();
       });
