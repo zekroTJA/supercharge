@@ -12,7 +12,7 @@ namespace DatabaseAccessLayer
         public DbSet<PointsModel> Points { get; private set; }
         public DbSet<PointsLogModel> PointsLog { get; private set; }
 
-        public DatabaseContext(IConfiguration config) 
+        public DatabaseContext(IConfiguration config)
         {
             this.config = config;
 
@@ -22,13 +22,17 @@ namespace DatabaseAccessLayer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-#if DEBUG
-            var connectionString = config.GetConnectionString("mysql");
-            optionsBuilder.UseMySql(connectionString);
-#else
             var connectionString = config.GetConnectionString("postgres");
             optionsBuilder.UseNpgsql(connectionString);
-#endif
+
+            if (connectionString == null || connectionString == "")
+            {
+                connectionString = config.GetConnectionString("mysql");
+                optionsBuilder.UseMySql(connectionString);
+            }
+
+
+
             base.OnConfiguring(optionsBuilder);
         }
     }
