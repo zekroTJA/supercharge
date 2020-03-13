@@ -200,7 +200,7 @@ export class DetailsRouteComponent implements OnInit {
               (cid) =>
                 ({
                   data: historyComp
-                    .filter((h) => h.championId === cid)
+                    .filter((h) => h.championId === cid && !h.predicted)
                     .map((h) => ({
                       x: new Date(h.timestamp),
                       y: h.championPoints,
@@ -211,6 +211,33 @@ export class DetailsRouteComponent implements OnInit {
                 } as ChartDataSets)
             )
           );
+
+          if (historyComp.find((h) => h.predicted)) {
+            this.barChartData = this.barChartData.concat(
+              Array.from(champs).map(
+                (cid) =>
+                  ({
+                    data: historyComp
+                      .filter((h) => h.championId === cid && h.predicted)
+                      .map((h) => ({
+                        x: new Date(h.timestamp),
+                        y: h.championPoints,
+                      })),
+                    label:
+                      this.state.championsMap[cid].name +
+                      (this.comparing
+                        ? ` (${this.summonerComparing.name})`
+                        : ''),
+                    fill: false,
+                    pointRadius: 1,
+                    borderWidth: 3,
+                    borderDash: [0, 6],
+                    borderColor: '#ccc',
+                    borderCapStyle: 'round',
+                  } as ChartDataSets)
+              )
+            );
+          }
 
           this.loadingBar.deactivate();
         });
