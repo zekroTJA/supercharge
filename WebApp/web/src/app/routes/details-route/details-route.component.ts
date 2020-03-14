@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { IAPIService } from 'src/app/services/api/api.interface';
 import { StateService } from 'src/app/services/state.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, Params, UrlSerializer } from '@angular/router';
 import { SummonerModel } from 'src/app/models/summoner.model';
 import { ChartOptions, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
@@ -18,6 +18,7 @@ import { ChampionModel } from 'src/app/models/champion.model';
 import dateformat from 'dateformat';
 import { NotificationService } from 'src/app/services/notification.service';
 import { LoadingBarService } from 'src/app/services/loading-bar.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-details-route',
@@ -70,7 +71,10 @@ export class DetailsRouteComponent implements OnInit {
   constructor(
     @Inject('APIService') private api: IAPIService,
     public state: StateService,
+    private router: Router,
     private route: ActivatedRoute,
+    private location: Location,
+    private urlSerializer: UrlSerializer,
     private notifications: NotificationService,
     private loadingBar: LoadingBarService
   ) {}
@@ -80,31 +84,39 @@ export class DetailsRouteComponent implements OnInit {
       this.summonerName = params.summonerName;
       this.summoner = this.state.currentSummoner;
 
-      this.inputFrom.nativeElement.value = dateformat(
-        this.dateFrom,
-        'yyyy-mm-dd'
-      );
-      this.inputTo.nativeElement.value = dateformat(this.dateTo, 'yyyy-mm-dd');
+      this.route.queryParams.subscribe((queryParams) => {
+        this.fromQueryParams(queryParams);
 
-      this.loadingBar.activate();
-      this.api
-        .getSummonerStats(this.state.server, this.summonerName)
-        .subscribe((stats) => {
-          this.stats = stats;
-          this.renderChart();
-          this.loadingBar.deactivate();
-        });
+        this.inputFrom.nativeElement.value = dateformat(
+          this.dateFrom,
+          'yyyy-mm-dd'
+        );
 
-      if (!this.summoner || this.summoner.name !== this.summonerName) {
+        this.inputTo.nativeElement.value = dateformat(
+          this.dateTo,
+          'yyyy-mm-dd'
+        );
+
         this.loadingBar.activate();
         this.api
-          .getSummoner(this.state.server, params.summonerName)
-          .subscribe((summoner) => {
-            this.summoner = summoner;
-            this.state.currentSummoner = summoner;
+          .getSummonerStats(this.state.server, this.summonerName)
+          .subscribe((stats) => {
+            this.stats = stats;
+            this.renderChart();
             this.loadingBar.deactivate();
           });
-      }
+
+        if (!this.summoner || this.summoner.name !== this.summonerName) {
+          this.loadingBar.activate();
+          this.api
+            .getSummoner(this.state.server, params.summonerName)
+            .subscribe((summoner) => {
+              this.summoner = summoner;
+              this.state.currentSummoner = summoner;
+              this.loadingBar.deactivate();
+            });
+        }
+      });
     });
   }
 
@@ -114,6 +126,7 @@ export class DetailsRouteComponent implements OnInit {
         .slice(0, 3)
         .map((s) => this.state.championsMap[s.championId]);
     }
+    this.setQueryParams();
     this.fetchHistory();
   }
 
@@ -275,7 +288,6 @@ export class DetailsRouteComponent implements OnInit {
       this.summonerComparing = null;
       return;
     }
-    console.log('TEST');
     this.api
       .getSummoner(this.state.server, v)
       .toPromise()
@@ -305,6 +317,7 @@ export class DetailsRouteComponent implements OnInit {
               this.state.championsMap[stats[0].championId],
             ];
 
+            console.log('test', this.summonerComparing);
             this.renderChart();
           });
       })
@@ -317,5 +330,61 @@ export class DetailsRouteComponent implements OnInit {
 
   public onSelectedComparisonChange() {
     this.renderChart();
+  }
+
+  private setQueryParams() {
+    const queryParams = {
+      from: dateformat(this.dateFrom, 'yyyy-mm-dd'),
+      to: dateformat(this.dateTo, 'yyyy-mm-dd'),
+      champions: this.selectedChampions.map((c) => c.key).join(','),
+      compare: null,
+      compareChampions: null,
+    };
+
+    if (this.summonerComparing) {
+      queryParams.compare = this.summonerComparing.name;
+    }
+
+    if (this.selectedChampionsComparage) {
+      queryParams.compareChampions = this.selectedChampionsComparage
+        .map((c) => c.key)
+        .join(',');
+    }
+
+    const urlTree = this.router.createUrlTree([], { queryParams });
+    this.location.go(this.urlSerializer.serialize(urlTree));
+  }
+
+  private fromQueryParams(queryParams: Params) {
+    if (!this.state.isInitialized) {
+      this.state.initialized.subscribe(() => this.fromQueryParams(queryParams));
+      return;
+    }
+
+    if (queryParams.from) {
+      this.dateFrom = new Date(queryParams.from);
+    }
+
+    if (queryParams.to) {
+      this.dateTo = new Date(queryParams.to);
+    }
+
+    if (queryParams.champions) {
+      this.selectedChampions = queryParams.champions
+        .split(',')
+        .map((id: string) => this.state.championsMap[parseInt(id, 10)]);
+    }
+
+    if (queryParams.compareChampions) {
+      this.selectedChampionsComparage = queryParams.compareChampions
+        .split(',')
+        .map((id: string) => this.state.championsMap[parseInt(id, 10)]);
+      console.log(this.selectedChampionsComparage);
+    }
+
+    if (queryParams.compare) {
+      this.comparing = true;
+      this.onCompareSummonerChange(queryParams.compare);
+    }
   }
 }
