@@ -112,6 +112,13 @@ namespace RestAPI.Controllers
                 history = new HistoryPrediction(history).Predict(to - DateTime.Now);
             }
 
+            var splitter = (to - from).Days / (30 * 4);
+
+            if (splitter > 1)
+            {
+                history = history.Where((_, i) => i % splitter == 0).ToList();
+            }
+
             return Ok(history);
         }
     }
