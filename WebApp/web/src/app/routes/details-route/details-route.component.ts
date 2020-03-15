@@ -19,6 +19,7 @@ import dateformat from 'dateformat';
 import { NotificationService } from 'src/app/services/notification.service';
 import { LoadingBarService } from 'src/app/services/loading-bar.service';
 import { Location } from '@angular/common';
+import { Timeout } from 'src/app/shared/timeout';
 
 @Component({
   selector: 'app-details-route',
@@ -68,6 +69,8 @@ export class DetailsRouteComponent implements OnInit {
   public lastUpdated: Date;
   public isData: boolean;
 
+  private requestTimeout = new Timeout(250);
+
   constructor(
     @Inject('APIService') private api: IAPIService,
     public state: StateService,
@@ -85,37 +88,37 @@ export class DetailsRouteComponent implements OnInit {
       this.summoner = this.state.currentSummoner;
 
       this.route.queryParams.subscribe((queryParams) => {
-        this.fromQueryParams(queryParams);
+        this.fromQueryParams(queryParams, () => {
+          this.inputFrom.nativeElement.value = dateformat(
+            this.dateFrom,
+            'yyyy-mm-dd'
+          );
 
-        this.inputFrom.nativeElement.value = dateformat(
-          this.dateFrom,
-          'yyyy-mm-dd'
-        );
+          this.inputTo.nativeElement.value = dateformat(
+            this.dateTo,
+            'yyyy-mm-dd'
+          );
 
-        this.inputTo.nativeElement.value = dateformat(
-          this.dateTo,
-          'yyyy-mm-dd'
-        );
-
-        this.loadingBar.activate();
-        this.api
-          .getSummonerStats(this.state.server, this.summonerName)
-          .subscribe((stats) => {
-            this.stats = stats;
-            this.renderChart();
-            this.loadingBar.deactivate();
-          });
-
-        if (!this.summoner || this.summoner.name !== this.summonerName) {
           this.loadingBar.activate();
           this.api
-            .getSummoner(this.state.server, params.summonerName)
-            .subscribe((summoner) => {
-              this.summoner = summoner;
-              this.state.currentSummoner = summoner;
+            .getSummonerStats(this.state.server, this.summonerName)
+            .subscribe((stats) => {
+              this.stats = stats;
+              this.renderChart();
               this.loadingBar.deactivate();
             });
-        }
+
+          if (!this.summoner || this.summoner.name !== this.summonerName) {
+            this.loadingBar.activate();
+            this.api
+              .getSummoner(this.state.server, params.summonerName)
+              .subscribe((summoner) => {
+                this.summoner = summoner;
+                this.state.currentSummoner = summoner;
+                this.loadingBar.deactivate();
+              });
+          }
+        });
       });
     });
   }
@@ -270,13 +273,17 @@ export class DetailsRouteComponent implements OnInit {
   }
 
   public onSelectedChange() {
-    this.renderChart();
+    this.requestTimeout.schedule(() => {
+      this.renderChart();
+    });
   }
 
   public onDateChange(from: Date, to: Date) {
     this.dateFrom = new Date(from);
     this.dateTo = new Date(to);
-    this.renderChart();
+    this.requestTimeout.schedule(() => {
+      this.renderChart();
+    });
   }
 
   public onCompareClick() {
@@ -329,7 +336,9 @@ export class DetailsRouteComponent implements OnInit {
   }
 
   public onSelectedComparisonChange() {
-    this.renderChart();
+    this.requestTimeout.schedule(() => {
+      this.renderChart();
+    });
   }
 
   private setQueryParams() {
@@ -355,9 +364,11 @@ export class DetailsRouteComponent implements OnInit {
     this.location.go(this.urlSerializer.serialize(urlTree));
   }
 
-  private fromQueryParams(queryParams: Params) {
+  private fromQueryParams(queryParams: Params, cb: () => void = () => {}) {
     if (!this.state.isInitialized) {
-      this.state.initialized.subscribe(() => this.fromQueryParams(queryParams));
+      this.state.initialized.subscribe(() =>
+        this.fromQueryParams(queryParams, cb)
+      );
       return;
     }
 
@@ -386,5 +397,7 @@ export class DetailsRouteComponent implements OnInit {
       this.comparing = true;
       this.onCompareSummonerChange(queryParams.compare);
     }
+
+    cb();
   }
 }
