@@ -38,7 +38,7 @@ namespace RestAPI.Modules
                          (p2.Timestamp - p1.Timestamp).Days;
 
             var date = p2.Timestamp;
-            var until = date.Add(duration).AddDays(2);
+            var until = date.Add(duration).AddDays(1);
             var points = p2.ChampionPoints;
 
             while (until >= date)
