@@ -18,6 +18,7 @@ import {
   StatusCountsModel,
   StatusVersionsModel,
 } from 'src/app/models/status.model';
+import { LoadingBarService } from '../loading-bar.service';
 
 const ROOT_URL = environment.production ? '/api' : 'https://localhost:5001';
 
@@ -31,12 +32,14 @@ export class RestAPIService implements IAPIService {
       console.error(err);
       this.notifications.show(`API Error: ${err.status}`, 'error');
     }
+    this.loadingBar.deactivate();
     return throwError(err);
   };
 
   constructor(
     private http: HttpClient,
-    private notifications: NotificationService
+    private notifications: NotificationService,
+    private loadingBar: LoadingBarService
   ) {}
 
   public getRegistrationCode(

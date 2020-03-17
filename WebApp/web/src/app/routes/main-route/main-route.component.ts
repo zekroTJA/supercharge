@@ -4,7 +4,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { StateService } from 'src/app/services/state.service';
 import { IAPIService } from 'src/app/services/api/api.interface';
 import { NotificationService } from 'src/app/services/notification.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { LoadingBarService } from 'src/app/services/loading-bar.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 
@@ -22,11 +22,21 @@ export class MainRouteComponent implements OnInit {
     @Inject('APIService') private api: IAPIService,
     private notifications: NotificationService,
     private router: Router,
+    private route: ActivatedRoute,
     private loadingBar: LoadingBarService,
     private localStorage: LocalStorageService
   ) {}
 
   public ngOnInit() {
+    this.route.params.subscribe((params) => {
+      if (!params.server) {
+        const server = this.state.server || 'euw1';
+        this.router.navigate([server.toLowerCase()]);
+      } else {
+        this.state.server = params.server.toUpperCase();
+      }
+    });
+
     this.suggestedSummonerNames = this.localStorage.getSuggestedSummoners();
 
     window.onclick = (ev: MouseEvent) => {
@@ -52,7 +62,7 @@ export class MainRouteComponent implements OnInit {
       .then((summoner) => {
         this.state.currentSummoner = summoner;
         this.localStorage.addSuggestedSummoner(summoner.name);
-        this.router.navigate(['summoner', summoner.name]);
+        this.router.navigate([this.state.server.toLowerCase(), summoner.name]);
       })
       .catch((err) => {
         if (err.status === 404) {

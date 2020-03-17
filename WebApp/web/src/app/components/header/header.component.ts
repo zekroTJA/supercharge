@@ -15,6 +15,12 @@ export class HeaderComponent implements OnInit {
   public ngOnInit() {}
 
   public onHeadingClick() {
-    this.router.navigate(['/']);
+    this.router.navigate([this.state.server.toLowerCase()]);
+  }
+
+  public onServerChange(server: string) {
+    const urlsplit = this.router.url.substr(1).split('/');
+    urlsplit[0] = server.toLowerCase();
+    this.router.navigateByUrl(urlsplit.join('/'));
   }
 }

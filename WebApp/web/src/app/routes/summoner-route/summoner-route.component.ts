@@ -66,6 +66,7 @@ export class SummonerRouteComponent implements OnInit {
     this.route.params.subscribe((params) => {
       const summonerName = params.summonerName;
       this.summoner = this.state.currentSummoner;
+      this.state.server = params.server.toUpperCase();
 
       if (!this.summoner || this.summoner.name !== summonerName) {
         this.loadingBar.activate();
@@ -120,19 +121,29 @@ export class SummonerRouteComponent implements OnInit {
   }
 
   public onWatchClick() {
-    this.router.navigate(['summoner', this.summoner.name, 'confirm'], {
-      queryParams: { action: 'watch' },
-    });
+    this.router.navigate(
+      [this.state.server.toLowerCase(), this.summoner.name, 'confirm'],
+      {
+        queryParams: { action: 'watch' },
+      }
+    );
   }
 
   public onUnwatchClick() {
-    this.router.navigate(['summoner', this.summoner.name, 'confirm'], {
-      queryParams: { action: 'unwatch' },
-    });
+    this.router.navigate(
+      [this.state.server.toLowerCase(), this.summoner.name, 'confirm'],
+      {
+        queryParams: { action: 'unwatch' },
+      }
+    );
   }
 
   public onDetailedClick() {
-    this.router.navigate(['summoner', this.summoner.name, 'details']);
+    this.router.navigate([
+      this.state.server.toLowerCase(),
+      this.summoner.name,
+      'details',
+    ]);
   }
 
   public get verticalChart(): boolean {

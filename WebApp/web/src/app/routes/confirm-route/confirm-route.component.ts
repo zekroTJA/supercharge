@@ -28,6 +28,7 @@ export class ConfirmRouteComponent implements OnInit {
   public ngOnInit() {
     this.route.params.subscribe((params) => {
       this.summonerName = params.summonerName;
+      this.state.server = params.server.toUpperCase();
 
       this.api
         .getRegistrationCode(this.state.server, this.summonerName)
@@ -60,7 +61,10 @@ export class ConfirmRouteComponent implements OnInit {
       .then(() => {
         this.notifications.show('Successfully set to watching.', 'success');
         this.state.currentSummoner.watch = true;
-        this.router.navigate(['summoner', this.summonerName]);
+        this.router.navigate([
+          this.state.server.toLowerCase(),
+          this.summonerName,
+        ]);
       })
       .catch((err) => {
         this.notifications.show(`Code is invalid (${err.status}).`, 'error');
@@ -73,7 +77,10 @@ export class ConfirmRouteComponent implements OnInit {
       .then(() => {
         this.notifications.show('Successfully set to not watching.', 'success');
         this.state.currentSummoner.watch = false;
-        this.router.navigate(['summoner', this.summonerName]);
+        this.router.navigate([
+          this.state.server.toLowerCase(),
+          this.summonerName,
+        ]);
       })
       .catch((err) => {
         this.notifications.show(`Code is invalid (${err.status}).`, 'error');

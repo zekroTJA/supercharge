@@ -86,6 +86,7 @@ export class DetailsRouteComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.summonerName = params.summonerName;
       this.summoner = this.state.currentSummoner;
+      this.state.server = params.server.toUpperCase();
 
       this.route.queryParams.subscribe((queryParams) => {
         this.fromQueryParams(queryParams, () => {
