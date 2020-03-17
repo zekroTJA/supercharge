@@ -278,9 +278,9 @@ export class DetailsRouteComponent implements OnInit {
     });
   }
 
-  public onDateChange(from: Date, to: Date) {
+  public onDateChange(from: string, to: string) {
     this.dateFrom = new Date(from);
-    this.dateTo = new Date(to);
+    this.dateTo = new Date(to + ' 23:59:59');
     this.requestTimeout.schedule(() => {
       this.renderChart();
     });
