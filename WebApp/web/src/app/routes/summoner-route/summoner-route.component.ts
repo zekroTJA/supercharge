@@ -151,7 +151,6 @@ export class SummonerRouteComponent implements OnInit {
   }
 
   public set verticalChart(v: boolean) {
-    console.log(v, this._verticalChart);
     if (v === this._verticalChart) {
       return;
     }

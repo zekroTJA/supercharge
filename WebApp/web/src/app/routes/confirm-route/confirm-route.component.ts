@@ -43,7 +43,6 @@ export class ConfirmRouteComponent implements OnInit {
   }
 
   public onConfirmClick() {
-    console.log(this.action);
     switch (this.action) {
       case 'watch':
         this.actionWatch();

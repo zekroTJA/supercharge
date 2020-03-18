@@ -7,7 +7,7 @@ import { VersionModel } from 'src/app/models/version.model';
 import { ChampionModel } from 'src/app/models/champion.model';
 import { SummonerModel } from 'src/app/models/summoner.model';
 import { StatsModel } from 'src/app/models/stats.model';
-import { EventEmitter, Inject, Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
@@ -130,7 +130,6 @@ export class RestAPIService implements IAPIService {
     championNames.forEach(
       (cn) => (params = params.append('championNames', cn))
     );
-    console.log(championNames);
 
     return this.http
       .get<HistoryModel[]>(

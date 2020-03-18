@@ -325,7 +325,6 @@ export class DetailsRouteComponent implements OnInit {
               this.state.championsMap[stats[0].championId],
             ];
 
-            console.log('test', this.summonerComparing);
             this.renderChart();
           });
       })
@@ -391,7 +390,6 @@ export class DetailsRouteComponent implements OnInit {
       this.selectedChampionsComparage = queryParams.compareChampions
         .split(',')
         .map((id: string) => this.state.championsMap[parseInt(id, 10)]);
-      console.log(this.selectedChampionsComparage);
     }
 
     if (queryParams.compare) {

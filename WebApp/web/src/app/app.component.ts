@@ -31,7 +31,6 @@ export class AppComponent {
       .getSummoner(this.state.server, value)
       .toPromise()
       .then((summoner) => {
-        console.log(summoner);
         this.summoner = summoner;
       })
       .catch((err) => {
