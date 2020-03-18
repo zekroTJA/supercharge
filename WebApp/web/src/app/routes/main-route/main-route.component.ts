@@ -7,6 +7,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LoadingBarService } from 'src/app/services/loading-bar.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { changeServer } from 'src/app/shared/server-router';
 
 @Component({
   selector: 'app-main-route',
@@ -29,9 +30,12 @@ export class MainRouteComponent implements OnInit {
 
   public ngOnInit() {
     this.route.params.subscribe((params) => {
-      if (!params.server) {
-        const server = this.state.server || 'euw1';
-        this.router.navigate([server.toLowerCase()]);
+      if (!this.state.isValidServer(params.server)) {
+        this.notifications.show(
+          `'${params.server}' is not a valid server! Switched to default server '${this.state.defaultServer}'.`,
+          'error'
+        );
+        changeServer(this.router, this.state.defaultServer);
       } else {
         this.state.server = params.server.toUpperCase();
       }

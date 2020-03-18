@@ -6,6 +6,7 @@ import { StateService } from 'src/app/services/state.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CodeModel } from 'src/app/models/code.model';
 import { NotificationService } from 'src/app/services/notification.service';
+import { changeServer } from 'src/app/shared/server-router';
 
 @Component({
   selector: 'app-confirm-route',
@@ -28,7 +29,16 @@ export class ConfirmRouteComponent implements OnInit {
   public ngOnInit() {
     this.route.params.subscribe((params) => {
       this.summonerName = params.summonerName;
-      this.state.server = params.server.toUpperCase();
+
+      if (!this.state.isValidServer(params.server)) {
+        this.notifications.show(
+          `'${params.server}' is not a valid server! Switched to default server '${this.state.defaultServer}'.`,
+          'error'
+        );
+        changeServer(this.router, this.state.defaultServer);
+      } else {
+        this.state.server = params.server.toUpperCase();
+      }
 
       this.api
         .getRegistrationCode(this.state.server, this.summonerName)

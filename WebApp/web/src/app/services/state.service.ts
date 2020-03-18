@@ -9,6 +9,20 @@ import { LocalStorageService } from './local-storage.service';
 
 const DEFAULT_SERVER = 'EUW1';
 
+const VALID_SERVERS: string[] = [
+  'RU',
+  'KR',
+  'BR1',
+  'OC1',
+  'JP1',
+  'NA1',
+  'EUN1',
+  'EUW1',
+  'TR1',
+  'LA1',
+  'LA2',
+];
+
 @Injectable({
   providedIn: 'root',
 })
@@ -53,5 +67,17 @@ export class StateService {
 
     this._server = v;
     this.localStorage.server = this._server;
+  }
+
+  public get validServers(): string[] {
+    return VALID_SERVERS;
+  }
+
+  public get defaultServer(): string {
+    return DEFAULT_SERVER;
+  }
+
+  public isValidServer(server: string): boolean {
+    return VALID_SERVERS.includes(server.toUpperCase());
   }
 }

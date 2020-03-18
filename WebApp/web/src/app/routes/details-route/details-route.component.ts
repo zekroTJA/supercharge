@@ -20,6 +20,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { LoadingBarService } from 'src/app/services/loading-bar.service';
 import { Location } from '@angular/common';
 import { Timeout } from 'src/app/shared/timeout';
+import { changeServer } from 'src/app/shared/server-router';
 
 @Component({
   selector: 'app-details-route',
@@ -86,7 +87,16 @@ export class DetailsRouteComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.summonerName = params.summonerName;
       this.summoner = this.state.currentSummoner;
-      this.state.server = params.server.toUpperCase();
+
+      if (!this.state.isValidServer(params.server)) {
+        this.notifications.show(
+          `'${params.server}' is not a valid server! Switched to default server '${this.state.defaultServer}'.`,
+          'error'
+        );
+        changeServer(this.router, this.state.defaultServer);
+      } else {
+        this.state.server = params.server.toUpperCase();
+      }
 
       this.route.queryParams.subscribe((queryParams) => {
         this.fromQueryParams(queryParams, () => {

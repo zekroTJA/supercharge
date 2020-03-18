@@ -3,6 +3,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StateService } from 'src/app/services/state.service';
 import { Router } from '@angular/router';
+import { changeServer } from 'src/app/shared/server-router';
 
 @Component({
   selector: 'app-header',
@@ -19,8 +20,6 @@ export class HeaderComponent implements OnInit {
   }
 
   public onServerChange(server: string) {
-    const urlsplit = this.router.url.substr(1).split('/');
-    urlsplit[0] = server.toLowerCase();
-    this.router.navigateByUrl(urlsplit.join('/'));
+    changeServer(this.router, server);
   }
 }
