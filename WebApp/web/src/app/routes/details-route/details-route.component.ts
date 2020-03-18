@@ -387,7 +387,7 @@ export class DetailsRouteComponent implements OnInit {
     }
 
     if (queryParams.to) {
-      this.dateTo = new Date(queryParams.to);
+      this.dateTo = new Date(queryParams.to + ' 23:59:59');
     }
 
     if (queryParams.champions) {
