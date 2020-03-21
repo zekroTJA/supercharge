@@ -7,7 +7,7 @@ import { VersionModel } from 'src/app/models/version.model';
 import { ChampionModel } from 'src/app/models/champion.model';
 import { SummonerModel } from 'src/app/models/summoner.model';
 import { StatsModel } from 'src/app/models/stats.model';
-import { EventEmitter, Inject, Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
@@ -18,6 +18,7 @@ import {
   StatusCountsModel,
   StatusVersionsModel,
 } from 'src/app/models/status.model';
+import { LoadingBarService } from '../loading-bar.service';
 
 const ROOT_URL = environment.production ? '/api' : 'https://localhost:5001';
 
@@ -31,12 +32,14 @@ export class RestAPIService implements IAPIService {
       console.error(err);
       this.notifications.show(`API Error: ${err.status}`, 'error');
     }
+    this.loadingBar.deactivate();
     return throwError(err);
   };
 
   constructor(
     private http: HttpClient,
-    private notifications: NotificationService
+    private notifications: NotificationService,
+    private loadingBar: LoadingBarService
   ) {}
 
   public getRegistrationCode(
@@ -127,7 +130,6 @@ export class RestAPIService implements IAPIService {
     championNames.forEach(
       (cn) => (params = params.append('championNames', cn))
     );
-    console.log(championNames);
 
     return this.http
       .get<HistoryModel[]>(

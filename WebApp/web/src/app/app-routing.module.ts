@@ -14,20 +14,24 @@ const routes: Routes = [
     component: MainRouteComponent,
   },
   {
-    path: 'summoner/:summonerName',
+    path: 'about',
+    component: AboutRouteComponent,
+  },
+  {
+    path: ':server',
+    component: MainRouteComponent,
+  },
+  {
+    path: ':server/:summonerName',
     component: SummonerRouteComponent,
   },
   {
-    path: 'summoner/:summonerName/confirm',
+    path: ':server/:summonerName/confirm',
     component: ConfirmRouteComponent,
   },
   {
-    path: 'summoner/:summonerName/details',
+    path: ':server/:summonerName/details',
     component: DetailsRouteComponent,
-  },
-  {
-    path: 'about',
-    component: AboutRouteComponent,
   },
   {
     path: '**',

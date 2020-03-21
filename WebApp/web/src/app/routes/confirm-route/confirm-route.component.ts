@@ -6,6 +6,7 @@ import { StateService } from 'src/app/services/state.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CodeModel } from 'src/app/models/code.model';
 import { NotificationService } from 'src/app/services/notification.service';
+import { changeServer } from 'src/app/shared/server-router';
 
 @Component({
   selector: 'app-confirm-route',
@@ -29,6 +30,16 @@ export class ConfirmRouteComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.summonerName = params.summonerName;
 
+      if (!this.state.isValidServer(params.server)) {
+        this.notifications.show(
+          `'${params.server}' is not a valid server! Switched to default server '${this.state.defaultServer}'.`,
+          'error'
+        );
+        changeServer(this.router, this.state.defaultServer);
+      } else {
+        this.state.server = params.server.toUpperCase();
+      }
+
       this.api
         .getRegistrationCode(this.state.server, this.summonerName)
         .subscribe((code) => {
@@ -42,7 +53,6 @@ export class ConfirmRouteComponent implements OnInit {
   }
 
   public onConfirmClick() {
-    console.log(this.action);
     switch (this.action) {
       case 'watch':
         this.actionWatch();
@@ -60,7 +70,10 @@ export class ConfirmRouteComponent implements OnInit {
       .then(() => {
         this.notifications.show('Successfully set to watching.', 'success');
         this.state.currentSummoner.watch = true;
-        this.router.navigate(['summoner', this.summonerName]);
+        this.router.navigate([
+          this.state.server.toLowerCase(),
+          this.summonerName,
+        ]);
       })
       .catch((err) => {
         this.notifications.show(`Code is invalid (${err.status}).`, 'error');
@@ -73,7 +86,10 @@ export class ConfirmRouteComponent implements OnInit {
       .then(() => {
         this.notifications.show('Successfully set to not watching.', 'success');
         this.state.currentSummoner.watch = false;
-        this.router.navigate(['summoner', this.summonerName]);
+        this.router.navigate([
+          this.state.server.toLowerCase(),
+          this.summonerName,
+        ]);
       })
       .catch((err) => {
         this.notifications.show(`Code is invalid (${err.status}).`, 'error');

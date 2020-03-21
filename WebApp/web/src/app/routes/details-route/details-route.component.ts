@@ -20,6 +20,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { LoadingBarService } from 'src/app/services/loading-bar.service';
 import { Location } from '@angular/common';
 import { Timeout } from 'src/app/shared/timeout';
+import { changeServer } from 'src/app/shared/server-router';
 
 @Component({
   selector: 'app-details-route',
@@ -86,6 +87,16 @@ export class DetailsRouteComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.summonerName = params.summonerName;
       this.summoner = this.state.currentSummoner;
+
+      if (!this.state.isValidServer(params.server)) {
+        this.notifications.show(
+          `'${params.server}' is not a valid server! Switched to default server '${this.state.defaultServer}'.`,
+          'error'
+        );
+        changeServer(this.router, this.state.defaultServer);
+      } else {
+        this.state.server = params.server.toUpperCase();
+      }
 
       this.route.queryParams.subscribe((queryParams) => {
         this.fromQueryParams(queryParams, () => {
@@ -324,7 +335,6 @@ export class DetailsRouteComponent implements OnInit {
               this.state.championsMap[stats[0].championId],
             ];
 
-            console.log('test', this.summonerComparing);
             this.renderChart();
           });
       })
@@ -377,7 +387,7 @@ export class DetailsRouteComponent implements OnInit {
     }
 
     if (queryParams.to) {
-      this.dateTo = new Date(queryParams.to);
+      this.dateTo = new Date(queryParams.to + ' 23:59:59');
     }
 
     if (queryParams.champions) {
@@ -390,7 +400,6 @@ export class DetailsRouteComponent implements OnInit {
       this.selectedChampionsComparage = queryParams.compareChampions
         .split(',')
         .map((id: string) => this.state.championsMap[parseInt(id, 10)]);
-      console.log(this.selectedChampionsComparage);
     }
 
     if (queryParams.compare) {

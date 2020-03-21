@@ -11,6 +11,8 @@ import { StatsModel } from 'src/app/models/stats.model';
 import { GRAPH_COLORS } from 'src/app/const/const';
 import { LoadingBarService } from 'src/app/services/loading-bar.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { NotificationService } from 'src/app/services/notification.service';
+import { changeServer } from 'src/app/shared/server-router';
 
 @Component({
   selector: 'app-summoner-route',
@@ -57,7 +59,8 @@ export class SummonerRouteComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private loadingBar: LoadingBarService,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private notifications: NotificationService
   ) {}
 
   public ngOnInit() {
@@ -66,6 +69,16 @@ export class SummonerRouteComponent implements OnInit {
     this.route.params.subscribe((params) => {
       const summonerName = params.summonerName;
       this.summoner = this.state.currentSummoner;
+
+      if (!this.state.isValidServer(params.server)) {
+        this.notifications.show(
+          `'${params.server}' is not a valid server! Switched to default server '${this.state.defaultServer}'.`,
+          'error'
+        );
+        changeServer(this.router, this.state.defaultServer);
+      } else {
+        this.state.server = params.server.toUpperCase();
+      }
 
       if (!this.summoner || this.summoner.name !== summonerName) {
         this.loadingBar.activate();
@@ -120,19 +133,29 @@ export class SummonerRouteComponent implements OnInit {
   }
 
   public onWatchClick() {
-    this.router.navigate(['summoner', this.summoner.name, 'confirm'], {
-      queryParams: { action: 'watch' },
-    });
+    this.router.navigate(
+      [this.state.server.toLowerCase(), this.summoner.name, 'confirm'],
+      {
+        queryParams: { action: 'watch' },
+      }
+    );
   }
 
   public onUnwatchClick() {
-    this.router.navigate(['summoner', this.summoner.name, 'confirm'], {
-      queryParams: { action: 'unwatch' },
-    });
+    this.router.navigate(
+      [this.state.server.toLowerCase(), this.summoner.name, 'confirm'],
+      {
+        queryParams: { action: 'unwatch' },
+      }
+    );
   }
 
   public onDetailedClick() {
-    this.router.navigate(['summoner', this.summoner.name, 'details']);
+    this.router.navigate([
+      this.state.server.toLowerCase(),
+      this.summoner.name,
+      'details',
+    ]);
   }
 
   public get verticalChart(): boolean {
@@ -140,7 +163,6 @@ export class SummonerRouteComponent implements OnInit {
   }
 
   public set verticalChart(v: boolean) {
-    console.log(v, this._verticalChart);
     if (v === this._verticalChart) {
       return;
     }
