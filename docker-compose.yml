@@ -72,7 +72,7 @@ services:
   webapp:
     build:
       context: './WebApp'
-    command: '-dir /app/dist -addr :80 -routes summoner'
+    command: '-dir /app/dist -addr webapp:80 -compress'
     image: 'supercharge/webapp:latest'
     expose:
       - '80'
