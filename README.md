@@ -20,6 +20,16 @@ The Logo and Icon is created and copyright by [luxtracon](https://twitter.com/lu
 
 ---
 
+## Screenshots
+
+> Screenshots taken: 2020-03-30 @ [fc183ff](https://github.com/zekroTJA/supercharge/commit/fc183ff55df8519e0004f136936d533f971eecc2)
+
+![](https://i.imgur.com/BxJnatY.png)
+![](https://i.imgur.com/LmtguFH.png)
+![](https://i.imgur.com/XIDOcYH.png)
+![](https://i.imgur.com/WbkTfUp.png)
+---
+
 ## Structure
 
 This project is split up in seperate "microservices" and access layers for better maintainability and deploy.
