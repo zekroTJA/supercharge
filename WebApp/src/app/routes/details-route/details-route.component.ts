@@ -360,11 +360,13 @@ export class DetailsRouteComponent implements OnInit {
       to: dateformat(this.dateTo, 'yyyy-mm-dd'),
       champions: this.selectedChampions.map((c) => c.key).join(','),
       compare: null,
+      compareServer: null,
       compareChampions: null,
     };
 
     if (this.summonerComparing) {
       queryParams.compare = this.summonerComparing.name;
+      queryParams.compareServer = this.serverComparing;
     }
 
     if (this.selectedChampionsComparage) {
@@ -407,6 +409,7 @@ export class DetailsRouteComponent implements OnInit {
 
     if (queryParams.compare) {
       this.comparing = true;
+      this.serverComparing = queryParams.compareServer || this.state.server;
       this.onCompareSummonerChange(queryParams.compare);
     }
 
