@@ -7,7 +7,7 @@ WORKDIR /build
 
 COPY src/ src/
 COPY angular.json .
-COPY browserlist .
+COPY browserslist .
 COPY package-lock.json .
 COPY package.json .
 COPY tsconfig.app.json .
