@@ -29,12 +29,26 @@ table {
 }
 
 .input-compare-container {
-  > input {
+  > div {
+    display: flex;
+    align-items: center;
     margin-top: 12px;
     margin-right: 10px;
+
+    > input {
+      max-width: 150px;
+    }
   }
 }
 
 .champ-select {
   padding-right: 20px;
+}
+
+.server-dropdown {
+  box-sizing: border-box;
+  &::ng-deep a {
+    padding: 4.5px 15px;
+    margin-top: 2px;
+  }
 }

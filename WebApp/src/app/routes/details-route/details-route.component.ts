@@ -39,6 +39,7 @@ export class DetailsRouteComponent implements OnInit {
   public comparing = false;
   public selectedChampionsComparage: ChampionModel[];
   public summonerComparing: SummonerModel;
+  public serverComparing: string;
 
   public dateFrom: Date = new Date(new Date().getTime() - 30 * 24 * 3600_000);
   public dateTo: Date = new Date();
@@ -97,6 +98,8 @@ export class DetailsRouteComponent implements OnInit {
       } else {
         this.state.server = params.server.toUpperCase();
       }
+
+      this.serverComparing = this.state.server;
 
       this.route.queryParams.subscribe((queryParams) => {
         this.fromQueryParams(queryParams, () => {
@@ -213,7 +216,7 @@ export class DetailsRouteComponent implements OnInit {
 
       this.api
         .getSummonerHistory(
-          this.state.server,
+          this.serverComparing,
           this.summonerComparing.name,
           this.selectedChampionsComparage.map((c) => c.id),
           this.dateFrom,
@@ -307,7 +310,7 @@ export class DetailsRouteComponent implements OnInit {
       return;
     }
     this.api
-      .getSummoner(this.state.server, v)
+      .getSummoner(this.serverComparing, v)
       .toPromise()
       .then((summoner) => {
         if (!summoner.registered) {
@@ -325,7 +328,7 @@ export class DetailsRouteComponent implements OnInit {
         this.summonerComparing = summoner;
 
         this.api
-          .getSummonerStats(this.state.server, summoner.name)
+          .getSummonerStats(this.serverComparing, summoner.name)
           .subscribe((stats) => {
             if (stats.length <= 0) {
               return;
