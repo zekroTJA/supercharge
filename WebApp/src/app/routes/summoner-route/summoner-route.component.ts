@@ -55,7 +55,7 @@ export class SummonerRouteComponent implements OnInit {
 
   constructor(
     @Inject('APIService') private api: IAPIService,
-    private state: StateService,
+    public state: StateService,
     private route: ActivatedRoute,
     private router: Router,
     private loadingBar: LoadingBarService,
