@@ -13,7 +13,7 @@ import { DropDownComponent } from './components/drop-down/drop-down.component';
 import { MainRouteComponent } from './routes/main-route/main-route.component';
 import { SummonerRouteComponent } from './routes/summoner-route/summoner-route.component';
 
-import { ChartsModule } from 'ng2-charts';
+import { ChartsModule, ThemeService } from 'ng2-charts';
 import { DateTimePipe } from './pipes/date-time.pipe';
 import { ConfirmRouteComponent } from './routes/confirm-route/confirm-route.component';
 import { DetailsRouteComponent } from './routes/details-route/details-route.component';
@@ -42,7 +42,10 @@ import { LoadingBarComponent } from './components/loading-bar/loading-bar.compon
     ChartsModule,
     FormsModule,
   ],
-  providers: [{ provide: 'APIService', useClass: RestAPIService }],
+  providers: [
+    { provide: 'APIService', useClass: RestAPIService },
+    ThemeService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
