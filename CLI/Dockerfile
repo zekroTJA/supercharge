@@ -1,7 +1,7 @@
-FROM mcr.microsoft.com/dotnet/core/runtime:3.1-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/runtime:5.0-alpine AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS build
 WORKDIR /src
 COPY ["CLI/CLI.csproj", "CLI/"]
 COPY ["DatabaseAccessLayer/DatabaseAccessLayer.csproj", "DatabaseAccessLayer/"]
