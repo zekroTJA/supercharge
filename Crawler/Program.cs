@@ -8,6 +8,14 @@ using System.Threading;
 
 namespace Crawler
 {
+    class Test
+    {
+        public int A { get; set; }
+        public int B { get; set; }
+
+        public Test(int a, int b) => (A, B) = (a, b);
+    }
+
     class Program
     {
         static void Main(string[] args)
