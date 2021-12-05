@@ -28,10 +28,8 @@ namespace DatabaseAccessLayer
             if (connectionString == null || connectionString == "")
             {
                 connectionString = config.GetConnectionString("mysql");
-                optionsBuilder.UseMySql(connectionString);
+                optionsBuilder.UseMySql(ServerVersion.AutoDetect(connectionString));
             }
-
-
 
             base.OnConfiguring(optionsBuilder);
         }
